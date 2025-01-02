@@ -55,6 +55,8 @@ const Delivery = () => {
     time: "",
     date: "",
   });
+  console.log(scheduleTime, "==scheduletime");
+
   const form = useForm<FormData>({
     resolver: zodResolver(FormValidation),
   });
@@ -217,7 +219,7 @@ const Delivery = () => {
                   <p className="text-[#666666]">10-20 min</p>
                 </div>
               </div>
-              <ScheduleTImePopup setScheduleTime={setScheduleTime}>
+              <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="delivery">
                 <div
                   className={cn(
                     "flex w-full items-center gap-3 border-[2px] border-[#282828] px-4 py-3 lg:w-2/3",

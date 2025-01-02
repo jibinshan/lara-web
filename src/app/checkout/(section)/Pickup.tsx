@@ -101,6 +101,7 @@ const Pickup = () => {
       return res.data.data;
     },
     onSuccess: (data) => {
+
       toast("Order created successfully");
       clearCart();
       router.push("/payment/" + data._id);
@@ -163,7 +164,7 @@ const Pickup = () => {
                   <p className="text-[#666666]">10-20 min</p>
                 </div>
               </div>
-              <ScheduleTImePopup setScheduleTime={setScheduleTime}>
+              <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="pickup">
                 <div
                   className={cn(
                     "flex w-full items-center gap-3 border-[2px] border-[#282828] px-4 py-3 lg:w-2/3",
@@ -267,7 +268,7 @@ const Pickup = () => {
           </div>
         </form>
       </Form>
-    </div >
+    </div>
   );
 };
 
