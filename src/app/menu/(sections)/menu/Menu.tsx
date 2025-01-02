@@ -12,6 +12,10 @@ import MenuItemMobile from "./MenuItemMobile";
 import debounce from "lodash.debounce";
 import { useRouter } from "next/navigation";
 import { format } from "date-fns";
+import CartSheet from "@/components/cart/CartSheet";
+import { Icons } from "@/components/Icon";
+import { useCart } from "@/context/CartContext";
+import { BetaMenuActive } from "@/lib/constants";
 
 const Menu = () => {
   const router = useRouter();
@@ -19,6 +23,20 @@ const Menu = () => {
   const { sortedMenu } = useRestaurant();
   const [currentCategory, setCurrentCategory] = useState<string | null>(null);
   const { menuCategory } = useRestaurant();
+  const { cartItems } = useCart();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const heroHeight = document.getElementById("hero")?.offsetHeight ?? 0;
+      setIsScrolled(window.scrollY > heroHeight);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const fixedElementHeight = 150; // Adjust this value to match the height of your fixed element
   // eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
@@ -153,15 +171,34 @@ const Menu = () => {
               </div>
               <Search query={query} setQuery={setQuery} />
             </div>
-            <Button
-              className="hidden items-center gap-2 px-6 py-6 font-semibold text-black md:flex"
-              asChild
-            >
-              <Link href="/pdf/woolton-a-la-carte.pdf" target="_blank">
-                <FileText />
-                Download Menu
-              </Link>
-            </Button>
+            <div className="flex gap-8 justify-center items-center">
+              {isScrolled && (
+                <CartSheet>
+                  <Button
+                    variant="ghost"
+                    className="relative px-1 py-1 hover:bg-transparent hover:text-primary/90 hidden md:flex"
+                    disabled={!BetaMenuActive}
+                  >
+                    <span className="sr-only">Shopping Cart</span>
+                    {cartItems.length && (
+                      <span className="absolute -right-2 -top-2 z-20 flex size-5 items-center justify-center rounded-full bg-primary text-xs font-bold text-white">
+                        {cartItems.length}
+                      </span>
+                    )}
+                    <Icons.shoppingCart className="z-0" />
+                  </Button>
+                </CartSheet>
+              )}
+              <Button
+                className="hidden items-center gap-2 px-6 py-6 font-semibold text-black md:flex"
+                asChild
+              >
+                <Link href="/pdf/woolton-a-la-carte.pdf" target="_blank">
+                  <FileText />
+                  Download Menu
+                </Link>
+              </Button>
+            </div>
           </div>
           <div
             ref={containerRef}
@@ -177,7 +214,7 @@ const Menu = () => {
                   className={cn(
                     "w-fit border-b-2 border-b-transparent bg-primary px-6 py-4 font-semibold transition-all duration-300 ease-in-out md:bg-transparent",
                     currentCategory === item._id &&
-                      "bg-[#02264E] md:border-b-primary",
+                    "bg-[#02264E] md:border-b-primary",
                     existCategory.find(
                       (categoryid) => categoryid === item._id,
                     ) !== item._id && "hidden w-0 border-0 px-0 py-0",
@@ -205,21 +242,21 @@ const Menu = () => {
                 className={cn(
                   "mt-6 flex w-full flex-col gap-2 lg:mt-0",
                   data._id !==
-                    existCategory.find(
-                      (categoryid) => categoryid === data._id,
-                    ) && "mt-0 hidden w-0 gap-0",
+                  existCategory.find(
+                    (categoryid) => categoryid === data._id,
+                  ) && "mt-0 hidden w-0 gap-0",
                 )}
               >
                 <h1
                   id={data._id}
                   className={cn(
                     data._id === currentCategory &&
-                      "sticky top-[150px] z-40 w-full bg-[#070707] py-3 lg:static lg:top-0",
+                    "sticky top-[150px] z-40 w-full bg-[#070707] py-3 lg:static lg:top-0",
                     "font-sans text-xl font-bold tracking-[0.00938em]",
                     data._id !==
-                      existCategory.find(
-                        (categoryid) => categoryid === data._id,
-                      ) && "h-0 w-0 p-0 tracking-[0px]",
+                    existCategory.find(
+                      (categoryid) => categoryid === data._id,
+                    ) && "h-0 w-0 p-0 tracking-[0px]",
                   )}
                 >
                   {data._id ===
@@ -311,7 +348,7 @@ const Menu = () => {
           </>
         )}
       </div>
-    </section>
+    </section >
   );
 };
 
