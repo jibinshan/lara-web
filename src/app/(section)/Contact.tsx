@@ -1,47 +1,158 @@
+'use client'
 import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
+import axios from "axios";
+import Image from "next/image";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { z } from "zod";
+
+
+const FormValidation = z.object({
+    name: z.string().min(1, "please enter your name"),
+    phone: z.string().min(11, "please enter atleast 11 digits").max(11, "please enter maximum 11 digits"),
+    email: z.string().min(1, "please enter your email"),
+    reason: z.string().optional(),
+    message: z.string().min(1, "please enter your message"),
+});
+
+type FormData = z.infer<typeof FormValidation>;
 
 const Contact = ({ }) => {
+    const form = useForm<FormData>({
+        resolver: zodResolver(FormValidation),
+        defaultValues: {
+            name: "",
+            phone: "",
+            email: "",
+            reason: "",
+            message: "",
+        },
+    });
+
+    const onSubmit = (data: FormData) => {
+        bookTableMutation.mutate(data);
+    };
+
+    const bookTableMutation = useMutation({
+        mutationFn: async (values: z.infer<typeof FormValidation>) => {
+            return await axios.post("/api/contact", values);
+        },
+        onSuccess: () => {
+            toast(
+                (t) => (
+                    <div className="flex flex-col gap-2 items-center justify-center">
+                        <p className="text-center">Your reservation request has been successfully submitted to the restaurant!</p>
+                        <button
+                            onClick={() => {
+                                toast.dismiss(t.id);
+                                form.reset();
+                            }}
+                            className="bg-primary text-white px-4 py-2 rounded"
+                        >
+                            OK
+                        </button>
+                    </div>
+                ),
+                { duration: Infinity }
+            );
+        },
+        onError: () => {
+            toast.error(
+                "There was an error submitting your message. Please try again later",
+            );
+        },
+    });
     return (
         <section id="welcome" className="flex w-full items-center justify-center bg-[#0b0b0b] overflow-hidden">
-            <div className="relative flex flex-col h-fit lg:min-h-[60vh] max-w-[1300px] w-full items-center justify-center px-4 lg:px-0 py-12 lg:py-24">
-                <p className="text-5xl font-gotu text-center text-[#C1C1C1]">Contact us</p>
-                <form className="h-full w-full">
-                    <div className="flex gap-4 pt-7">
-                        <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-x-16">
-                            <div>
-                                <Label className="text-sm text-[#787571] ">First Name</Label>
-                                <Input
-                                    className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none placeholder:text-[#787571] focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+            <div className="relative flex flex-col gap-9 h-fit lg:min-h-[60vh] max-w-[1300px] w-full items-center justify-center px-4 lg:px-0 py-12 lg:py-24">
+                <div className="w-full flex flex-col items-center justify-center">
+                    <p className="text-5xl font-gotu text-center text-[#C1C1C1]">Contact us</p>
+                    <Image src="/images/underline.png" width={840} height={85} alt="underline" className="w-52" />
+                </div>
+                <Form {...form}>
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="h-full w-full">
+                        <div className="flex gap-4 pt-7">
+                            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-x-16">
+                                <FormField
+                                    control={form.control}
+                                    name="name"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel className="text-sm text-[#787571] ">First Name</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none placeholder:text-[#787571] focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
-                            </div>
-                            <div>
-                                <Label className="text-sm text-[#787571] ">Phone</Label>
-                                <Input
-                                    className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none placeholder:text-[#787571] focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                <FormField
+                                    control={form.control}
+                                    name="phone"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel className="text-sm text-[#787571] ">Phone</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none placeholder:text-[#787571] focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
-                            </div>
-                            <div>
-                                <Label className="text-sm text-[#787571] ">Email</Label>
-                                <Input
-                                    className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none placeholder:text-[#787571] focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                <FormField
+                                    control={form.control}
+                                    name="email"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel className="text-sm text-[#787571] ">Email</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    type="email"
+                                                    className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none placeholder:text-[#787571] focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
-                            </div>
-                            <div>
-                                <Label className="text-sm text-[#787571] ">Your Message</Label>
-                                <Input
-                                    className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none placeholder:text-[#787571] focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                <FormField
+                                    control={form.control}
+                                    name="message"
+                                    render={({ field }) => (
+                                        <FormItem className="w-full">
+                                            <FormLabel className="text-sm text-[#787571] ">Message</FormLabel>
+                                            <FormControl>
+                                                <Input
+                                                    {...field}
+                                                    className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none placeholder:text-[#787571] focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                />
+                                            </FormControl>
+                                            <FormMessage />
+                                        </FormItem>
+                                    )}
                                 />
                             </div>
                         </div>
-                    </div>
-                    <div className="flex w-full flex-col items-center justify-center pt-7 lg:flex-row">
-                        <Button className="w-fit border-[#dbab69] text-[#dbab69] bg-transparent" variant='outline'> Submit</Button>
-                    </div>
-                </form >
-            </div >
-        </section >
+                        <div className="flex w-full flex-col items-center justify-center pt-7 lg:flex-row">
+                            <Button className="w-fit h-12 px-10"
+                                disabled={bookTableMutation.isPending}
+                            > Submit</Button>
+                        </div>
+                    </form>
+                </Form>
+            </div>
+        </section>
     );
 };
 

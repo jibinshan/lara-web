@@ -14,7 +14,7 @@ export interface MenuItem {
   _idCategory?: string;
   isVeg: boolean;
   price: Price;
-  takeawayPrice: TakeawayPrice;
+  takeawayPrice: Price;
   enabled: boolean;
   _id: string;
   name: string;
@@ -26,16 +26,14 @@ export interface MenuItem {
   _idModifier?: string; // Same as above, but for the '_idModifier' property.
 }
 
-interface TakeawayPrice {
-  value: number;
-  currency: string;
-  _id?: string; // Same as above for takeawayPrice.currency. Adjust as needed.
-}
-
 interface Extras {
   menuType: string; // This assumes that the extra type is always 'menuType'. If it isn't, adjust accordingly.
+  menuItemOrderType: string;
+  availability: availability;
 }
-
+interface availability {
+  days: string[];
+}
 export interface Modifier {
   price: Price; // Assuming all modifiers have a price object with value and currency properties. Adjust as needed if this assumption is incorrect.
   header: string;
@@ -47,6 +45,7 @@ export interface Modifier {
   _id?: string; // This assumes that modifiers may have an ID, but it's not always present in your data. Remove it if this isn't the case.
   modifierOrder: number;
   modifierItemOrder: number;
+  defaultSelection: string;
 }
 
 interface ModifierItem {

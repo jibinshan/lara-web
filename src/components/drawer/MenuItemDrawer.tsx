@@ -3,8 +3,8 @@ import { Icons } from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/context/CartContext";
+import { BetaMenuActive } from "@/lib/constants";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { getCurrencySymbol } from "@/lib/get-currency-symbol";
 import { GetModifiersFromItemId } from "@/lib/get-modifiers-from-item-id";
@@ -18,7 +18,6 @@ import {
   DrawerFooter,
   DrawerTrigger,
 } from "../ui/drawer";
-import { BetaMenuActive } from "@/lib/constants";
 
 interface MenuItemPopupProps {
   children: React.ReactNode;
@@ -26,11 +25,9 @@ interface MenuItemPopupProps {
 }
 
 const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
-  const [showNote, setShowNote] = useState(false);
   const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(item.price.value);
-  const [note, setNote] = useState("");
   const [selectedModifiers, setSelectedModifiers] = useState<MenuItem[]>([]);
   const { addItem } = useCart();
 
@@ -78,12 +75,15 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
           <div className="pt-48">
             <div className="rounded-lg bg-[#0f0f0f] px-5 py-6">
               {item && (
-                <div className="z-40 flex w-full justify-between gap-2">
-                  <p className="text-lg font-semibold">{item.name}</p>
-                  <p className="text-lg font-semibold">
-                    {getCurrencySymbol(item?.price?.currency)}{" "}
-                    {formattedItemPrice(item.price.value)}
-                  </p>
+                <div className="flex flex-col gap-2">
+                  <div className="z-40 flex w-full justify-between gap-2">
+                    <p className="text-lg font-semibold">{item.name}</p>
+                    <p className="text-lg font-semibold">
+                      {getCurrencySymbol(item?.price?.currency)}{" "}
+                      {formattedItemPrice(item.price.value)}
+                    </p>
+                  </div>
+                  <p>{item.description}</p>
                 </div>
               )}
             </div>
@@ -138,39 +138,6 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
               </div>
             </div>
           )}
-          <div className="rounded-lg bg-[#0f0f0f] px-5 py-6">
-            {showNote ? (
-              <div className="z-40 flex w-full flex-col gap-2">
-                <Label
-                  htmlFor="note"
-                  className="flex cursor-pointer items-center gap-2 text-[#FBEAD2]"
-                  onClick={() => {
-                    setShowNote(false);
-                  }}
-                >
-                  <Icons.pencil />
-                  Add Note
-                </Label>
-                <Textarea
-                  id="note"
-                  value={note}
-                  onChange={(e) => setNote(e.target.value)}
-                  rows={3}
-                  className="border-none bg-[#0F0F0F]"
-                />
-              </div>
-            ) : (
-              <p
-                className="flex w-fit cursor-pointer items-center gap-2 text-[#FBEAD2] underline hover:text-[#FBEAD2]/90"
-                onClick={() => {
-                  setShowNote(true);
-                }}
-              >
-                <Icons.pencil />
-                Write a note
-              </p>
-            )}
-          </div>
         </div>
         {BetaMenuActive && (
           <DrawerFooter className="flex w-full flex-row justify-start gap-2">
@@ -224,7 +191,6 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
                 toast.success("Item added to cart");
                 setOpen(false);
                 setQuantity(1);
-                setNote("");
                 setSelectedModifiers([]);
               }}
             >

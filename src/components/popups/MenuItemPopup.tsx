@@ -39,7 +39,6 @@ const MenuItemPopup: FC<MenuItemPopupProps> = ({ children, item }) => {
 
   useEffect(() => {
     let price = item.price.value;
-
     for (const selectedModifier of selectedModifiers) {
       price += selectedModifier.price.value;
     }
@@ -52,103 +51,107 @@ const MenuItemPopup: FC<MenuItemPopupProps> = ({ children, item }) => {
   const handleModifierChange = (modifier: MenuItem, isChecked: boolean) => {
     setSelectedModifiers((prev) =>
       isChecked
-        ? [...prev, modifier]
-        : prev.filter((m) => m._id !== modifier._id),
+        ?
+        [...prev, modifier]
+        :
+        prev.filter((m) => m._id !== modifier._id),
     );
   };
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="hidden max-w-0 border-[1px] border-[#212121] bg-[#070707] lg:block lg:max-w-[525px]">
-        <DialogHeader>
-          <DialogTitle className="text-[#FBEAD2]">{item.name}</DialogTitle>
-          <DialogDescription>
-            {item.description ?? "No description available"}
-          </DialogDescription>
-        </DialogHeader>
+      <DialogContent className="hidden md:flex flex-col gap-3 max-w-0 border-[1px] border-[#212121] bg-[#070707] lg:max-w-[625px] max-h-[625px] p-0 overflow-y-scroll hidden-scrollbar ">
         {item.images[0] && (
           <Image
             src={item.images[0]}
             width={1980}
             height={1080}
             alt={item.name}
-            className="h-auto max-h-[180px] w-full object-cover"
+            className="h-auto md:max-h-[350px] w-full object-cover"
           />
         )}
-        {showNote ? (
-          <div className="flex w-full flex-col gap-2">
-            <Label
-              htmlFor="note"
-              className="flex cursor-pointer items-center gap-2 text-[#FBEAD2]"
+        <div className="px-6 py-6 flex flex-col gap-5">
+          <DialogHeader>
+            <DialogTitle className="text-[#FBEAD2]">{item.name}</DialogTitle>
+            <DialogDescription>
+              {item.description ?? "No description available"}
+            </DialogDescription>
+          </DialogHeader>
+          {showNote ? (
+            <div className="flex w-full flex-col gap-2">
+              <Label
+                htmlFor="note"
+                className="flex cursor-pointer items-center gap-2 text-[#FBEAD2]"
+                onClick={() => {
+                  setShowNote(false);
+                }}
+              >
+                <Icons.pencil />
+                Add Note
+              </Label>
+              <Textarea
+                id="note"
+                value={note}
+                onChange={(e) => setNote(e.target.value)}
+                rows={3}
+                className="border-none bg-[#0F0F0F]"
+              />
+            </div>
+          ) : (
+            <p
+              className="flex w-fit cursor-pointer items-center gap-2 text-[#FBEAD2] underline hover:text-[#FBEAD2]/90"
               onClick={() => {
-                setShowNote(false);
+                setShowNote(true);
               }}
             >
               <Icons.pencil />
-              Add Note
-            </Label>
-            <Textarea
-              id="note"
-              value={note}
-              onChange={(e) => setNote(e.target.value)}
-              rows={3}
-              className="border-none bg-[#0F0F0F]"
-            />
-          </div>
-        ) : (
-          <p
-            className="flex w-fit cursor-pointer items-center gap-2 text-[#FBEAD2] underline hover:text-[#FBEAD2]/90"
-            onClick={() => {
-              setShowNote(true);
-            }}
-          >
-            <Icons.pencil />
-            Write a note
-          </p>
-        )}
-        {GetModifiersFromItemId(item).length > 0 && (
-          <div className="space-y-2">
-            <Label className="text-lg font-semibold text-[#FBEAD2]">
-              Modifiers
-            </Label>
-            {/* max-h-[100px] */}
-            <div className="custom-scrollbar flex h-full max-h-[200px] w-full flex-col gap-2 overflow-y-scroll">
-              {GetModifiersFromItemId(item).map((modifier) => (
-                <div
-                  key={modifier._id}
-                  className="flex w-full cursor-pointer items-center gap-4"
-                  onClick={() =>
-                    handleModifierChange(
-                      modifier,
-                      !selectedModifiers.some((m) => m._id === modifier._id),
-                    )
-                  }
-                >
-                  <Checkbox
-                    id={modifier._id}
-                    checked={selectedModifiers.some(
-                      (m) => m._id === modifier._id,
-                    )}
-                    onCheckedChange={(checked) =>
-                      handleModifierChange(modifier, checked as boolean)
-                    }
-                  />
-                  <Label
-                    htmlFor={modifier._id}
-                    className="flex items-center gap-2 text-[#FBEAD2]"
+              Write a note
+            </p>
+          )}
+          {GetModifiersFromItemId(item).length > 0 && (
+            <div className="space-y-2">
+              <Label className="text-lg font-semibold text-[#FBEAD2]">
+                Modifiers
+              </Label>
+              {/* max-h-[100px] */}
+              <div className="custom-scrollbar flex h-full max-h-[200px] w-full flex-col gap-2 overflow-y-scroll">
+                {GetModifiersFromItemId(item).map((modifier) => (
+                  <div
+                    key={modifier._id}
+                    className="flex w-full cursor-pointer items-center gap-4"
+                  // onClick={() =>
+                  //   handleModifierChange(
+                  //     modifier,
+                  //     !selectedModifiers.some((m) => m._id === modifier._id),
+                  //   )
+                  // }
                   >
-                    {modifier.name}
-                    {modifier.price &&
-                      ` (+${getCurrencySymbol(modifier.price.currency)}${modifier.price.value})`}
-                  </Label>
-                </div>
-              ))}
+                    <Checkbox
+                      id={modifier._id}
+                      checked={selectedModifiers.some(
+                        (m) => m._id === modifier._id,
+                      )}
+                      onCheckedChange={(checked) =>
+                        handleModifierChange(modifier, checked as boolean)
+                      }
+                    />
+                    <Label
+                      htmlFor={modifier._id}
+                      className="flex items-center gap-2 text-[#FBEAD2]"
+                    >
+                      {modifier.name}
+                      {modifier.price &&
+                        `(+${getCurrencySymbol(modifier.price.currency)}${modifier.price.value})`}
+                    </Label>
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
-        )}
+          )}
+        </div>
         {BetaMenuActive && (
-          <DialogFooter className="flex flex-row justify-end gap-2">
+          <DialogFooter className="w-full h-fit flex flex-row justify-end gap-2">
             <div className="flex h-full w-fit items-center gap-3 bg-[#0F0F0F] p-2 text-[#D5A859]">
               <Button
                 className="h-full w-fit rounded-full bg-transparent p-0 hover:bg-transparent"

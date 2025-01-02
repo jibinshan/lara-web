@@ -1,54 +1,14 @@
 "use client";
 import EmblaCarousel from "@/app/(section)/(special)/MenuCarousel";
 import { Button } from "@/components/ui/button";
+import { useRestaurant } from "@/context/RestaurantContext";
 import type { EmblaOptionsType } from "embla-carousel";
 import Link from "next/link";
 
 const OPTIONS: EmblaOptionsType = { loop: true };
 
-const slideData: {
-  modelUrl: string;
-  price: string;
-  name: string;
-}[] = [
-  {
-    name: "Adana Kebab",
-    price: "30",
-    modelUrl: "/models/adana-kebab.glb",
-  },
-  {
-    name: "Lara Jumbo Platter",
-    price: "30",
-    modelUrl: "/models/lara-jumbo-platter.glb",
-  },
-  {
-    name: "Mixed Vegetables",
-    price: "30",
-    modelUrl: "/models/mixed-vegetables.glb",
-  },
-  {
-    name: "Roasted Kuckle Lamb",
-    price: "30",
-    modelUrl: "/models/roasted-kuckle-lamb.glb",
-  },
-  {
-    name: "Saksuka",
-    price: "30",
-    modelUrl: "/models/saksuka.glb",
-  },
-  {
-    name: "Turkish Sheperd Salad",
-    price: "30",
-    modelUrl: "/models/turkish-sheperd-salad.glb",
-  },
-  {
-    name: "Vegetarian Kebab",
-    price: "30",
-    modelUrl: "/models/vegetarian-kebab.glb",
-  },
-];
-
-const Special = ({}) => {
+const Special = ({ }) => {
+  const { modelData } = useRestaurant();
   return (
     <section className="relative flex h-full w-full justify-center bg-[#070707]">
       <div className="flex h-full w-full max-w-[1300px] flex-col items-center justify-center gap-4 px-3 py-12 lg:px-0">
@@ -62,25 +22,26 @@ const Special = ({}) => {
               <br />
               Specials
             </h1>
-            <Link href="">
-              <Button
-                className="flex items-center justify-center gap-3 border-[#FEC679] bg-transparent px-10 py-7 text-[#FEC679]"
-                variant="outline"
-              >
+            <Link href='/menu'>
+              <Button className="relative py-7 px-10 font-medium uppercase transition-colors hover:bg-primary/90 before:absolute 
+                            before:inset-0 before:-z-[1] before:h-full before:w-full before:border-2 before:border-transparent before:transition-all 
+                            before:content-[''] before:hover:top-1 before:hover:left-1 before:hover:border-b-primary before:hover:border-r-primary before:hover:rounded-xl">
                 View Menu
               </Button>
             </Link>
           </div>
-          <div className="flex items-end">
-            <p className="max-w-[400px] px-2 text-center font-light leading-[160%] text-[#BBB4AA] md:px-0 lg:text-start">
-              Bavette was born from a passion for bringing the finest cuts of
-              beef to the table, with a commitment to sustainability.
+          <div className="flex items-center">
+            <p className="max-w-[400px] px-2 text-center font-light leading-[160%] text-[#BBB4AA] md:px-0 md:text-xl lg:text-start">
+              Lara was born from a passion for bringing the finest cuisine to
+              the table, with a commitment to sustainability.
             </p>
           </div>
         </div>
-        <div className="relative z-20 flex min-h-[400px] w-full flex-col justify-center px-2">
-          <EmblaCarousel slides={slideData} options={OPTIONS} />
-        </div>
+        {modelData && (
+          <div className="relative z-20 flex min-h-[400px] w-full flex-col justify-center px-2">
+            <EmblaCarousel slides={modelData} options={OPTIONS} />
+          </div>
+        )}
       </div>
     </section>
   );

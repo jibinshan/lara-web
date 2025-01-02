@@ -1,5 +1,4 @@
 "use client";
-import { BetaMenuActive } from "@/lib/constants";
 import type { CartItem } from "@/types/cart-item.type";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
@@ -45,9 +44,6 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({
   }, [cartItems, initialLoad]);
 
   const addItem = (item: CartItem) => {
-    if (!BetaMenuActive) {
-      return;
-    }
     setCartItems((prevItems) => {
       const existingItem = prevItems.find(
         (i) => i._idMenuItem === item._idMenuItem,

@@ -67,7 +67,7 @@ export const PrevButton: React.FC<PropType> = (props) => {
       variant="outline"
       size="icon"
       className={cn(
-        "group/btn h-8 w-8 rounded-full border-0 border-primary text-foreground hover:bg-primary",
+        "group/btn h-10 w-10 rounded-full border-0 border-primary text-foreground hover:bg-primary",
         "-left-12 top-1/2 -translate-y-1/2",
       )}
       {...restProps}
@@ -76,12 +76,12 @@ export const PrevButton: React.FC<PropType> = (props) => {
         className="absolute inset-0 flex rounded-full group-hover/btn:hidden"
         style={{
           border: `2px solid #BC995D`,
-          clipPath: "polygon(0 0, 100% 0, 60% 100%, 0 100%)",
+          // clipPath: "polygon(0 0, 100% 0, 60% 100%, 0 100%)",
           transition: "clip-path 0.4s ease-in-out",
           transform: "rotate(160deg)",
         }}
       />
-      <ArrowLeftIcon className="h-4 w-4" />
+      <ArrowLeftIcon className="h-5 w-5" />
       <span className="sr-only">Previous slide</span>
     </Button>
   );
@@ -95,7 +95,7 @@ export const NextButton: React.FC<PropType> = (props) => {
       variant="outline"
       size="icon"
       className={cn(
-        "group/btn h-8 w-8 rounded-full border-0 border-primary text-foreground hover:bg-primary",
+        "group/btn h-10 w-10 rounded-full border-0 border-primary text-foreground hover:bg-primary",
         "-right-12 top-1/2 -translate-y-1/2",
       )}
       {...restProps}
@@ -104,12 +104,12 @@ export const NextButton: React.FC<PropType> = (props) => {
         className="absolute inset-0 flex rounded-full group-hover/btn:hidden"
         style={{
           border: `2px solid #BC995D`,
-          clipPath: "polygon(0 0, 100% 0, 60% 100%, 0 100%)",
+          // clipPath: "polygon(0 0, 100% 0, 60% 100%, 0 100%)",
           transition: "clip-path 0.4s ease-in-out",
           transform: "rotate(-20deg)",
         }}
       />
-      <ArrowRightIcon className="h-4 w-4" />
+      <ArrowRightIcon className="h-5 w-5" />
       <span className="sr-only">Next slide</span>
     </Button>
   );

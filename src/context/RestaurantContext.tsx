@@ -5,7 +5,9 @@ import {
 } from "@/lib/organize-menu-by-category";
 import type { MenuCategory } from "@/types/menu-category.type";
 import type { MenuItem } from "@/types/menu-item.type";
+import type { ModelData } from "@/types/model-data.type";
 import type { Restaurant } from "@/types/restaurant.type";
+import type { Review } from "@/types/review.type";
 import { useQuery } from "@tanstack/react-query";
 import axios, { type AxiosResponse } from "axios";
 import React, { createContext, useContext, useEffect } from "react";
@@ -20,6 +22,8 @@ type MenuContextType = {
   restaurantID: string;
   stripePublishableKey: string;
   restaurant: Restaurant | undefined;
+  reviews: Review[] | undefined;
+  modelData: ModelData[] | undefined;
 };
 
 const RestaurantContext = createContext<MenuContextType | undefined>(undefined);
@@ -79,7 +83,7 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({
           rows: MenuItem[];
         };
       }> = await axios.get(
-        `${apiUrl}/menu?pageSize=30000&pageNum=1&orderBy=order&orderByDir=asc&filter__idRestaurant=${restaurantID}`,
+        `${apiUrl}/menu?pageSize=30000&pageNum=1&orderBy=order&orderByDir=asc&filter__idRestaurant=${restaurantID}&filter_enabled=true`,
       );
 
       return res.data.data.rows;
@@ -96,7 +100,37 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({
       }> = await axios.get(
         `${apiUrl}/restaurant/${restaurantID}/category?pageSize=30000&pageNum=1&filter_enabled=true`,
       );
-      return res.data.data.rows;
+      const data = res.data.data.rows;
+      const filteredData = data
+        .filter((item) => item.name.toLowerCase() !== "modifiers")
+        .filter((item) => item.order)
+        .sort((a, b) => a.order - b.order);
+      return filteredData;
+    },
+  });
+
+  const { data: modelData } = useQuery({
+    queryKey: ["mddel", "all"],
+    queryFn: async () => {
+      const res: AxiosResponse<{
+        data: {
+          rows: ModelData[];
+        };
+      }> = await axios.get(`https://api.prod.sdk.thefoodo.com/model/all`, {
+        headers: {
+          "x-api-key": "2M4QMv8O5JTzSXBOR1H27EU8POBV1JJ7LZSHQO9O3O",
+        },
+      });
+      const data = res.data.data.rows;
+      return data.filter((item) => item.meta.restaurantID === restaurantID);
+    },
+  });
+
+  const { data: reviews } = useQuery({
+    queryKey: ["reviews"],
+    queryFn: async () => {
+      const res: AxiosResponse<Review[]> = await axios.get(`/api/reviews`);
+      return res.data;
     },
   });
 
@@ -118,6 +152,8 @@ export const RestaurantProvider: React.FC<{ children: React.ReactNode }> = ({
         restaurantID,
         stripePublishableKey,
         restaurant,
+        reviews,
+        modelData,
       }}
     >
       {children}

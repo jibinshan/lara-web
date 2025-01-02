@@ -3,13 +3,13 @@ interface Timing {
   to: string;
 }
 
-interface DayHours {
+export interface DayHours {
   isOpen: boolean;
   timings: Timing[];
   _id: string;
 }
 
-interface OpenHours {
+export interface OpenHours {
   sunday: DayHours;
   monday: DayHours;
   tuesday: DayHours;
@@ -112,4 +112,16 @@ export interface Restaurant {
   updatedAt: string;
   __v: number;
   themeColors: ThemeColors;
+  isDeliveryEnabled: boolean;
+  isTakeAwayEnabled: boolean;
+  minimumCollectionOrderAmount: number;
+  minimumDeliveryOrderAmount: number;
+  takeAwayWindow: Window[]
+  deliveryWindow: Window[]
+}
+
+interface Window {
+  startTime: string;
+  endTime: string;
+  _id: string;
 }

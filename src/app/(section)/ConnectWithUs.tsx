@@ -6,8 +6,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 import Image from "next/image";
+import Link from "next/link";
 
-const ConnectWithUs = ({}) => {
+const ConnectWithUs = ({ }) => {
   return (
     <section
       id="welcome"
@@ -25,9 +26,11 @@ const ConnectWithUs = ({}) => {
               <p className="text-center font-gotu text-3xl font-semibold text-[#C1C1C1] lg:text-start lg:text-5xl">
                 Connect with us
               </p>
-              <p className="text-center font-poppins font-light uppercase text-[#D7D7D7] underline lg:text-start">
-                Lora @instagram
-              </p>
+              <Link href='https://www.instagram.com/lararestaurant/?hl=en' target="_blank">
+                <p className="text-center font-poppins font-light uppercase text-[#D7D7D7] underline lg:text-start">
+                  Lara @instagram
+                </p>
+              </Link>
             </div>
             <div className="mt-10 flex items-center gap-7">
               <CarouselPrevious className="static" variant="ghost" />
@@ -81,8 +84,8 @@ const ConnectWithUs = ({}) => {
             </CarouselItem>
           </CarouselContent>
         </Carousel>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 

@@ -9,7 +9,7 @@ export default {
       fontFamily: {
         gotu: ["var(--font-gotu)", ...fontFamily.sans],
         poppins: ["var(--font-poppins)", ...fontFamily.sans],
-        sans: ["Inter", "sans-serif"],
+        playfair: ["var(--font-playfair)", ...fontFamily.sans],
       },
       borderRadius: {
         lg: "var(--radius)",

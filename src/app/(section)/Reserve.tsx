@@ -31,10 +31,13 @@ const Reserve = ({ }) => {
                                 <div className="flex flex-col gap-5 px-2 lg:px-0 py-6">
                                     <p className="text-[#C1C1C1] font-gotu text-3xl lg:text-5xl">Reserve<br />
                                         Your Table</p>
-                                    <p className="w-fit lg:w-[400px] text-[#BBB4AA] font-poppins">Here at Lara Restaurant we have over 20
-                                        year`s experience. With all our dishes are prepared daily with authentic fresh ingredients. Discover the taste of our delicious meat, chicken & fish at our new restaurant.</p>
-                                    <Link href=''>
-                                        <Button className="flex items-center justify-center gap-3 px-10 py-7 text-[#FEC679] border-[#FEC679] bg-transparent" variant='outline'>View Menu</Button>
+                                    <p className="w-fit lg:w-[400px] text-[#BBB4AA] font-poppins">Discover the vibrant flavors of Lara, where traditional and modern cuisines blend in every dish. Reserve your table today to experience an unforgettable culinary journey.</p>
+                                    <Link href='/table-booking'>
+                                        <Button className="relative py-7 px-10 font-medium uppercase transition-colors hover:bg-primary/90 before:absolute 
+                            before:inset-0 before:-z-[1] before:h-full before:w-full before:border-2 before:border-transparent before:transition-all 
+                            before:content-[''] before:hover:top-1 before:hover:left-1 before:hover:border-b-primary before:hover:border-r-primary before:hover:rounded-xl">
+                                            Book Table
+                                        </Button>
                                     </Link>
                                 </div>
                             </div>
@@ -48,10 +51,13 @@ const Reserve = ({ }) => {
                                     <p className="text-[#C1C1C1] font-gotu text-3xl lg:text-5xl">Experience
                                         <br />
                                         the Flavors</p>
-                                    <p className="w-full lg:w-[400px] text-[#BBB4AA] font-poppins">Here at Lara Restaurant we have over 20
-                                        year`s experience. With all our dishes are prepared daily with authentic fresh ingredients. Discover the taste of our delicious meat, chicken & fish at our new restaurant.</p>
-                                    <Link href=''>
-                                        <Button className="flex items-center justify-center gap-3 px-10 py-7 text-[#FEC679] border-[#FEC679] bg-transparent" variant='outline'>View Menu</Button>
+                                    <p className="w-full lg:w-[400px] text-[#BBB4AA] font-poppins">Indulge in a world of rich, authentic flavors crafted to excite your palate. Experience the fusion of tradition and innovation in every bite, only at Lara.</p>
+                                    <Link href='/table-booking'>
+                                        <Button className="relative py-7 px-10 font-medium transition-colors hover:bg-primary/90 before:absolute 
+                            before:inset-0 before:-z-[1] before:h-full before:w-full before:border-2 before:border-transparent before:transition-all 
+                            before:content-[''] before:hover:top-1 before:hover:left-1 before:hover:border-b-primary before:hover:border-r-primary before:hover:rounded-xl">
+                                            Book Table
+                                        </Button>
                                     </Link>
                                 </div>
                             </div>
@@ -68,8 +74,8 @@ const Reserve = ({ }) => {
                     </div>
 
                 </div>
-            </div >
-        </section >
+            </div>
+        </section>
     );
 };
 

@@ -22,6 +22,9 @@ import {
 } from "../ui/form";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
+import { useRestaurant } from "@/context/RestaurantContext";
+import { format } from "date-fns";
+import type { DayHours, OpenHours } from "@/types/restaurant.type";
 
 const FormSchema = z.object({
   time: z.string(),
@@ -44,9 +47,13 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({
   children,
   setScheduleTime,
 }) => {
+  const { restaurant } = useRestaurant();
+
   const [open, setOpen] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const [dates, setDates] = useState<DateObject[]>([]);
+  const [from, setFrom] = useState<number>(0);
+  const [to, setTo] = useState<number>(12);
   const [select, setSelect] = useState<string>("");
   const [showLeftArrow, setShowLeftArrow] = useState(false);
   const [showRightArrow, setShowRightArrow] = useState(true);
@@ -57,6 +64,7 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({
       date: "",
     },
   });
+  const dateValue = form.watch("date");
   const scrollRight = () => {
     if (scrollRef.current) {
       // scrollRef.current.scrollBy({ left: 300, behavior: 'smooth' });
@@ -128,6 +136,115 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({
     setDates(getDateLabels());
   }, []);
 
+  function roundToHourIfNeeded(timeString: string) {
+    const [hours, minutes] = timeString.split(":").map(Number);
+
+    // Check if minutes are greater than 45, if so, round up
+    if (minutes !== undefined && hours !== undefined) {
+      if (minutes > 45) {
+        return hours + 1;
+      }
+      return hours;
+    }
+  }
+
+  useEffect(() => {
+    const opening = (restaurant?.openHours as Partial<OpenHours>) ?? {};
+    if (dateValue) {
+      const day = format(
+        new Date(dateValue),
+        "EEEE",
+      ).toLowerCase() as keyof OpenHours;
+      if (day in opening) {
+        const hours = (opening[day] as Partial<DayHours>) ?? {};
+
+        const fromTime: string | undefined = hours.timings?.find(
+          (item) => item.from,
+        )?.from;
+        const toTime: string | undefined = hours.timings?.find(
+          (item) => item.to,
+        )?.to;
+        if (toTime) {
+          const to = roundToHourIfNeeded(toTime);
+          setTo(Number(to));
+        }
+        if (fromTime) {
+          const from = roundToHourIfNeeded(fromTime);
+          setFrom(Number(from));
+        }
+      }
+    } else {
+      console.log("Date is invalid or undefined");
+    }
+  }, [dateValue, restaurant?.openHours]);
+
+  const generateTimeSlots = () => {
+    const slots = [];
+
+    if (from < to) {
+      for (let hour = from; hour < to; hour++) {
+        for (let minute = 0; minute < 60; minute += 30) {
+          // if (hour === 23 && minute > 0) break; // Stop after 10:00 PM
+          // const period = hour >= 12 ? "PM" : "AM";
+          // const displayHour = hour > 12 ? hour - 12 : hour;
+          // const time = `${displayHour}:${minute.toString().padStart(2, "0")} ${period}`;
+          let endMinute = minute + 30;
+          let endHour = hour;
+
+          // Handle the overflow for minutes and hours
+          if (endMinute >= 60) {
+            endMinute -= 60;
+            endHour += 1;
+          }
+
+          const startTime = `${hour}:${minute.toString().padStart(2, "0")}`;
+          const endTime = `${endHour}:${endMinute.toString().padStart(2, "0")}`;
+
+          const time = `${startTime} - ${endTime}`;
+          slots.push(time);
+        }
+      }
+    } else {
+      for (let hour = from; hour < 24; hour++) {
+        for (let minute = 0; minute < 60; minute += 30) {
+          let endMinute = minute + 30;
+          let endHour = hour;
+
+          // Handle the overflow for minutes and hours
+          if (endMinute >= 60) {
+            endMinute -= 60;
+            endHour += 1;
+          }
+
+          const startTime = `${hour}:${minute.toString().padStart(2, "0")}`;
+          const endTime = `${endHour}:${endMinute.toString().padStart(2, "0")}`;
+
+          const time = `${startTime} - ${endTime}`;
+          slots.push(time);
+        }
+      }
+      for (let hour = 0; hour < to; hour++) {
+        for (let minute = 0; minute < 60; minute += 30) {
+          let endMinute = minute + 30;
+          let endHour = hour;
+
+          // Handle the overflow for minutes and hours
+          if (endMinute >= 60) {
+            endMinute -= 60;
+            endHour += 1;
+          }
+
+          const startTime = `${hour}:${minute.toString().padStart(2, "0")}`;
+          const endTime = `${endHour}:${endMinute.toString().padStart(2, "0")}`;
+
+          const time = `${startTime} - ${endTime}`;
+          slots.push(time);
+        }
+      }
+    }
+    return slots;
+  };
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{children}</DialogTrigger>
@@ -197,30 +314,19 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({
                       defaultValue={field.value}
                       className="custom-scrollbar flex h-[300px] flex-col gap-3 space-y-1 overflow-y-scroll px-2 py-2"
                     >
-                      <FormItem className="flex items-center justify-between space-y-0">
-                        <Label className="text-base font-semibold">
-                          7:00 PM - 7:30 PM
-                        </Label>
-                        <FormControl>
-                          <RadioGroupItem value="7:00 PM - 7:30 PM" />
-                        </FormControl>
-                      </FormItem>
-                      <FormItem className="flex items-center justify-between space-y-0">
-                        <Label className="text-base font-semibold">
-                          7:00 PM - 7:40 PM
-                        </Label>
-                        <FormControl>
-                          <RadioGroupItem value="7:00 PM - 7:40 PM" />
-                        </FormControl>
-                      </FormItem>
-                      <FormItem className="flex items-center justify-between space-y-0">
-                        <Label className="text-base font-semibold">
-                          7:00 PM - 7:50 PM
-                        </Label>
-                        <FormControl>
-                          <RadioGroupItem value="7:00 PM - 7:50 PM" />
-                        </FormControl>
-                      </FormItem>
+                      {generateTimeSlots().map((time) => (
+                        <FormItem
+                          className="flex items-center justify-between space-y-0"
+                          key={time}
+                        >
+                          <Label className="text-base font-semibold">
+                            {time}
+                          </Label>
+                          <FormControl>
+                            <RadioGroupItem value={time} />
+                          </FormControl>
+                        </FormItem>
+                      ))}
                     </RadioGroup>
                   </FormControl>
                   <FormMessage />

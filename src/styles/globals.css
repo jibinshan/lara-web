@@ -135,3 +135,10 @@
 .hidden-scrollbar::-webkit-scrollbar {
   display: none;
 }
+
+
+/*model viewer*/
+#model {
+  --progress-bar-color: none;
+  --progress-bar-height: 0px;
+  }
