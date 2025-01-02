@@ -292,11 +292,10 @@ const Checkout = () => {
                     <p className="text-lg font-semibold">Total Amount</p>
                     <p className="text-lg font-semibold">
                       {getCurrencySymbol("GBP")}{" "}
-                      {cartValue() +
-                        calculateServiceCharge(
-                          cartValue(),
-                          restaurant?.serviceCharge ?? 0,
-                        )}
+                      {(
+                        (cartValue() + calculateServiceCharge(cartValue(), restaurant?.serviceCharge ?? 0))
+                          .toFixed(2)
+                      )}
                     </p>
                   </div>
                   <div>

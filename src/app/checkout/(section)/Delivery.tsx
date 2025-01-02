@@ -59,7 +59,7 @@ const Delivery = () => {
     resolver: zodResolver(FormValidation),
   });
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (data: FormData) => {
       const res: AxiosResponse<{
         data: {
@@ -73,8 +73,8 @@ const Delivery = () => {
           pickup === "Standard"
             ? new Date(Date.now() + 20 * 60000).toISOString()
             : new Date(
-                `${scheduleTime.date},${scheduleTime.time.split("-")[0]}`,
-              ).toISOString(),
+              `${scheduleTime.date},${scheduleTime.time.split("-")[0]}`,
+            ).toISOString(),
         description: "Order for " + data.name,
         orderStatus: "placed_order",
         items: cartItems,
@@ -296,13 +296,13 @@ const Delivery = () => {
           </div>
           <div className="flex w-full flex-col pt-7 lg:w-4/5 lg:flex-row">
             <div className="/6 w-full lg:w-2"></div>
-            <Button className="h-11 w-full bg-[#bc995d] font-semibold">
+            <Button className="h-11 w-full bg-[#bc995d] font-semibold" disabled={isPending}>
               Place Delivery Order
             </Button>
           </div>
         </form>
       </Form>
-    </div>
+    </div >
   );
 };
 

@@ -30,11 +30,8 @@ import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 
 // }
 const FormValidation = z.object({
-  orderType: z.enum(["PICKUP", "DELIVERY"], {
-    required_error: "You need to select a order type.",
-  }),
-  date: z.string().min(3, "please select date"),
-  time: z.string().min(2, "please select time"),
+  // date: z.string().min(2, "please select date"),
+  // time: z.string().min(2, "please select time"),
   name: z.string().min(2, "please enter name"),
   phone: z
     .string()
@@ -66,7 +63,7 @@ const Pickup = () => {
   });
   const { cartValue } = useCart();
 
-  const { mutate } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: async (data: FormData) => {
       const res: AxiosResponse<{
         data: {
@@ -80,8 +77,8 @@ const Pickup = () => {
           pickup === "Standard"
             ? new Date(Date.now() + 20 * 60000).toISOString()
             : new Date(
-                `${scheduleTime.date}T${scheduleTime.time.split("-")[0]}:00Z`,
-              ).toISOString(),
+              `${scheduleTime.date}T${scheduleTime.time.split("-")[0]}:00Z`,
+            ).toISOString(),
         description: "Order for " + data.name,
         orderStatus: "placed_order",
         items: cartItems,
@@ -114,9 +111,7 @@ const Pickup = () => {
   });
 
   const onSubmit = (data: FormData) => {
-    toast("Not Implemented");
-    return;
-    mutate(data);
+    return mutate(data);
   };
   return (
     <div>
@@ -266,13 +261,13 @@ const Pickup = () => {
           </div>
           <div className="flex w-full flex-col pt-7 lg:w-4/5 lg:flex-row">
             <div className="/6 w-full lg:w-2"></div>
-            <Button className="h-11 w-full bg-[#bc995d] font-semibold">
+            <Button className="h-11 w-full bg-[#bc995d] font-semibold" disabled={isPending}>
               Place Order
             </Button>
           </div>
         </form>
       </Form>
-    </div>
+    </div >
   );
 };
 
