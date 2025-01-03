@@ -216,7 +216,7 @@ const Delivery = () => {
                 <Calendar />
                 <div className="flex flex-col">
                   <p className="text-lg font-semibold">Standard</p>
-                  <p className="text-[#666666]">10-20 min</p>
+                  <p className="text-[#666666]">{restaurant?.totalDeliveryETA}{' '} min</p>
                 </div>
               </div>
               <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="delivery">
