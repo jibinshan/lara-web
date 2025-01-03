@@ -87,21 +87,45 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({
     const startMinutes = timeToMinutes(startTime);
     const endMinutes = timeToMinutes(endTime);
 
+    const currentDate = new Date();
+    const currentMinutes =
+      currentDate.getHours() * 60 + currentDate.getMinutes();
+
+    const minAllowedTime = currentMinutes + 30;
+
     const timeSlots: string[] = [];
 
-    for (let currentMinutes = startMinutes; currentMinutes <= endMinutes; currentMinutes += intervalMinutes) {
-      timeSlots.push(minutesToTime(currentMinutes));
+    for (
+      let currentMinutesIter = startMinutes;
+      currentMinutesIter <= endMinutes;
+      currentMinutesIter += intervalMinutes
+    ) {
+      if (currentMinutesIter > minAllowedTime) {
+        timeSlots.push(minutesToTime(currentMinutesIter));
+      }
     }
 
     return timeSlots;
   }
   useEffect(() => {
-    if (orderType === 'delivery') {
-      setTimeslot(generateTimeSlots(deliverystartime ?? "00: 00", deliveryendtime ?? "00:00", 30))
-    } else {
-      setTimeslot(generateTimeSlots(takeawaystarttime ?? "00: 00", takeawayendtime ?? "00:00", 30))
-    }
-  }, [orderType])
+    const updateTimeslot = () => {
+      if (orderType === "delivery") {
+        setTimeslot(
+          generateTimeSlots(deliverystartime ?? "00:00", deliveryendtime ?? "00:00", 30)
+        );
+      } else {
+        setTimeslot(
+          generateTimeSlots(takeawaystarttime ?? "00:00", takeawayendtime ?? "00:00", 30)
+        );
+      }
+    };
+
+    updateTimeslot();
+
+    const interval = setInterval(updateTimeslot, 15 * 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, [orderType]);
 
 
 
