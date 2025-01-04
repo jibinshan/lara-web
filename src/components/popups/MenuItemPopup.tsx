@@ -15,6 +15,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useCart } from "@/context/CartContext";
 import { BetaMenuActive } from "@/lib/constants";
+import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { getCurrencySymbol } from "@/lib/get-currency-symbol";
 import { GetModifiersFromItemId } from "@/lib/get-modifiers-from-item-id";
 import type { CartItemModifier } from "@/types/cart-item.type";
@@ -142,7 +143,7 @@ const MenuItemPopup: FC<MenuItemPopupProps> = ({ children, item }) => {
                     >
                       {modifier.name}
                       {modifier.price &&
-                        `(+${getCurrencySymbol(modifier.price.currency)}${modifier.price.value})`}
+                        `(+${getCurrencySymbol(modifier.price.currency)}${formattedItemPrice(modifier.price.value)})`}
                     </Label>
                   </div>
                 ))}
@@ -195,6 +196,7 @@ const MenuItemPopup: FC<MenuItemPopupProps> = ({ children, item }) => {
                     value: price,
                     currency: item.price.currency,
                   },
+                  notes: note,
                   modifiers: modifiers,
                   images: item.images,
                   description: item.description,
@@ -212,7 +214,7 @@ const MenuItemPopup: FC<MenuItemPopupProps> = ({ children, item }) => {
           </DialogFooter>
         )}
       </DialogContent>
-    </Dialog>
+    </Dialog >
   );
 };
 
