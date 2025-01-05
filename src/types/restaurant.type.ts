@@ -87,6 +87,8 @@ export interface Restaurant {
   options: Options;
   deliveryETA: number;
   totalDeliveryETA: number;
+  busyMode: boolean;
+  busyModeTime: number;
   diningETA: string;
   noOfTables: number | null;
   currecny: string; // (Backend Dev being an idiot)

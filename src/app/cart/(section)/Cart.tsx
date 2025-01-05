@@ -3,6 +3,7 @@ import { Icons } from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { useCart } from "@/context/CartContext";
+import { useRestaurant } from "@/context/RestaurantContext";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
@@ -11,6 +12,7 @@ import { useRouter } from "next/navigation";
 const Cart = ({ }) => {
   const router = useRouter();
   const { cartItems, updateItem, removeItem, cartValue } = useCart();
+  const { restaurant } = useRestaurant()
   const totalAmount = parseFloat(
     cartItems
       .reduce((total, item) => {
@@ -20,7 +22,7 @@ const Cart = ({ }) => {
   );
   return (
     <section className="flex h-full min-h-[90vh] w-full max-w-[1300px] flex-col gap-4 pt-4">
-      <div className="px-6">
+      <div className="px-6 flex flex-col gap-4 items-center justify-center">
         <Card className="flex max-h-[500px] w-full flex-1 flex-col justify-between border-[1px]">
           <h1 className="flex items-end gap-4 border-b-[1px] border-dashed p-4 font-playfair text-3xl font-semibold">
             Cart
@@ -79,6 +81,9 @@ const Cart = ({ }) => {
             <p>Total: £ {formattedItemPrice(totalAmount) || 0}</p>
           </div>
         </Card>
+        {!restaurant?.isDeliveryEnabled || !restaurant?.isTakeAwayEnabled && (
+          <p className="font-[500] text-2xl text-red-600">Currently Restaurant Delivery is Closed Sorry for convenience</p>
+        )}
       </div>
       <div className="fixed bottom-0 flex w-full max-w-[1300px] gap-3 px-4 py-3">
         <Button
@@ -97,7 +102,7 @@ const Cart = ({ }) => {
               cartItems.length === 0 && "pointer-events-none cursor-not-allowed",
             )}
             asChild
-            disabled={cartItems.length === 0 ? true : false}
+            disabled={cartItems.length === 0 ? true : false || !restaurant?.isDeliveryEnabled || !restaurant.isTakeAwayEnabled}
           >
             <Link href="/checkout">
               Checkout
