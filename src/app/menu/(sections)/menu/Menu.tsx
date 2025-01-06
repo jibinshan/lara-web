@@ -171,12 +171,12 @@ const Menu = () => {
               </div>
               <Search query={query} setQuery={setQuery} />
             </div>
-            <div className="flex gap-8 justify-center items-center">
+            <div className="flex items-center justify-center gap-8">
               {isScrolled && (
                 <CartSheet>
                   <Button
                     variant="ghost"
-                    className="relative px-1 py-1 hover:bg-transparent hover:text-primary/90 hidden md:flex"
+                    className="relative hidden px-1 py-1 hover:bg-transparent hover:text-primary/90 md:flex"
                     disabled={!BetaMenuActive}
                   >
                     <span className="sr-only">Shopping Cart</span>
@@ -214,7 +214,7 @@ const Menu = () => {
                   className={cn(
                     "w-fit border-b-2 border-b-transparent bg-primary px-6 py-4 font-semibold transition-all duration-300 ease-in-out md:bg-transparent",
                     currentCategory === item._id &&
-                    "bg-[#02264E] md:border-b-primary",
+                      "bg-[#02264E] md:border-b-primary",
                     existCategory.find(
                       (categoryid) => categoryid === item._id,
                     ) !== item._id && "hidden w-0 border-0 px-0 py-0",
@@ -242,21 +242,21 @@ const Menu = () => {
                 className={cn(
                   "mt-6 flex w-full flex-col gap-2 lg:mt-0",
                   data._id !==
-                  existCategory.find(
-                    (categoryid) => categoryid === data._id,
-                  ) && "mt-0 hidden w-0 gap-0",
+                    existCategory.find(
+                      (categoryid) => categoryid === data._id,
+                    ) && "mt-0 hidden w-0 gap-0",
                 )}
               >
                 <h1
                   id={data._id}
                   className={cn(
                     data._id === currentCategory &&
-                    "sticky top-[150px] z-40 w-full bg-[#070707] py-3 lg:static lg:top-0",
+                      "sticky top-[150px] z-40 w-full bg-[#070707] py-3 lg:static lg:top-0",
                     "font-sans text-xl font-bold tracking-[0.00938em]",
                     data._id !==
-                    existCategory.find(
-                      (categoryid) => categoryid === data._id,
-                    ) && "h-0 w-0 p-0 tracking-[0px]",
+                      existCategory.find(
+                        (categoryid) => categoryid === data._id,
+                      ) && "h-0 w-0 p-0 tracking-[0px]",
                   )}
                 >
                   {data._id ===
@@ -348,7 +348,7 @@ const Menu = () => {
           </>
         )}
       </div>
-    </section >
+    </section>
   );
 };
 
