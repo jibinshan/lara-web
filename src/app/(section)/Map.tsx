@@ -5,7 +5,7 @@ const Map = ({ }) => {
     return (
         <section id="welcome" className="flex w-full items-center justify-center bg-[#0b0b0b] overflow-hidden">
             <div className="relative flex flex-col gap-4 h-fit lg:min-h-[60vh]  w-full items-center justify-center px-4 lg:px-0 py-12 lg:py-24">
-                <div className="w-full flex">
+                <div className="w-full  flex">
                     {/* <Image
                         src="/images/home/map/map.png"
                         width={1462}
