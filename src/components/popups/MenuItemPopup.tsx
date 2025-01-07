@@ -145,8 +145,7 @@ const MenuItemPopup: FC<MenuItemPopupProps> = ({ children, item }) => {
                                     modifiers.push({
                                         _idModifiers: item?.modifiers[0]?._id ? item?.modifiers[0]?._id : '',
                                         price: selectedModifier.price,
-                                        _idMenuItem: selectedModifier._id,
-                                        withExtra: "with"
+                                        _idMenuItem: selectedModifier._id
                                     });
                                     // }
                                 }
