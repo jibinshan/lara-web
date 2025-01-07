@@ -81,7 +81,7 @@ const Pickup = () => {
             ).toISOString(),
         description: "Order for " + data.name,
         orderStatus: "placed_order",
-        items: cartItems,
+        cart: cartItems,
         userDetails: {
           name: data.name,
           email: data.email,

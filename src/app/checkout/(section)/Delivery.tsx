@@ -79,7 +79,7 @@ const Delivery = () => {
             ).toISOString(),
         description: "Order for " + data.name,
         orderStatus: "placed_order",
-        items: cartItems,
+        cart: cartItems,
         notes: data.notes,
         userDetails: {
           name: data.name,
