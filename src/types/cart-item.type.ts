@@ -13,7 +13,7 @@ export interface CartItem {
 }
 
 export interface CartItemModifier {
-  _idModifier: string;
+  _idModifiers: string;
   _idMenuItem: string;
   price: Price;
   withExtra: string;

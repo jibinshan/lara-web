@@ -136,7 +136,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
                                     // );
                                     // if (modifier) {
                                     modifiers.push({
-                                        _idModifier: item?.modifiers[0]?._id ? item?.modifiers[0]?._id : '',
+                                        _idModifiers: item?.modifiers[0]?._id ? item?.modifiers[0]?._id : '',
                                         price: selectedModifier.price,
                                         _idMenuItem: selectedModifier._id,
                                         withExtra: "with"
