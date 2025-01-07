@@ -23,7 +23,7 @@ const Checkout = () => {
   );
   const [isPickupNow, setIsPickupNow] = useState(true)
   const [isDeliveryNow, setIsDeliveryNow] = useState(true)
-  const { restaurant } = useRestaurant();
+  const { restaurant, items } = useRestaurant();
 
 
   const checkPickupTime = () => {
@@ -248,11 +248,19 @@ const Checkout = () => {
                           <p className="line-clamp-1 text-lg font-normal text-[#FBEAD2]">
                             {item.name}
                           </p>
-                          {item.description && (
+                          {/* {item.description && (
                             <p className="line-clamp-2 text-lg font-normal text-[#FBEAD2]">
                               {item.description}
                             </p>
-                          )}
+                          )} */}
+                          {item.modifiers.map((mod) => {
+                            const modifier = items.find((item) => item._id === mod._idMenuItem)?.name;
+                            return (
+                              <div key={mod._idMenuItem}>
+                                <p>1 X{' '}{modifier ? modifier : ''}</p>
+                              </div>
+                            )
+                          })}
                           <p className="text-lg font-normal text-[#FBEAD2]">
                             {getCurrencySymbol(item.price.currency)}{" "}
                             {formattedItemPrice(item.price.value)}

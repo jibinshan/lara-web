@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 const Cart = ({ }) => {
   const router = useRouter();
   const { cartItems, updateItem, removeItem, cartValue } = useCart();
-  const { restaurant } = useRestaurant()
+  const { restaurant, items } = useRestaurant()
   const totalAmount = parseFloat(
     cartItems
       .reduce((total, item) => {
@@ -42,6 +42,14 @@ const Cart = ({ }) => {
                   <div className="flex gap-2">
                     <div className="flex flex-col items-start justify-between">
                       <p className="font-semibold">{item.name}</p>
+                      {item.modifiers.map((mod) => {
+                        const modifier = items.find((item) => item._id === mod._idMenuItem)?.name;
+                        return (
+                          <div key={mod._idMenuItem}>
+                            <p>1 X{' '}{modifier ? modifier : ''}</p>
+                          </div>
+                        )
+                      })}
                       <p className="font-semibold">
                         £ {formattedItemPrice(item.price.value)}
                       </p>

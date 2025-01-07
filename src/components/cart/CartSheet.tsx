@@ -10,6 +10,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { useCart } from "@/context/CartContext";
+import { useRestaurant } from "@/context/RestaurantContext";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { getCurrencySymbol } from "@/lib/get-currency-symbol";
 import Image from "next/image";
@@ -29,6 +30,7 @@ const CartSheet: FC<CartSheetProps> = ({ children }) => {
     updateItem,
     removeItem,
   } = useCart();
+  const { items } = useRestaurant()
   return (
     <Sheet open={cartSheetOpen} onOpenChange={setCartSheetOpen}>
       <SheetTrigger asChild>{children}</SheetTrigger>
@@ -64,6 +66,14 @@ const CartSheet: FC<CartSheetProps> = ({ children }) => {
                     )}
                     <div className="flex flex-col items-start justify-between">
                       <p className="">{item.name}</p>
+                      {item.modifiers.map((mod) => {
+                        const modifier = items.find((item) => item._id === mod._idMenuItem)?.name;
+                        return (
+                          <div key={mod._idMenuItem}>
+                            <p>1 X{' '}{modifier ? modifier : ''}</p>
+                          </div>
+                        )
+                      })}
                       {getCurrencySymbol(item.price.currency)}{" "}
                       {formattedItemPrice(item.price.value)}
                     </div>
