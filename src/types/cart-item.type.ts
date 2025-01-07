@@ -16,4 +16,5 @@ export interface CartItemModifier {
   _idModifier: string;
   _idMenuItem: string;
   price: Price;
+  withExtra: string;
 }
