@@ -89,12 +89,12 @@ const MenuItemPopup: FC<MenuItemPopupProps> = ({ children, item }) => {
                                     <div
                                         key={modifier._id}
                                         className="flex w-full cursor-pointer items-center gap-4"
-                                        // onClick={() =>
-                                        //   handleModifierChange(
-                                        //     modifier,
-                                        //     !selectedModifiers.some((m) => m._id === modifier._id),
-                                        //   )
-                                        // }
+                                    // onClick={() =>
+                                    //   handleModifierChange(
+                                    //     modifier,
+                                    //     !selectedModifiers.some((m) => m._id === modifier._id),
+                                    //   )
+                                    // }
                                     >
                                         <Checkbox
                                             id={modifier._id}
@@ -169,7 +169,7 @@ const MenuItemPopup: FC<MenuItemPopupProps> = ({ children, item }) => {
                             }}
                         >
                             Add to cart - {getCurrencySymbol(item.price.currency)}
-                            {price}
+                            {formattedItemPrice(price)}
                         </Button>
                     </DialogFooter>
                 )}

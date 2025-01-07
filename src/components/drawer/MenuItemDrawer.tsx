@@ -159,7 +159,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
                             }}
                         >
                             Add to cart - {getCurrencySymbol(item.price.currency)}
-                            {price}
+                            {formattedItemPrice(price)}
                         </Button>
                     </DrawerFooter>
                 )}
