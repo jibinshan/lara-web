@@ -20,6 +20,8 @@ const Cart = ({ }) => {
       }, 0)
       .toFixed(2),
   );
+  console.log(cartItems, "==cartitems");
+
   return (
     <section className="flex h-full min-h-[90vh] w-full max-w-[1300px] flex-col gap-4 pt-4">
       <div className="px-6 flex flex-col gap-4 items-center justify-center">

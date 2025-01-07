@@ -143,8 +143,9 @@ const MenuItemPopup: FC<MenuItemPopupProps> = ({ children, item }) => {
                                     // );
                                     // if (modifier) {
                                     modifiers.push({
-                                        _idModifiers: selectedModifier._id,
+                                        _idModifier: selectedModifier._id,
                                         price: selectedModifier.price,
+                                        _idMenuItem: item._id,
                                     });
                                     // }
                                 }

@@ -41,6 +41,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
     const handleModifierChange = (modifier: MenuItem, isChecked: boolean) => {
         setSelectedModifiers((prev) => (isChecked ? [...prev, modifier] : prev.filter((m) => m._id !== modifier._id)));
     };
+
     return (
         <Drawer open={open} onOpenChange={setOpen}>
             <DrawerTrigger asChild>{children}</DrawerTrigger>
@@ -135,8 +136,9 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
                                     // );
                                     // if (modifier) {
                                     modifiers.push({
-                                        _idModifiers: selectedModifier._id,
+                                        _idModifier: selectedModifier._id,
                                         price: selectedModifier.price,
+                                        _idMenuItem: item._id,
                                     });
                                     // }
                                 }
