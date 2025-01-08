@@ -88,6 +88,18 @@ const Pickup = () => {
           phone: {
             number: data.phone,
           },
+          address: {
+            shipping: {
+              address: '',
+              pincode: '',
+              city: '',
+            },
+            billing: {
+              address: '',
+              pincode: '',
+              city: '',
+            },
+          },
         },
         // New Additions
         tip: 0,
