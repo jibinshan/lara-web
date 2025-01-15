@@ -85,10 +85,7 @@ export interface Restaurant {
   address: Address;
   openHours: OpenHours;
   options: Options;
-  deliveryETA: number;
-  totalDeliveryETA: number;
-  busyMode: boolean;
-  busyModeTime: number;
+  deliveryETA: string;
   diningETA: string;
   noOfTables: number | null;
   currecny: string; // (Backend Dev being an idiot)
@@ -115,16 +112,4 @@ export interface Restaurant {
   updatedAt: string;
   __v: number;
   themeColors: ThemeColors;
-  isDeliveryEnabled: boolean;
-  isTakeAwayEnabled: boolean;
-  minimumCollectionOrderAmount: number;
-  minimumDeliveryOrderAmount: number;
-  takeAwayWindow: Window[]
-  deliveryWindow: Window[]
-}
-
-interface Window {
-  startTime: string;
-  endTime: string;
-  _id: string;
 }

@@ -1,4 +1,5 @@
-import type { Price } from "@/types/price.type";
+import type { Price } from "./price.type";
+
 
 export interface CartItem {
   name: string;

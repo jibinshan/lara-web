@@ -30,6 +30,7 @@
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
   }
+
   .dark {
     --background: 0 0% 3.9%;
     --foreground: 0 0% 98%;
@@ -57,10 +58,12 @@
     --chart-5: 340 75% 55%;
   }
 }
+
 @layer base {
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
@@ -86,6 +89,22 @@
   --border: 0 0% 60%;
   --input: 0 0% 80%;
   --ring: 35 84% 60%;
+
+
+  /* menu Checkout Start */
+
+  --menubackground: 0, 0%, 3%;
+  --menuforeground: 0, 0%, 0%;
+  --menuprimary: 38, 41%, 55%;
+  --menusecondary: 35, 84%, 90%;
+  --buttonhover: 42, 73%, 41%;
+  --itembackground: 0, 0%, 6%;
+  --menuprimaryforeground: 36, 18%, 70%;
+  --menusecondaryforeground: 0, 0%, 20%;
+  --itemdescription: 36, 2%, 47%;
+  --itembutton: 0, 0%, 9%;
+  --buttondisabled: 0, 0%, 17%;
+  --mobilebg: 0, 0%, 0%;
 }
 
 /* Scrolling Text Start */
@@ -95,6 +114,7 @@
   0% {
     transform: translateX(0);
   }
+
   100% {
     transform: translateX(-100%);
   }
@@ -109,11 +129,13 @@
   white-space: nowrap;
   animation: scroll 10s linear infinite;
 }
+
 /* Scrolling Text End */
 
 /* Custom scrollbar Start */
 .custom-scrollbar::-webkit-scrollbar {
-  height: 8px; /* Small height */
+  height: 8px;
+  /* Small height */
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -121,15 +143,20 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: #434343; /* Scrollbar color */
-  border-radius: 10px; /* Pill shape */
-  border: 2px solid transparent; /* Space around the scrollbar */
+  background-color: #434343;
+  /* Scrollbar color */
+  border-radius: 10px;
+  /* Pill shape */
+  border: 2px solid transparent;
+  /* Space around the scrollbar */
   background-clip: content-box;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: #555; /* Darker color on hover */
+  background-color: #555;
+  /* Darker color on hover */
 }
+
 /* Custom scrollbar End */
 
 .hidden-scrollbar::-webkit-scrollbar {
@@ -141,4 +168,4 @@
 #model {
   --progress-bar-color: none;
   --progress-bar-height: 0px;
-  }
+}

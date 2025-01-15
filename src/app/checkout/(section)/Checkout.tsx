@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useCart } from "@/context/CartContext";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { getCurrencySymbol } from "@/lib/get-currency-symbol";
-import { MoveLeft, Trash2 } from "lucide-react";
+import { MoveLeft } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -17,27 +17,30 @@ import { isAfter } from "date-fns";
 
 const Checkout = () => {
   const router = useRouter();
-  const { cartItems, removeItem, cartValue } = useCart();
+  const { cartItems, cartValue } = useCart();
   const [checkoutType, setCheckoutType] = useState<"delivery" | "pickup">(
     "delivery",
   );
-  const [isPickupNow, setIsPickupNow] = useState(true)
-  const [isDeliveryNow, setIsDeliveryNow] = useState(true)
+  const [isPickupNow, setIsPickupNow] = useState(true);
+  const [isDeliveryNow, setIsDeliveryNow] = useState(true);
   const { restaurant, items } = useRestaurant();
 
-
   const checkPickupTime = () => {
-    const pickupstart = restaurant?.takeAwayWindow.find((item) => item.startTime)?.startTime;
-    const pickupend = restaurant?.takeAwayWindow.find((item) => item.startTime)?.endTime;
+    const pickupstart = restaurant?.takeAwayWindow.find(
+      (item) => item.startTime,
+    )?.startTime;
+    const pickupend = restaurant?.takeAwayWindow.find(
+      (item) => item.startTime,
+    )?.endTime;
     if (pickupstart) {
-      const [hours, minutes] = pickupstart.split(':').map(Number);
+      const [hours, minutes] = pickupstart.split(":").map(Number);
       const today = new Date();
       const pickupDate = new Date(
         today.getFullYear(),
         today.getMonth(),
         today.getDate(),
         hours,
-        minutes
+        minutes,
       );
 
       const now = new Date();
@@ -51,14 +54,14 @@ const Checkout = () => {
     }
 
     if (pickupend) {
-      const [hours, minutes] = pickupend.split(':').map(Number);
+      const [hours, minutes] = pickupend.split(":").map(Number);
       const today = new Date();
       const pickupDate = new Date(
         today.getFullYear(),
         today.getMonth(),
         today.getDate(),
         hours,
-        minutes
+        minutes,
       );
 
       const now = new Date();
@@ -72,19 +75,22 @@ const Checkout = () => {
     }
   };
 
-
   const checkDeliveryTime = () => {
-    const deliverystart = restaurant?.deliveryWindow.find((item) => item.startTime)?.startTime;
-    const deliveryend = restaurant?.deliveryWindow.find((item) => item.startTime)?.endTime;
+    const deliverystart = restaurant?.deliveryWindow.find(
+      (item) => item.startTime,
+    )?.startTime;
+    const deliveryend = restaurant?.deliveryWindow.find(
+      (item) => item.startTime,
+    )?.endTime;
     if (deliverystart) {
-      const [hours, minutes] = deliverystart.split(':').map(Number);
+      const [hours, minutes] = deliverystart.split(":").map(Number);
       const today = new Date();
       const pickupDate = new Date(
         today.getFullYear(),
         today.getMonth(),
         today.getDate(),
         hours,
-        minutes
+        minutes,
       );
 
       const now = new Date();
@@ -98,19 +104,18 @@ const Checkout = () => {
     }
 
     if (deliveryend) {
-      const [hours, minutes] = deliveryend.split(':').map(Number);
+      const [hours, minutes] = deliveryend.split(":").map(Number);
       const today = new Date();
       const pickupDate = new Date(
         today.getFullYear(),
         today.getMonth(),
         today.getDate(),
         hours,
-        minutes
+        minutes,
       );
 
       const now = new Date();
       now.setSeconds(0, 0);
-
 
       if (isAfter(now, pickupDate)) {
         setIsDeliveryNow(false);
@@ -120,54 +125,51 @@ const Checkout = () => {
     }
   };
 
-
   useEffect(() => {
     if (restaurant?.takeAwayWindow) {
       checkPickupTime();
-      checkDeliveryTime()
-
+      checkDeliveryTime();
 
       const interval = setInterval(() => {
         checkPickupTime();
-        checkDeliveryTime()
+        checkDeliveryTime();
       }, 300000);
-
 
       return () => clearInterval(interval);
     }
-  }, [restaurant?.takeAwayWindow])
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [restaurant?.takeAwayWindow]);
 
   return (
     <section className="flex h-full w-full items-center justify-center">
-      <div className="flex h-full w-full max-w-[1300px] flex-col gap-[2.5rem] px-2 py-[2.5rem]">
-        <div className="flex flex-col-reverse gap-3 lg:flex-row lg:justify-between lg:gap-28">
+      <div className="flex h-full w-full max-w-[1300px] flex-col gap-[2.5rem] px-3 pt-3 md:pt-[2.5rem] pb-[2.5rem]">
+        <div className="flex flex-col gap-3 lg:flex-row lg:justify-between lg:gap-28">
           <Tabs
             defaultValue="delivery"
             className="flex w-full flex-col gap-4 lg:w-2/3"
           >
             <Button
-              className="hidden w-fit p-0 text-white lg:flex lg:gap-2"
+              className="w-fit p-0 text-[#FBEAD2] text-lg font-[500] tracking-[1px] hidden md:flex gap-2"
               onClick={() => router.back()}
               variant="link"
             >
               <MoveLeft /> <span>Back to Cart</span>
             </Button>
             <div className="flex w-full flex-col gap-3 border-b-[2px] border-[#131313] py-3 pb-5 lg:flex-row lg:items-center lg:justify-between">
-              <p className="text-xl font-semibold">
+              <p className="text-xl font-semibold text-[#7A7875]">
                 {checkoutType === "delivery" ? "Delivery" : "Pickup"} Details
               </p>
               <TabsList className="flex h-fit w-fit gap-1 rounded-full bg-[#161616] px-1 py-1">
                 <TabsTrigger
                   value="pickup"
-                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-white data-[state=active]:bg-[#bc995d] data-[state=active]:text-[#282828]"
+                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-menuprimary data-[state=active]:text-gray-300"
                   onClick={() => setCheckoutType("pickup")}
                 >
                   Pickup
                 </TabsTrigger>
                 <TabsTrigger
                   value="delivery"
-                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-white data-[state=active]:bg-[#bc995d] data-[state=active]:text-[#282828]"
+                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-menuprimary data-[state=active]:text-gray-300"
                   onClick={() => setCheckoutType("delivery")}
                 >
                   Delivery
@@ -175,55 +177,57 @@ const Checkout = () => {
               </TabsList>
             </div>
             <TabsContent value="pickup">
-              {!restaurant?.isTakeAwayEnabled
-                ?
+              {!restaurant?.isTakeAwayEnabled ? (
                 <p>Pickup is unavailable at the moment.</p>
-                :
-                !isPickupNow ?
-                  <p>Pickup is unavailable at the moment.</p>
-                  :
-                  restaurant?.minimumCollectionOrderAmount &&
-                    restaurant?.minimumCollectionOrderAmount < cartValue() + calculateServiceCharge(cartValue(), restaurant?.serviceCharge ?? 0,)
-                    ?
-                    <p>The total amount must be greater than {restaurant?.minimumCollectionOrderAmount}.</p>
-                    :
-                    <Pickup />
-              }
+              ) : !isPickupNow ? (
+                <p>Pickup is unavailable at the moment.</p>
+              ) : restaurant?.minimumCollectionOrderAmount &&
+                restaurant?.minimumCollectionOrderAmount <
+                cartValue() +
+                calculateServiceCharge(
+                  cartValue(),
+                  restaurant?.serviceCharge ?? 0,
+                ) ? (
+                <p>
+                  The total amount must be greater than{" "}
+                  {restaurant?.minimumCollectionOrderAmount}.
+                </p>
+              ) : (
+                <Pickup />
+              )}
             </TabsContent>
             <TabsContent value="delivery">
-              {!restaurant?.isDeliveryEnabled
-                ?
+              {!restaurant?.isDeliveryEnabled ? (
                 <p>Delivery is unavailable at the moment.</p>
-                :
-                !isDeliveryNow ?
-                  <p>Delivery is unavailable at the moment.</p>
-                  :
-                  restaurant?.minimumDeliveryOrderAmount &&
-                    restaurant?.minimumDeliveryOrderAmount < cartValue() + calculateServiceCharge(cartValue(), restaurant?.serviceCharge ?? 0,)
-                    ?
-                    <p>The total amount must be greater than {restaurant?.minimumDeliveryOrderAmount}.</p>
-                    :
-                    <Delivery />
-              }
+              ) : !isDeliveryNow ? (
+                <p>Delivery is unavailable at the moment.</p>
+              ) : restaurant?.minimumDeliveryOrderAmount &&
+                restaurant?.minimumDeliveryOrderAmount <
+                cartValue() +
+                calculateServiceCharge(
+                  cartValue(),
+                  restaurant?.serviceCharge ?? 0,
+                ) ? (
+                <p>
+                  The total amount must be greater than{" "}
+                  {restaurant?.minimumDeliveryOrderAmount}.
+                </p>
+              ) : (
+                <Delivery />
+              )}
             </TabsContent>
           </Tabs>
 
-          <div className="flex w-full flex-col justify-end gap-3 lg:w-1/3 lg:flex-row">
-            <p
-              className="flex gap-2 lg:hidden lg:w-0"
-              onClick={() => router.back()}
-            >
-              <MoveLeft /> <span>Back to Cart</span>
-            </p>
-            <div className="flex h-fit w-full flex-col gap-7 rounded-md border-[2px] border-[#1e1e1e] px-4 py-5">
+          <div className="flex w-full flex-col justify-end gap-3 lg:w-1/3 lg:flex-row mb-16 md:mb-0">
+            <div className="flex h-fit w-full flex-col gap-7 rounded-md md:border-[2px] md:border-[#1e1e1e] md:px-4 md:py-5">
               <div className="w-full">
-                <p className="text-lg font-semibold">Order Summary</p>
+                <p className="text-xl font-[600] tracking-[0.6px] text-[#7A7875]">Order Summary</p>
               </div>
               <div className="flex flex-col">
                 <div className="custom-scrollbar flex max-h-[300px] w-full flex-col overflow-x-auto overflow-y-scroll">
-                  {cartItems.map((item) => (
+                  {cartItems.map((item, index) => (
                     <div
-                      key={item._idMenuItem}
+                      key={index}
                       className="flex w-full items-center justify-between border-b-[2px] border-b-[#1e1e1e] py-2"
                     >
                       <div className="flex items-center gap-2">
@@ -254,12 +258,14 @@ const Checkout = () => {
                             </p>
                           )} */}
                           {item.modifiers.map((mod) => {
-                            const modifier = items.find((item) => item._id === mod._idMenuItem)?.name;
+                            const modifier = items.find(
+                              (item) => item._id === mod._idMenuItem,
+                            )?.name;
                             return (
                               <div key={mod._idMenuItem}>
-                                <p>1 X{' '}{modifier ? modifier : ''}</p>
+                                <p>1 X {modifier ? modifier : ""}</p>
                               </div>
-                            )
+                            );
                           })}
                           <p className="text-lg font-normal text-[#FBEAD2]">
                             {getCurrencySymbol(item.price.currency)}{" "}
@@ -267,13 +273,13 @@ const Checkout = () => {
                           </p>
                         </div>
                       </div>
-                      <Button
+                      {/* <Button
                         className="aspect-square p-2 hover:bg-transparent"
                         variant="ghost"
                         onClick={() => removeItem(item._idMenuItem)}
                       >
                         <Trash2 className="text-[#bc995d]" />
-                      </Button>
+                      </Button> */}
                     </div>
                   ))}
                 </div>
@@ -284,7 +290,7 @@ const Checkout = () => {
                       placeholder="Gift or discount code"
                       className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
                     />
-                    <Button>Apply</Button>
+                    <Button className="h-12">Apply</Button>
                   </div>
                   <div className="flex justify-between">
                     <p className="text-sm font-semibold">Service Charge</p>
@@ -293,7 +299,7 @@ const Checkout = () => {
                       {calculateServiceCharge(
                         cartValue(),
                         restaurant?.serviceCharge ?? 0,
-                      )}
+                      ).toFixed(2)}
                     </p>
                   </div>
                   <div className="flex justify-between">
@@ -301,9 +307,12 @@ const Checkout = () => {
                     <p className="text-lg font-semibold">
                       {getCurrencySymbol("GBP")}{" "}
                       {(
-                        (cartValue() + calculateServiceCharge(cartValue(), restaurant?.serviceCharge ?? 0))
-                          .toFixed(2)
-                      )}
+                        cartValue() +
+                        calculateServiceCharge(
+                          cartValue(),
+                          restaurant?.serviceCharge ?? 0,
+                        )
+                      ).toFixed(2)}
                     </p>
                   </div>
                   <div>

@@ -5,12 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import Sidebar from "./SideBar";
-import CartSheet from "./cart/CartSheet";
-import { BetaMenuActive } from "@/lib/constants";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Clock, Mail, MapPin, Phone } from "lucide-react";
-import { useCart } from "@/context/CartContext";
 
 const Navbar = ({
   position = "static",
@@ -18,7 +15,6 @@ const Navbar = ({
   position?: "static" | "fixed" | "absolute";
 }) => {
   const pathname = usePathname();
-  const { cartItems } = useCart();
 
   const [isScrolled, setIsScrolled] = useState(false);
 
@@ -141,7 +137,7 @@ const Navbar = ({
             </Button> */}
           </div>
           <div className="hidden items-center justify-center gap-[2.5rem] md:flex">
-            {pathname !== "/" && (
+            {/* {pathname !== "/" && (
               <CartSheet>
                 <Button
                   variant="ghost"
@@ -157,7 +153,7 @@ const Navbar = ({
                   <Icons.shoppingCart className="z-0" />
                 </Button>
               </CartSheet>
-            )}
+            )} */}
             <div
               className={cn(
                 "flex",
