@@ -6,11 +6,8 @@ import { useQuery } from "@tanstack/react-query";
 import axios, { type AxiosResponse } from "axios";
 import { Check } from "lucide-react";
 import Link from "next/link";
-import { use } from "react";
 
-export default function Page(props: {
-    params: Promise<{ id: string }>
-}) {
+export default function Page(props: { params: { id: string } }) {
     //   const searchParams = useSearchParams();
 
     //   const redirectStatus = searchParams.get("redirect_status");
@@ -20,7 +17,7 @@ export default function Page(props: {
     //   );
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
 
-    const params = use(props.params);
+    const params = props.params;
 
     const { data } = useQuery({
         queryKey: ["stripe", params.id, "refresh-payment"],
