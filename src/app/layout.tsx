@@ -7,7 +7,7 @@ import Providers from "@/app/Providers";
 
 export const metadata: Metadata = {
   title:
-    "Lara Restaurant Leicester | Authentic Turkish Restaurant | Grill Platters",
+    "Lara Restaurant Leicester | Authentic Turkish Restaurant | Grill Platters Famous",
   description:
     "Lara Restaurant in Leicester, London, offers authentic Turkish cuisine with mouthwatering grill platters, tender lamb dishes, and a variety of flavorful, traditional Turkish recipes. Experience a true taste of Turkey in a warm, welcoming atmosphere!",
   icons: [{ rel: "icon", url: "/images/logo.png" }],
