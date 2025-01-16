@@ -104,14 +104,26 @@ const Delivery = () => {
         },
     });
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = async (data: FormData) => {
+        let valid = true;
+        await axios
+            .post(`${apiUrl}/orders/delivery-check`, {
+                _idRestaurant: restaurantID,
+                postcode: data.pinCode,
+            })
+            .catch(() => {
+                toast.error("Delivery not available in your area");
+                valid = false;
+            });
+
+        if (!valid) return;
+
         mutate(data);
     };
     return (
         <div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="h-full">
-
                     <div className="flex w-full flex-col items-start justify-between gap-3 border-b-[2px] border-[#131313] py-3 pb-5">
                         <p className="w-full text-xl font-semibold text-[#7A7875]">Delivery Time</p>
                         <div className="flex w-full flex-col gap-3 px-1 py-1">
@@ -254,7 +266,7 @@ const Delivery = () => {
                                 name="notes"
                                 render={({ field }) => (
                                     <FormItem className="flex w-full flex-col gap-2">
-                                        <FormLabel className="flex cursor-pointer items-center gap-2 text-[#FBEAD2] pt-10">
+                                        <FormLabel className="flex cursor-pointer items-center gap-2 pt-10 text-[#FBEAD2]">
                                             <Icons.pencil />
                                             Add Note
                                         </FormLabel>
@@ -269,8 +281,8 @@ const Delivery = () => {
                     </div>
 
                     <div className="flex w-full flex-col pt-7 lg:w-4/5 lg:flex-row">
-                        <div className="w-full bg-menuprimary border-t-[1px] border-t-[#131313] fixed bottom-0 left-0 md:static flex flex-col gap-2 px-3 py-3 md:px-0 md:py-0">
-                            <Button className="h-14 w-full bg-primary text-lg font-bold uppercase tracking-[1px] rounded-none" disabled={isPending}>
+                        <div className="fixed bottom-0 left-0 flex w-full flex-col gap-2 border-t-[1px] border-t-[#131313] bg-menuprimary px-3 py-3 md:static md:px-0 md:py-0">
+                            <Button className="h-14 w-full rounded-none bg-primary text-lg font-bold uppercase tracking-[1px]" disabled={isPending}>
                                 Place Delivery Order
                             </Button>
                         </div>
