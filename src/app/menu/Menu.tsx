@@ -134,8 +134,8 @@ export default function Menu() {
   const reversedCartItems = [...cartItems].reverse();
 
   //category filter
-  const [existCategory, setExistCategory] = useState<string[]>([]);
-  const lastCategory = organizedMenu?.[organizedMenu.length - 1];
+  // const [existCategory, setExistCategory] = useState<string[]>([]);
+  // const lastCategory = organizedMenu?.[organizedMenu.length - 1];
   // const lastCategoryItemsCount = lastCategory?.items.length ?? 0;
 
   useEffect(() => {
