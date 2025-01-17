@@ -100,7 +100,7 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                     <Icons.close className="h-4 w-4" />
                 </Button>
                 <div className={cn(
-                    "z-40 flex h-[90%] flex-col gap-5 overflow-y-scroll px-4",
+                    "z-40 flex h-[90%] flex-col gap-5 overflow-y-scroll  px-4",
                     !item.images[0] && "h-[90%]",
                 )}>
                     <div className={cn("pt-48", !item.images[0] && "pt-0")}>
