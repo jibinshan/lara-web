@@ -10,11 +10,9 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft, CircleMinus, CirclePlus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Cart = ({ }) => {
-  const router = useRouter();
   const { cartItems, updateItem, removeItem } = useCart();
   const [totalAmount, setTotalAmount] = useState(0);
   const { items } = useRestaurant();
