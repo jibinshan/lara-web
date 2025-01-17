@@ -10,11 +10,12 @@ import { getCurrencySymbol } from "@/lib/get-currency-symbol";
 import { GetModifiersFromItemId } from "@/lib/get-modifiers-from-item-id";
 import type { CartItem, CartItemModifier } from "@/types/cart-item.type";
 import type { MenuItem } from "@/types/menu";
-import { type FC, useEffect, useRef, useState } from "react";
+// import { type FC, useEffect, useRef, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { Drawer, DrawerContent, DrawerFooter, DrawerTitle, DrawerTrigger } from "../ui/drawer";
 import { useRestaurant } from "@/context/RestaurantContext";
-import { getMenuItemById } from "@/lib/get-menu-item-by-id";
+// import { getMenuItemById } from "@/lib/get-menu-item-by-id";
 import { cn } from "@/lib/utils";
 import { Minus } from "lucide-react";
 
