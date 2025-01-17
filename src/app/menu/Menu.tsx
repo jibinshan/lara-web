@@ -136,7 +136,7 @@ export default function Menu() {
   //category filter
   const [existCategory, setExistCategory] = useState<string[]>([]);
   const lastCategory = organizedMenu?.[organizedMenu.length - 1];
-  const lastCategoryItemsCount = lastCategory?.items.length ?? 0;
+  // const lastCategoryItemsCount = lastCategory?.items.length ?? 0;
 
   useEffect(() => {
     const updatedCategories: string[] = [];
