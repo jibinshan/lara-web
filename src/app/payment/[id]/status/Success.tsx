@@ -1,3 +1,4 @@
+import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { cn } from "@/lib/utils";
 import type { RefreshPayment } from "@/types/refresh-payment.type";
@@ -6,7 +7,7 @@ import axios, { type AxiosResponse } from "axios";
 import { ChevronDown, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 
 interface SuccessProps {
     id: string;
@@ -16,6 +17,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
 
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const { restaurant } = useRestaurant()
+    const { clearCart } = useCart();
     const [close, setClose] = useState(true);
     const { data } = useQuery({
         queryKey: ["stripe", id, "refresh-payment"],
@@ -26,12 +28,16 @@ const Success: FC<SuccessProps> = ({ id }) => {
                         data: RefreshPayment;
                     }>
                 ) => res.data.data
-            );
+            )
         },
         enabled: !!id,
     });
 
-
+    useEffect(() => {
+        if (data?._id) {
+            clearCart()
+        }
+    }, [data])
 
     if (!data) {
         return <div>Loading...</div>;
