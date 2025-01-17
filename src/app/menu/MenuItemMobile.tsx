@@ -1,4 +1,5 @@
 import MenuItemDrawer from "@/components/drawer/MenuItemDrawer";
+import { Icons } from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
@@ -189,7 +190,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                   Add
                 </Button>
               ) : (
-                <div className="flex h-fit w-fit items-center gap-3 bg-menuprimary p-2 text-menusecondary">
+                <div className="flex h-fit w-fit items-center gap-3 bg-primary p-2 text-menusecondary">
                   <Button
                     className={cn(
                       "h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent",

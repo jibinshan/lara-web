@@ -173,7 +173,7 @@ export default function MenuMobile() {
                   className={cn(
                     "h-12 shrink-0 rounded-none text-base font-extrabold transition-colors",
                     activeCategory === category._id
-                      ? "bg-menuprimary text-menusecondary"
+                      ? "bg-menuprimary text-menuforeground"
                       : "bg-transparent text-menusecondary hover:bg-primary/80",
                   )}
                 >

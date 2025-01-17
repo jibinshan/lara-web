@@ -10,10 +10,11 @@ import { getCurrencySymbol } from "@/lib/get-currency-symbol";
 import { GetModifiersFromItemId } from "@/lib/get-modifiers-from-item-id";
 import type { CartItem, CartItemModifier } from "@/types/cart-item.type";
 import type { MenuItem } from "@/types/menu";
-import { type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { Drawer, DrawerContent, DrawerFooter, DrawerTitle, DrawerTrigger } from "../ui/drawer";
 import { useRestaurant } from "@/context/RestaurantContext";
+import { getMenuItemById } from "@/lib/get-menu-item-by-id";
 import { cn } from "@/lib/utils";
 import { Minus } from "lucide-react";
 
@@ -139,7 +140,7 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                                     id={modifier._id}
                                                     checked={selectedModifiers.some((m) => m._id === modifier._id)}
                                                     onCheckedChange={(checked) => handleModifierChange(modifier, checked as boolean)}
-                                                    className="border-menusecondary data-[state=checked]:bg-menuprimary"
+                                                    className="border-menusecondary"
                                                 />
                                             </div>
                                         </div>
@@ -180,7 +181,7 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                 }
 
                                 // Convert selected modifiers to CartItemModifier format
-                                const modifiers: CartItemModifier[] = selectedModifiers.map((mod) => ({
+                                const modifiers: CartItemModifier[] = selectedModifiers.map((mod, index) => ({
                                     _idModifiers: menuitem?.modifiers[0]?._id ?? "",
                                     _idMenuItem: mod._id,
                                     price: mod.price,

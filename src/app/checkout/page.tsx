@@ -6,7 +6,7 @@ import { MoveLeft } from "lucide-react";
 
 const page = ({ }) => {
     return (
-        <main className="relative flex flex-col h-full w-full bg-black">
+        <main className="relative flex flex-col h-full w-full">
             <div className="w-full bg-black h-[10vh] flex justify-center items-center">
                 <div className="w-[38%] h-full flex justify-start items-center px-3">
                     <Link href='/cart'>
@@ -28,7 +28,7 @@ const page = ({ }) => {
             <div className="flex h-full w-full flex-col items-center justify-center">
                 <Checkout />
             </div>
-        </main>
+        </main >
     );
 };
 

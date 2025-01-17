@@ -136,7 +136,7 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                                     checked={selectedModifiers.some((m) => m._id === modifier._id)}
                                                     onCheckedChange={(checked) => handleModifierChange(modifier, checked as boolean)}
                                                     // className='rounded-full p-1 ring-[1px] h-5 w-5 ring-offset-4 ring-offset-[#0f0f0f] ring-primary border-0 border-[#0f0f0f] shadow-none bg-transparent'
-                                                    className="h-6 w-6 border-menuprimary data-[state=checked]:bg-menuprimary"
+                                                    className="h-6 w-6 border-menuprimary"
                                                 />
                                                 <div className="flex flex-col items-start justify-center">
                                                     <Label htmlFor={modifier._id} className="items-center gap-2 text-lg font-[700] text-menusecondary">

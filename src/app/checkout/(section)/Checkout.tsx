@@ -162,14 +162,14 @@ const Checkout = () => {
               <TabsList className="flex h-fit w-fit gap-1 rounded-full bg-[#161616] px-1 py-1">
                 <TabsTrigger
                   value="pickup"
-                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-menuprimary data-[state=active]:text-gray-300"
+                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300"
                   onClick={() => setCheckoutType("pickup")}
                 >
                   Pickup
                 </TabsTrigger>
                 <TabsTrigger
                   value="delivery"
-                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-menuprimary data-[state=active]:text-gray-300"
+                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300"
                   onClick={() => setCheckoutType("delivery")}
                 >
                   Delivery

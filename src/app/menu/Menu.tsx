@@ -125,7 +125,7 @@ export default function Menu() {
   const { items } = useRestaurant();
   useEffect(() => {
     const totalCart = cartItems.reduce(
-      (acc, i) => acc + i.price.value,
+      (acc, i) => acc + i.quantity * i.price.value,
       0,
     );
 
@@ -135,6 +135,8 @@ export default function Menu() {
 
   //category filter
   const [existCategory, setExistCategory] = useState<string[]>([]);
+  const lastCategory = organizedMenu?.[organizedMenu.length - 1];
+  const lastCategoryItemsCount = lastCategory?.items.length ?? 0;
 
   useEffect(() => {
     const updatedCategories: string[] = [];
@@ -303,7 +305,7 @@ export default function Menu() {
               </Button>
             </div>
             <Button
-              className="relative flex w-full items-center justify-between rounded-none bg-menuprimary py-6 font-manrope text-lg font-bold uppercase text-menubackground disabled:bg-buttondisabled disabled:text-background"
+              className="relative flex w-full items-center justify-between rounded-none bg-menuprimary py-6 font-manrope text-lg font-bold uppercase text-background disabled:bg-buttondisabled disabled:text-background"
               onClick={() => router.push("/checkout")}
               disabled={cartItems.length === 0}
             >
@@ -368,7 +370,7 @@ export default function Menu() {
                         <div className="flex w-full items-center justify-between pt-6">
                           <Link
                             href={`/cart/${index}`}
-                            className="font-[400] capitalize text-menuprimary"
+                            className="font-[400] capitalize text-menuprimary underline"
                           >
                             Edit Item
                           </Link>

@@ -72,8 +72,6 @@ const Cart = ({ }) => {
                             const modifier = items.find(
                               (item) => item._id === modifiers._idMenuItem,
                             )?.name;
-                            console.log(modifier, "==mod");
-
                             return (
                               <div
                                 className="flex w-full items-center justify-between"
@@ -94,7 +92,7 @@ const Cart = ({ }) => {
                           item.modifiers.length > 0 && "pt-3"
                         )}>
                           <EditMenuItemDrawer item={item} index={index}>
-                            <p className="font-[400] capitalize text-menuprimary">
+                            <p className="font-[400] capitalize text-menuprimary underline">
                               Edit Item
                             </p>
                           </EditMenuItemDrawer>

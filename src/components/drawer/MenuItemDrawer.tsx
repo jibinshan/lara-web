@@ -148,7 +148,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
                             onCheckedChange={(checked) =>
                               handleModifierChange(modifier, checked as boolean)
                             }
-                            className="border-menusecondary data-[state=checked]:bg-menuprimary"
+                            className="border-menusecondary"
                           />
                         </div>
                       </div>
@@ -161,9 +161,9 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
         </div>
         {BetaMenuActive && (
           <DrawerFooter className="flex w-full flex-row justify-start gap-5">
-            <div className="flex h-12 w-1/2 items-center justify-center gap-3 rounded-none bg-menuprimary p-2 text-menuforeground">
+            <div className="flex h-12 w-1/2 items-center justify-center gap-3 rounded-none bg-primary p-2 text-menuforeground">
               <Button
-                className="h-full w-1/3 rounded-full bg-transparent p-0 text-menuforeground shadow-none hover:bg-menuprimary"
+                className="h-full w-1/3 rounded-full bg-menuprimary p-0 text-menuforeground shadow-none hover:bg-menuprimary"
                 onClick={() => {
                   setQuantity((prev) => Math.max(prev - 1, 1));
                 }}
