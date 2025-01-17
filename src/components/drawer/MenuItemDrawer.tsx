@@ -63,7 +63,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
         <DrawerTitle></DrawerTitle>
         <div
           style={{
-            backgroundImage: item.images[0]
+            backgroundImage: item.images[0] || !item?.extras.hideMenuThumbNailImages
               ? `url(${item.images[0]})`
               : "/images/menu/items/item-placeholder.svg",
             backgroundSize: "cover",
