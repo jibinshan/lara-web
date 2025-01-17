@@ -1,5 +1,4 @@
 import MenuItemDrawer from "@/components/drawer/MenuItemDrawer";
-import { Icons } from "@/components/Icon";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
