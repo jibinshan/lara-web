@@ -11,7 +11,6 @@ export interface RefreshPayment {
   courseAway: string | null;
   orderStatus: string;
   totalDiscount: number;
-  totalCartAmount: number;
   transactionId: string;
   transactionStatus: string;
   transactionMessage: string | null;
