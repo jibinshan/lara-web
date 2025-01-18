@@ -69,7 +69,7 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                         <div className="absolute left-0 top-0 z-20 flex h-full w-full items-end justify-center overflow-hidden">
                             <Image src="/images/image.svg" width={1175} height={119} alt="image" className="h-auto w-full object-cover" />
                         </div>
-                        {item && item.images.length > 0 || !item?.extras?.hideMenuThumbNailImages ? item && (
+                        {item && item.images.length > 0 && !item?.extras?.hideMenuThumbNailImages ? item && (
                             <Image src={item.images[0]!} className="h-auto w-full object-cover md:max-h-[350px]" alt="image" width={1980} height={1080} />
                         ) : (
                             <div className="z-10 h-[350px] w-full bg-black/30 object-cover md:max-h-[350px]"></div>
