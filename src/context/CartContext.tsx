@@ -51,8 +51,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCartItems((prevItems) => {
       const itemKey = generateCartItemKey(item);
       const existingItem = prevItems.find((i) => generateCartItemKey(i) === itemKey);
+
       if (existingItem) {
-        return prevItems.map((i) => (generateCartItemKey(i) === itemKey ? item : i));
+        return prevItems.map((i) => (generateCartItemKey(i) === itemKey ? ({ ...item, quantity: (existingItem.quantity ?? 1) + (item.quantity ?? 1) } as CartItem) : i));
       }
       return [...prevItems, item];
     });
@@ -122,3 +123,4 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     </CartContext.Provider>
   );
 };
+
