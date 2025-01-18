@@ -125,7 +125,7 @@ export default function Menu() {
   const { items } = useRestaurant();
   useEffect(() => {
     const totalCart = cartItems.reduce(
-      (acc, i) => acc + i.quantity * i.price.value,
+      (acc, i) => acc + i.price.value,
       0,
     );
 
