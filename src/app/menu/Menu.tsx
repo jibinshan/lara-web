@@ -390,6 +390,10 @@ export default function Menu() {
                                 updateItem(
                                   {
                                     ...item,
+                                    price: {
+                                      ...item.price,
+                                      value: item.price.value - item.price.value / item.quantity,
+                                    },
                                     quantity: item.quantity - 1,
                                   },
                                   index,
@@ -407,6 +411,10 @@ export default function Menu() {
                                 updateItem(
                                   {
                                     ...item,
+                                    price: {
+                                      ...item.price,
+                                      value: item.price.value + item.price.value / item.quantity,
+                                    },
                                     quantity: item.quantity + 1,
                                   },
                                   index,

@@ -214,7 +214,7 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                     </DrawerFooter>
                 )}
             </DrawerContent>
-        </Drawer>
+        </Drawer >
     );
 };
 

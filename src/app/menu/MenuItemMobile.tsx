@@ -162,9 +162,9 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
               !item.images[0] && "hidden",
             )}
           >
-            {item.images[0] && (
+            {!item.extras.hideMenuThumbNailImages && item.images.length > 0 && (
               <Image
-                src={item.images[0]}
+                src={item.images[0]!}
                 width={1980}
                 height={1080}
                 alt={item.name}

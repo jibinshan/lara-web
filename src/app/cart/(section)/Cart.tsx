@@ -1,6 +1,7 @@
 "use client";
 import EditMenuItemDrawer from "@/components/drawer/EditMenuItemDrawer";
 import CartDeletePopup from "@/components/popups/CartDeletePopup";
+import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
@@ -9,17 +10,15 @@ import { cn } from "@/lib/utils";
 import { ArrowLeft, CircleMinus, CirclePlus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const Cart = ({ }) => {
-  const router = useRouter();
   const { cartItems, updateItem, removeItem } = useCart();
   const [totalAmount, setTotalAmount] = useState(0);
   const { items } = useRestaurant();
   useEffect(() => {
     const totalcart = cartItems.reduce(
-      (acc, i) => acc + i.quantity * i.price.value,
+      (acc, i) => acc + i.price.value,
       0,
     );
 
@@ -29,9 +28,9 @@ const Cart = ({ }) => {
   return (
     <section className="w-full bg-menuforeground">
       <div className="fixed left-0 top-0 z-30 flex h-[10vh] w-full items-center justify-start bg-black px-4">
-        <div onClick={() => router.back()} className="p-0 text-menusecondary">
+        <Link href='/menu' className="p-0 text-menusecondary">
           <ArrowLeft />
-        </div>
+        </Link>
         <div className="flex w-[90%] justify-center">
           <Image
             src="/images/logo.png"
@@ -117,6 +116,10 @@ const Cart = ({ }) => {
                                   updateItem(
                                     {
                                       ...item,
+                                      price: {
+                                        ...item.price,
+                                        value: item.price.value - item.price.value / item.quantity,
+                                      },
                                       quantity: item.quantity - 1,
                                     },
                                     index,
@@ -135,6 +138,10 @@ const Cart = ({ }) => {
                                 updateItem(
                                   {
                                     ...item,
+                                    price: {
+                                      ...item.price,
+                                      value: item.price.value + item.price.value / item.quantity,
+                                    },
                                     quantity: item.quantity + 1,
                                   },
                                   index,
@@ -169,12 +176,17 @@ const Cart = ({ }) => {
             {"£"} {formattedItemPrice(totalAmount)}
           </p>
         </div>
-        <Link
-          className="flex h-14 w-full items-center justify-center bg-menuprimary uppercase tracking-[1px] text-menuforeground font-[700]"
-          href="/checkout"
+        <Button
+          disabled={cartItems.length === 0}
+          className="px-0 py-0"
         >
-          checkout.{"£"} {formattedItemPrice(totalAmount)}
-        </Link>
+          <Link
+            href="/checkout"
+            className="flex h-14 w-full items-center justify-center bg-menuprimary uppercase tracking-[1px] text-menuforeground font-[700]"
+          >
+            checkout.{"£"} {formattedItemPrice(totalAmount)}
+          </Link>
+        </Button>
       </div>
     </section >
   );

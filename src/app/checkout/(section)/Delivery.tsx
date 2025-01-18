@@ -39,7 +39,7 @@ const Delivery = () => {
     const { apiUrl, restaurantID, restaurant } = useRestaurant();
     const { cartValue } = useCart();
     const router = useRouter();
-    const { cartItems, clearCart } = useCart();
+    const { cartItems } = useCart();
     const [pickup, setPickUp] = useState<string>("Standard");
     const [scheduleTime, setScheduleTime] = useState<ScheduleTime>({
         time: "",
@@ -96,7 +96,6 @@ const Delivery = () => {
         },
         onSuccess: (data) => {
             toast("Order created successfully");
-            clearCart();
             router.push("/payment/" + data._id);
         },
         onError: () => {
@@ -240,7 +239,7 @@ const Delivery = () => {
                                     <FormItem className="w-full lg:w-4/5">
                                         <FormControl>
                                             <Input
-                                                placeholder="Pin code"
+                                                placeholder="Post code"
                                                 {...field}
                                                 className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
                                             />

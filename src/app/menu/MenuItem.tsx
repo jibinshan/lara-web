@@ -24,7 +24,7 @@ export default function MenuItem({ item }: { item: MenuItem }) {
                     <p className="line-clamp-2 text-sm text-itemdescription">{item.description}</p>
                 </div>
                 <div>
-                    {item.images.length > 0 ? (
+                    {!item.extras.hideMenuThumbNailImages || item.images.length > 0 ? (
                         <Image src={item.images[0]!} className="max-h-28 min-h-28 min-w-28 max-w-28 object-cover" alt={item.name} width={1980} height={1080} />
                     ) : (
                         <div className="h-28 w-28 rounded-md"></div>

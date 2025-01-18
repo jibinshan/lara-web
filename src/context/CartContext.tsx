@@ -11,6 +11,7 @@ type CartContextType = {
   updateItem: (item: CartItem, index: number) => void;
   clearCart: () => void;
   cartValue: () => number;
+  repeatItem: (id: string) => void;
 };
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -50,8 +51,9 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCartItems((prevItems) => {
       const itemKey = generateCartItemKey(item);
       const existingItem = prevItems.find((i) => generateCartItemKey(i) === itemKey);
+
       if (existingItem) {
-        return prevItems.map((i) => (generateCartItemKey(i) === itemKey ? item : i));
+        return prevItems.map((i) => (generateCartItemKey(i) === itemKey ? ({ ...item, quantity: (existingItem.quantity ?? 1) + (item.quantity ?? 1) } as CartItem) : i));
       }
       return [...prevItems, item];
     });
@@ -61,7 +63,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return parseFloat(
       cartItems
         .reduce((acc, item) => {
-          return acc + item.price.value * (item.quantity ?? 1);
+          return acc + item.price.value;
         }, 0)
         .toFixed(2)
     );
@@ -90,6 +92,19 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setCartItems([]);
   };
 
+  const repeatItem = (id: string) => {
+    setCartItems((prevItems) => {
+      const itemsWithId = prevItems.filter((item) => item._idMenuItem === id);
+      if (itemsWithId.length === 0) return prevItems;
+
+      const latestItem = itemsWithId[itemsWithId.length - 1];
+      if (!latestItem) return prevItems;
+
+      const latestItemIndex = prevItems.lastIndexOf(latestItem);
+      return prevItems.map((item, index) => (index === latestItemIndex ? ({ ...item, quantity: (item.quantity ?? 1) + 1 } as CartItem) : item));
+    });
+  };
+
   return (
     <CartContext.Provider
       value={{
@@ -101,9 +116,11 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
         cartSheetOpen,
         setCartSheetOpen,
         cartValue,
+        repeatItem,
       }}
     >
       {children}
     </CartContext.Provider>
   );
 };
+
