@@ -101,7 +101,7 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
       if (!latestItem) return prevItems;
 
       const latestItemIndex = prevItems.lastIndexOf(latestItem);
-      return prevItems.map((item, index) => (index === latestItemIndex ? ({ ...item, quantity: (item.quantity ?? 1) + 1 } as CartItem) : item));
+      return prevItems.map((item, index) => (index === latestItemIndex ? ({ ...item, price: { ...item.price, value: item.price.value + item.price.value / item.quantity }, quantity: (item.quantity ?? 1) + 1 } as CartItem) : item));
     });
   };
 

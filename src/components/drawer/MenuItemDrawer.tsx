@@ -26,9 +26,10 @@ import { Minus, Plus } from "lucide-react";
 interface MenuItemPopupProps {
   children: React.ReactNode;
   item: MenuItem;
+  setChoose: (open: boolean) => void;
 }
 
-const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
+const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) => {
   const [open, setOpen] = useState(false);
   const [quantity, setQuantity] = useState(1);
   const [price, setPrice] = useState(item.price.value);
@@ -59,7 +60,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>{children}</DrawerTrigger>
-      <DrawerContent className="flex h-[90%] w-full flex-col justify-end border-[1px] border-menubackground bg-menubackground lg:hidden lg:w-0">
+      <DrawerContent className="flex h-[90%] w-full flex-col justify-end border-[1px] border-menubackground bg-menubackground md:hidden lg:w-0">
         <DrawerTitle></DrawerTitle>
         <div
           style={{
@@ -213,6 +214,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item }) => {
                 });
                 toast.success("Item added to cart");
                 setOpen(false);
+                setChoose(false);
                 setQuantity(1);
                 setSelectedModifiers([]);
               }}
