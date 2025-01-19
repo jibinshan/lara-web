@@ -1,5 +1,6 @@
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
+import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { cn } from "@/lib/utils";
 import type { RefreshPayment } from "@/types/refresh-payment.type";
 import { useQuery } from "@tanstack/react-query";
@@ -79,7 +80,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                         />
                     </Link>
 
-                    <Search className="h-8 w-8" />
+                    <Search className="h-0  w-0" />
                 </div>
 
                 {/*first section */}
@@ -111,7 +112,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                     >
                         <div>
                             <button className="font-manrope bg-[#000] px-5 py-3 text-sm font-[800] leading-[150%] text-[#D5A859] md:text-base">
-                                ORDER #{id}
+                                ORDER #{id.slice(-5)}
                             </button>
                         </div>
                         <h4 className="font-manrope text-center text-2xl font-[500] leading-[150%] text-[#000] md:text-4xl">
@@ -171,7 +172,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                     Sub-Total
                                 </h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-[#BC995D] md:text-base">
-                                    £{data?.totalCartAmount}
+                                    £{formattedItemPrice(data?.totalCartAmount)}
                                 </span>
                             </div>
                             <div className="flex flex-row justify-between border-b border-[#BC995D] pb-2">
@@ -179,7 +180,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                     Order Total
                                 </h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-[#BC995D] md:text-base">
-                                    £{data?.totalAmount}
+                                    £{formattedItemPrice(data?.totalAmount)}
                                 </span>
                             </div>
                         </div>

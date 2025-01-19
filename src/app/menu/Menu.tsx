@@ -2,6 +2,7 @@
 
 import MenuItem from "@/app/menu/MenuItem";
 import CartDeletePopup from "@/components/popups/CartDeletePopup";
+import DeliveryCheck from "@/components/popups/DeliveryCheck";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
@@ -31,19 +32,18 @@ export default function Menu() {
   );
   const isManualScroll = useRef(false);
   const lastActiveCategory = useRef<string>("");
-  const [orderType, setOrderType] = useState<2 | 3>(2);
+  const [orderType, setOrderType] = useState<2 | 3>(3);
+
   const router = useRouter();
   useEffect(() => {
     const savedOrderType = localStorage.getItem("orderType");
     if (savedOrderType) {
-      setOrderType(parseInt(savedOrderType) as 2 | 3);
+      setOrderType(parseInt(savedOrderType) as 3 | 2);
     }
   }, []);
-
   useEffect(() => {
     localStorage.setItem("orderType", orderType.toString());
   }, [orderType]);
-
   const updateActiveCategory = () => {
     const categories = Object.entries(categoryRefs.current);
     let activeId = "";
@@ -190,7 +190,6 @@ export default function Menu() {
     setExistCategory(updatedCategories);
   }, [organizedMenu]);
 
-
   return (
     <section className="flex w-full max-w-[1300px] flex-row bg-menubg">
       <div className="flex w-full flex-col gap-4 md:w-4/6">
@@ -278,30 +277,33 @@ export default function Menu() {
                 {restaurant?.name}
               </span>
             </p>
-            <div className="flex w-full gap-4">
-              <Button
-                className={cn(
-                  "w-full rounded-none bg-menuprimary text-menuforeground font-bold uppercase",
-                  orderType === 3
-                    ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground"
-                    : "",
-                )}
-                onClick={() => setOrderType(3)}
-              >
-                I&apos;ll Collect
-              </Button>
-              <Button
-                className={cn(
-                  "w-full rounded-none bg-menuprimary text-menuforeground font-bold uppercase",
-                  orderType === 2
-                    ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground"
-                    : "",
-                )}
-                onClick={() => setOrderType(2)}
-              >
-                Delivery
-              </Button>
-            </div>
+            {restaurant?.isDeliveryEnabled && restaurant.isTakeAwayEnabled && (
+              <div className="flex w-full gap-4">
+                <Button
+                  className={cn(
+                    "w-full rounded-none bg-menuprimary text-menuforeground font-bold uppercase",
+                    orderType === 3
+                      ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground"
+                      : "",
+                  )}
+                  onClick={() => setOrderType(3)}
+                >
+                  I&apos;ll Collect
+                </Button>
+                <DeliveryCheck setOrderType={setOrderType}>
+                  <Button
+                    className={cn(
+                      "w-full rounded-none bg-menuprimary text-menuforeground font-bold uppercase",
+                      orderType === 2
+                        ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground"
+                        : "",
+                    )}
+                  >
+                    Delivery
+                  </Button>
+                </DeliveryCheck>
+              </div>
+            )}
             <Button
               className="relative flex w-full items-center justify-between rounded-none bg-menuprimary py-6 font-manrope text-lg font-bold uppercase text-background disabled:bg-buttondisabled disabled:text-background"
               onClick={() => router.push("/checkout")}

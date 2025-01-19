@@ -24,7 +24,7 @@ export default function MenuMobile() {
   );
   const isManualScroll = useRef(false);
   const lastActiveCategory = useRef<string>("");
-  const [orderType, setOrderType] = useState<2 | 3>(2);
+  const [orderType, setOrderType] = useState<2 | 3>(3);
   const router = useRouter();
 
   useEffect(() => {
