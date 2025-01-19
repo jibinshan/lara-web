@@ -3,11 +3,15 @@ import Checkout from "./(section)/Checkout";
 import Image from "next/image";
 import Link from "next/link";
 import { MoveLeft } from "lucide-react";
+import Navbar from "@/components/Navbar";
 
 const page = ({ }) => {
     return (
         <main className="relative flex flex-col h-full w-full">
-            <div className="w-full bg-black h-[10vh] flex justify-center items-center">
+            <div className="w-full hidden md:block">
+                <Navbar />
+            </div>
+            <div className="w-full bg-black h-[10vh] flex justify-center items-center md:hidden">
                 <div className="w-[38%] h-full flex justify-start items-center px-3">
                     <Link href='/cart'>
                         <MoveLeft />

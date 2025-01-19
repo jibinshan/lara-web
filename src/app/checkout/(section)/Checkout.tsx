@@ -179,18 +179,14 @@ const Checkout = () => {
               <TabsList className="flex h-fit w-fit gap-1 rounded-full bg-[#161616] px-1 py-1">
                 <TabsTrigger
                   value="pickup"
-                  className={cn("rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300 block",
-                    checkoutType === 3 ? "md:block" : "md:hidden"
-                  )}
+                  className={cn("rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300")}
                   onClick={() => setCheckoutType(3)}
                 >
                   Pickup
                 </TabsTrigger>
                 <TabsTrigger
                   value="delivery"
-                  className={cn("rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300",
-                    checkoutType === 2 ? "md:block" : "md:hidden"
-                  )}
+                  className={cn("rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300")}
                   onClick={() => setCheckoutType(2)}
                 >
                   Delivery

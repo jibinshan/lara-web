@@ -9,6 +9,7 @@ import { useMutation } from '@tanstack/react-query';
 import axios, { type AxiosResponse } from 'axios';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
+import toast from 'react-hot-toast';
 
 interface DeliveryCheckProps {
     setOrderType: (orderType: 2 | 3) => void
@@ -24,8 +25,8 @@ type FormData = z.infer<typeof FormValidation>;
 
 const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
     const [open, setOpen] = useState(false);
-    const [success, setSuccess] = useState(false);
-    const [error, setError] = useState(false);
+    // const [success, setSuccess] = useState(false);
+    // const [error, setError] = useState(false);
     const { apiUrl, restaurantID } = useRestaurant();
     const form = useForm<FormData>({
         resolver: zodResolver(FormValidation),
@@ -47,22 +48,22 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
             return res.data.data;
         },
         onSuccess: () => {
-            // toast("Order created successfully");
-            setSuccess(true);
-            setError(false);
+            toast("Good news! We deliver to your postcode!");
+            // setSuccess(true);
+            // setError(false);
             setOrderType(2);
         },
         onError: () => {
-            // toast.error("Please clear your cart and try again");
-            setError(true);
-            setSuccess(false);
+            toast.error("Oops! Delivery isn’t available here. But you can still place an order for pickup!");
+            // setError(true);
+            // setSuccess(false);
         },
     });
     useEffect(() => {
         if (!open) {
             form.reset();
-            setSuccess(false);
-            setError(false);
+            // setSuccess(false);
+            // setError(false);
         }
     }, [open])
 
@@ -104,7 +105,7 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
                             <Button disabled={isPending} className='h-12 rounded-none'>CHECK</Button>
                         </form>
                     </Form>
-                    {success && (
+                    {/* {success && (
                         <p className='font-manrope text-sm flex text-center max-w-[70%] font-[300] text-menuprimary'>
                             Good news! We deliver to your postcode!
                         </p>
@@ -114,7 +115,7 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
                         <p className='font-manrope text-sm flex text-center max-w-[70%] font-[300] text-red-600'>
                             Oops! Delivery isn’t available here. But you can still place an order for pickup!
                         </p>
-                    )}
+                    )} */}
                 </div>
                 <DialogFooter>
                     {/* <div className='w-full flex items-center justify-center gap-4 py-5 px-5'>
