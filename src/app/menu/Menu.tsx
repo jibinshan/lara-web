@@ -270,7 +270,7 @@ export default function Menu() {
       <div className="hidden w-2/6 flex-col md:flex">
         <div className="sticky top-0 z-10 h-fit overflow-y-visible bg-itembackground px-4 py-2">
           <div className="scrollbar-none flex flex-col gap-6 overflow-x-auto pb-2">
-            {restaurant?.isDeliveryEnabled ? restaurant?.isTakeAwayEnabled && (
+            {restaurant?.isDeliveryEnabled || restaurant?.isTakeAwayEnabled ? (
               <p className="flex items-center justify-center gap-1 pt-6 text-base font-normal tracking-[1.8px] text-menusecondary">
                 <ShoppingBag fill="#fbead2" className="text-itembackground" />{" "}
                 <span>
