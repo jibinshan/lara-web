@@ -14,13 +14,30 @@ import Pickup from "./Pickup";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 import { isAfter } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const Checkout = () => {
   const router = useRouter();
   const { cartItems, cartValue } = useCart();
-  const [checkoutType, setCheckoutType] = useState<"delivery" | "pickup">(
-    "delivery",
+  const [checkoutType, setCheckoutType] = useState<2 | 3>(
+    3
   );
+  const [defaultvalue, setDefaultvalue] = useState('pickup')
+
+  useEffect(() => {
+    const savedOrderType = localStorage.getItem("orderType");
+    if (savedOrderType) {
+      setCheckoutType(parseInt(savedOrderType) as 3 | 2);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (checkoutType === 2) {
+      setDefaultvalue('delivery')
+    } else {
+      setDefaultvalue('pickup')
+    }
+  }, [checkoutType])
   const [isPickupNow, setIsPickupNow] = useState(true);
   const [isDeliveryNow, setIsDeliveryNow] = useState(true);
   const { restaurant, items } = useRestaurant();
@@ -145,7 +162,7 @@ const Checkout = () => {
       <div className="flex h-full w-full max-w-[1300px] flex-col gap-[2.5rem] px-3 pt-3 md:pt-[2.5rem] pb-[2.5rem]">
         <div className="flex flex-col gap-3 lg:flex-row lg:justify-between lg:gap-28">
           <Tabs
-            defaultValue="delivery"
+            value={defaultvalue}
             className="flex w-full flex-col gap-4 lg:w-2/3"
           >
             <Button
@@ -157,20 +174,24 @@ const Checkout = () => {
             </Button>
             <div className="flex w-full flex-col gap-3 border-b-[2px] border-[#131313] py-3 pb-5 lg:flex-row lg:items-center lg:justify-between">
               <p className="text-xl font-semibold text-[#7A7875]">
-                {checkoutType === "delivery" ? "Delivery" : "Pickup"} Details
+                {checkoutType === 2 ? "Delivery" : "Pickup"} Details
               </p>
               <TabsList className="flex h-fit w-fit gap-1 rounded-full bg-[#161616] px-1 py-1">
                 <TabsTrigger
                   value="pickup"
-                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300"
-                  onClick={() => setCheckoutType("pickup")}
+                  className={cn("rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300 block",
+                    checkoutType === 3 ? "md:block" : "md:hidden"
+                  )}
+                  onClick={() => setCheckoutType(3)}
                 >
                   Pickup
                 </TabsTrigger>
                 <TabsTrigger
                   value="delivery"
-                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300"
-                  onClick={() => setCheckoutType("delivery")}
+                  className={cn("rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-gray-300 data-[state=active]:bg-primary data-[state=active]:text-gray-300",
+                    checkoutType === 2 ? "md:block" : "md:hidden"
+                  )}
+                  onClick={() => setCheckoutType(2)}
                 >
                   Delivery
                 </TabsTrigger>
@@ -327,8 +348,8 @@ const Checkout = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 

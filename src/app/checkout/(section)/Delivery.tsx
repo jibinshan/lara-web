@@ -103,9 +103,22 @@ const Delivery = () => {
         },
     });
 
-    const onSubmit = (data: FormData) => {
+    const onSubmit = async (data: FormData) => {
+        let valid = true;
+        await axios
+            .post(`${apiUrl}/orders/delivery-check`, {
+                _idRestaurant: restaurantID,
+                postcode: data.pinCode,
+            })
+            .catch(() => {
+                toast.error("Delivery not available in your area");
+                valid = false;
+            });
+        if (!valid) return;
+
         mutate(data);
     };
+
     return (
         <div>
             <Form {...form}>
