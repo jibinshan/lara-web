@@ -63,7 +63,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
             <div>
                 {/*head section */}
                 <div className="flex flex-row items-center justify-between bg-[#000] px-4 py-4 md:px-24 md:py-8">
-                    <Link href="/">
+                    <Link href="/menu">
                         <Image
                             src={"/images/home/checkout/arrow.png"}
                             width={30}
