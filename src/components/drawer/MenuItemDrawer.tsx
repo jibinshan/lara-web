@@ -138,8 +138,12 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                             htmlFor={modifier._id}
                             className="flex items-center gap-2 text-menusecondary"
                           >
-                            {getCurrencySymbol(modifier?.price?.currency)}{" "}
-                            {formattedItemPrice(modifier.price.value)}
+                            {modifier.price &&
+                              modifier.price.value > 0 ?
+                              `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                              :
+                              "FREE"
+                            }
                           </Label>
                           <Checkbox
                             id={modifier._id}

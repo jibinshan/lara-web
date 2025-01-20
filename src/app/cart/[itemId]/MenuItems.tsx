@@ -182,7 +182,12 @@ const MenuItems: FC<MenuItemProps> = ({ itemId }) => {
                                                 </div>
                                             </div>
                                             <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
-                                                {modifier.price && `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`}
+                                                {modifier.price &&
+                                                    modifier.price.value > 0 ?
+                                                    `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                                                    :
+                                                    "FREE"
+                                                }
                                             </p>
                                         </div>
                                     ))}

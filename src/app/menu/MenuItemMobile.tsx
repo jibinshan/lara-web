@@ -37,7 +37,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
   return (
     item && (
 
-      <section className="z-10 flex h-fit w-full flex-row items-center overflow-hidden bg-mobilebg px-0 py-4">
+      <section className="z-10 flex h-fit w-full flex-row items-center overflow-hidden bg-mobilebg px-0 py-4 pb-16">
         <div
           className={cn(
             "flex w-[60%] flex-col items-start justify-between gap-4 py-[1rem] md:flex-row",
