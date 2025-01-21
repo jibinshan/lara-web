@@ -68,6 +68,7 @@ const Pickup = () => {
                 description: "Order for " + data.name,
                 orderStatus: "placed_order",
                 items: cartItems,
+                notes: note,
                 userDetails: {
                     name: data.name,
                     email: data.email,
