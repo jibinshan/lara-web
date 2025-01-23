@@ -193,6 +193,16 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                     £{formattedItemPrice(data?.totalAmount)}
                                 </span>
                             </div>
+                            {data.cart.map((item, index) => (
+                                <div className="flex flex-row justify-between border-b border-[#BC995D] pb-2" key={index}>
+                                    <h5 className="font-manrope text-sm font-[700] leading-[150%] text-[#FBEAD2] md:text-base">
+                                        Order Total{item?.menuItemName}
+                                    </h5>
+                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-[#BC995D] md:text-base">
+                                        Quantity:{" "}{item.quantity}
+                                    </span>
+                                </div>
+                            ))}
                         </div>
                     </div>
                 </div>
