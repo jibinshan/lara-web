@@ -41,7 +41,17 @@ const Success: FC<SuccessProps> = ({ id }) => {
     }, [data])
 
     if (!data) {
-        return <div>Loading...</div>;
+        return (
+            <div className="w-full h-full flex flex-col items-center justify-center gap-5">
+                <p className="font-[600] text-4xl tracking-[2px]">Placing your order...</p>
+                <Image
+                    src='/images/payment/loading.png'
+                    width={147}
+                    height={147}
+                    alt="loading"
+                />
+            </div>
+        );
     }
 
 

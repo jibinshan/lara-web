@@ -100,7 +100,9 @@ const Pickup = () => {
             toast("Order created successfully");
             router.push("/payment/" + data._id);
         },
-        onError: () => {
+        onError: (error) => {
+            console.log(error, "==error");
+
             toast.error("Please clear your cart and try again");
         },
     });
