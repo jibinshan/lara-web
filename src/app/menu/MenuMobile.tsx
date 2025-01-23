@@ -11,6 +11,7 @@ import MenuItemMobile from "./MenuItemMobile";
 import SearchInput from "./SearchInput";
 import Image from "next/image";
 import type { OrganizedMenu } from "@/lib/organize-menu";
+import { format } from "date-fns";
 
 export default function MenuMobile() {
   const { organizedMenu } = useRestaurant();
@@ -131,6 +132,63 @@ export default function MenuMobile() {
   }, [query, organizedMenu])
 
 
+  //category filter
+  const [existCategory, setExistCategory] = useState<string[]>([]);
+
+  useEffect(() => {
+    const updatedCategories: string[] = [];
+    organizedMenu?.forEach((data) => {
+      if (
+        data?.items?.find((item) => item.extras)?.extras?.availability?.days &&
+        data?.items?.find((item) => item.extras)?.extras?.menuItemOrderType
+      ) {
+        const categoryexist = data.items.find(
+          (Item) =>
+            Item?.extras?.availability?.days.includes(
+              format(Date.now(), "EEEE").toLowerCase(),
+            ) &&
+            (Item?.extras?.menuItemOrderType === "both" ||
+              Item?.extras?.menuItemOrderType === "takeaway"),
+        )?._idCategory;
+
+        if (categoryexist && !updatedCategories.includes(categoryexist)) {
+          updatedCategories.push(categoryexist);
+        }
+      } else if (
+        data?.items?.find((item) => item.extras)?.extras?.availability?.days
+      ) {
+        const categoryexist = data.items.find((Item) =>
+          Item?.extras?.availability?.days.includes(
+            format(Date.now(), "EEEE").toLowerCase(),
+          ),
+        )?._idCategory;
+        if (categoryexist && !updatedCategories.includes(categoryexist)) {
+          updatedCategories.push(categoryexist);
+        }
+      } else if (
+        data?.items?.find((item) => item.extras)?.extras?.menuItemOrderType
+      ) {
+        const categoryexist = data.items.find(
+          (Item) =>
+            Item?.extras?.menuItemOrderType === "both" ||
+            Item?.extras?.menuItemOrderType === "takeaway",
+        )?._idCategory;
+
+        if (categoryexist && !updatedCategories.includes(categoryexist)) {
+          updatedCategories.push(categoryexist);
+        }
+      } else {
+        const categoryexist = data.items.find((Item) => Item)?._idCategory;
+
+        if (categoryexist && !updatedCategories.includes(categoryexist)) {
+          updatedCategories.push(categoryexist);
+        }
+      }
+    });
+
+    setExistCategory(updatedCategories);
+  }, [organizedMenu]);
+
   return (
     <section className="flex w-full max-w-[1300px] flex-row bg-mobilebg">
       <div className="flex w-full flex-col gap-0 md:w-4/6">
@@ -173,8 +231,11 @@ export default function MenuMobile() {
                   className={cn(
                     "h-12 shrink-0 rounded-none text-base font-extrabold transition-colors",
                     activeCategory === category._id
-                      ? "bg-menuprimary text-menuforeground"
-                      : "bg-transparent text-menusecondary hover:bg-primary/80",
+                      ? "bg-menuprimary text-white hover:bg-menuprimary hover:text-menuforeground"
+                      : "bg-transparent text-menuprimary border-[1px] border-menuprimary hover:bg-transparent hover:text-menuprimary",
+                    existCategory.find(
+                      (categoryid) => categoryid === category._id,
+                    ) !== category._id && "hidden w-0 border-0 px-0 py-0",
                   )}
                 >
                   {category.name}
@@ -195,15 +256,36 @@ export default function MenuMobile() {
                 }}
                 className="scroll-mt-20"
               >
-                <h2 className={cn("pb-3 text-2xl font-bold text-menusecondary",
-                  category.items.length === 0 && "hidden pb-0"
+                <h2 className={cn("pb-3 text-2xl font-bold text-menuprimary",
+                  category.items.length === 0 && "hidden pb-0",
+                  category._id !==
+                  existCategory.find(
+                    (categoryid) => categoryid === category._id,
+                  ) && "mt-0 hidden w-0 gap-0",
                 )}>
                   {category.name}
                 </h2>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {category.items.map((item) => (
+                  {/* {category.items.map((item) => (
                     <MenuItemMobile key={item._id} id={item._id} />
-                  ))}
+                  ))} */}
+                  {category.items.map((item) => {
+                    if (
+                      item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) &&
+                      item.extras?.menuItemOrderType !== "dinein") {
+                      return <MenuItemMobile key={item._id} id={item._id} />;
+                    } else if (item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) && item.extras?.menuItemOrderType === "dinein") {
+                      return null;
+                    } else if (!item.extras?.availability?.days && item.extras?.menuItemOrderType !== "dinein") {
+                      return <MenuItemMobile key={item._id} id={item._id} />;
+                    } else if (!item.extras?.menuItemOrderType && !item.extras?.availability?.days) {
+                      return <MenuItemMobile key={item._id} id={item._id} />;
+                    } else if (item.extras?.availability?.days && !item.extras?.menuItemOrderType) {
+                      return <MenuItemMobile key={item._id} id={item._id} />;
+                    } else {
+                      return null;
+                    }
+                  })}
                 </div>
               </div>
             ))}

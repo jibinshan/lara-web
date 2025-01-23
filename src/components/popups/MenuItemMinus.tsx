@@ -54,7 +54,7 @@ const MenuItemMinus: FC<MenuChoosingProps> = ({ children, item }) => {
                                 }}
                                 className="w-full bg-menuprimary text-menuforeground hover:bg-buttonhover"
                             >
-                                Redirect
+                                Go To Cart
                             </Button>
                         </Link>
                     </div>

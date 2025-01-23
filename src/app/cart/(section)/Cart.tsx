@@ -27,7 +27,7 @@ const Cart = ({ }) => {
   const reversedCartItems = [...cartItems].reverse();
   return (
     <section className="w-full bg-menuforeground">
-      <div className="fixed left-0 top-0 z-30 flex h-[10vh] w-full items-center justify-start bg-black px-4">
+      <div className="fixed left-0 top-0 z-30 flex h-[10vh] w-full items-center justify-start bg-menubackground px-4">
         <Link href='/menu' className="p-0 text-menusecondary">
           <ArrowLeft />
         </Link>
@@ -41,9 +41,9 @@ const Cart = ({ }) => {
           />
         </div>
       </div>
-      <div className="w-full flex-col h-[94vh] overflow-y-hidden bg-menuforeground">
+      <div className="w-full flex-col h-[94vh] overflow-y-hidden bg-menubackground">
         <p className="mt-16 px-4 text-xl font-[700] text-menusecondary">Your Order</p>
-        <div className="sticky top-0 z-10 h-[80vh] overflow-y-visible bg-menuforeground px-4 py-2">
+        <div className="sticky top-0 z-10 h-[80vh] overflow-y-visible bg-menubackground px-4 py-2">
           <div className="scrollbar-none flex flex-col gap-6 overflow-x-auto pb-2">
             <div className="scrollbar-none flex h-[69vh] w-full flex-col gap-4 overflow-y-scroll">
               {cartItems.length !== 0 ? (
@@ -61,31 +61,45 @@ const Cart = ({ }) => {
                               {item?.quantity}&nbsp;&nbsp;{item.name}
                             </p>
                           </div>
-                          <p className="font-[700] text-menuprimary">
-                            {menuitem && getCurrencySymbol(menuitem.price.currency)}{" "}
-                            {menuitem && formattedItemPrice(menuitem.price.value)}
-                          </p>
+                          {menuitem && menuitem.price.value > 0 ? (
+                            <p className="font-[700] text-menuprimary">
+                              {menuitem && getCurrencySymbol(menuitem.price.currency)}{" "}
+                              {menuitem && formattedItemPrice(menuitem.price.value)}
+                            </p>
+                          ) : ''}
                         </div>
                         <div className="flex w-full flex-col items-center justify-between gap-2 pl-3">
-                          {item.modifiers.map((modifiers, index) => {
-                            const modifier = items.find(
-                              (item) => item._id === modifiers._idMenuItem,
-                            )?.name;
-                            return (
-                              <div
-                                className="flex w-full items-center justify-between"
-                                key={index}
-                              >
-                                <p className="w-[80%] text-sm font-[300] tracking-[1.4px] text-menusecondary">
-                                  {item?.quantity}&nbsp;&nbsp;{modifier}
-                                </p>
-                                <p className="text-sm font-[700] text-menuprimary">
-                                  {getCurrencySymbol(modifiers.price.currency)}{" "}
-                                  {formattedItemPrice(modifiers.price.value)}
-                                </p>
-                              </div>
-                            );
-                          })}
+                          {Object.entries(
+                            item.modifiers.reduce((acc, modifier) => {
+                              const name = items.find(
+                                (i) => i._id === modifier._idMenuItem,
+                              )?.name;
+                              if (name) {
+                                if (!acc[name]) {
+                                  acc[name] = { ...modifier, count: 0 };
+                                }
+                                acc[name].count += 1;
+                              }
+                              return acc;
+                            }, {} as Record<string, typeof item.modifiers[0] & { count: number }>),
+                          ).map(([name, modifier], index) => (
+                            <div
+                              className="flex w-full items-center justify-between"
+                              key={index}
+                            >
+                              <p className="w-[80%] text-sm font-[300] tracking-[1.4px] text-menusecondary">
+                                {modifier.count}&nbsp;&nbsp;{name}
+                              </p>
+                              {modifier && modifier.price.value > 0 ?
+                                (
+                                  <p className="text-sm font-[700] text-menuprimary">
+                                    {getCurrencySymbol(modifier.price.currency)}{" "}
+                                    {formattedItemPrice(modifier.price.value)}
+                                  </p>
+                                )
+                                : ''}
+                            </div>
+                          ))}
                         </div>
                         <div className={cn("flex w-full items-center justify-between pt-0",
                           item.modifiers.length > 0 && "pt-3"
@@ -169,10 +183,10 @@ const Cart = ({ }) => {
       </div>
       <div className="fixed bottom-0 left-0 z-40 flex w-full flex-col gap-4">
         <div className="flex w-full items-center justify-between px-4">
-          <p className="text-lg font-bold capitalize tracking-[1px] text-menuprimary-foreground">
+          <p className="text-lg font-bold capitalize tracking-[1px] text-menuprimary">
             your Total Bill
           </p>
-          <p className="text-lg font-bold text-menuprimary-foreground">
+          <p className="text-lg font-bold text-menuprimary">
             {"£"} {formattedItemPrice(totalAmount)}
           </p>
         </div>

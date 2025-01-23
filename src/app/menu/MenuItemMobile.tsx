@@ -37,69 +37,68 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
   return (
     item && (
 
-      <section className="z-10 flex h-fit w-full flex-row items-center overflow-hidden bg-mobilebg px-0 py-4 pb-16">
+      <section className="z-10 flex h-fit w-full flex-row items-center overflow-hidden bg-itembackground px-4 py-4">
         <div
           className={cn(
             "flex w-[60%] flex-col items-start justify-between gap-4 py-[1rem] md:flex-row",
-            !item.images[0] && "w-full",
+            (item.extras.hideMenuThumbNailImages || !item.images[0]) && "w-full",
           )}
         >
           <div className="flex w-full flex-col gap-2">
-            <h2 className="w-full font-inter text-xl font-[600] capitalize leading-[150%] tracking-[1px] text-menusecondary">
-              {item.name}
-            </h2>
-            <p
-              className="line-clamp-3 w-[95%] text-sm font-medium lowercase text-itemdescription"
-              style={{ wordSpacing: "0.10rem" }}
-            >
-              {item.description}
-            </p>
+            <MenuItemDrawer item={item} setChoose={setOpen}>
+              <h2 className="w-full font-inter text-xl font-[600] capitalize leading-[150%] tracking-[1px] text-white">
+                {item.name}
+              </h2>
+            </MenuItemDrawer>
+            <MenuItemDrawer item={item} setChoose={setOpen}>
+              <p
+                className="line-clamp-3 w-[95%] text-sm font-medium lowercase text-itemdescription"
+                style={{ wordSpacing: "0.10rem" }}
+              >
+                {item.description}
+              </p>
+            </MenuItemDrawer>
             <div
               className={cn(
                 "justify-start",
-                !item.images[0] && "flex w-full items-center justify-between pr-8",
+                (item.extras.hideMenuThumbNailImages || !item.images[0]) && "flex w-full items-center justify-between pr-8",
               )}
             >
-              <p className="mt-3 w-fit rounded-3xl bg-menusecondary-foreground p-2 px-3 py-3 text-base font-medium leading-[80%] tracking-[1px] text-menuprimary-foreground">
-                {item.takeawayPrice.value > 0 ? (
-                  <>
-                    {getCurrencySymbol(item.takeawayPrice.currency)}{" "}
-                    {formattedItemPrice(item.takeawayPrice.value)}
-                  </>
-                ) : (
-                  <>
-                    {item.price.value > 0 ? (
-                      <>
-                        {getCurrencySymbol(item.price.currency)}{" "}
-                        {formattedItemPrice(item.price.value)}
-                      </>
-                    ) : (
-                      <>
-                        {item.modifiers.length === 0 ? (
-                          <>Free</>
-                        ) : (
-                          GetModifiersFromItemId(item, items, 0).map(
-                            (modifier) => {
-                              if (
-                                modifier._id ===
-                                item.modifiers.find(
-                                  (modifier) => modifier.defaultSelection,
-                                )?.defaultSelection
-                              ) {
-                                return `${getCurrencySymbol(modifier.price.currency)} ${modifier.price.value}`;
-                              }
-                            },
-                          )
-                        )}
-                      </>
-                    )}
-                  </>
-                )}
-              </p>
+              <MenuItemDrawer item={item} setChoose={setOpen}>
+                <p className="mt-3 w-fit rounded-3xl bg-menusecondary-foreground p-2 px-3 py-3 text-base font-medium leading-[80%] tracking-[1px] text-menuprimary">
+                  {item.takeawayPrice.value > 0 ? (
+                    <>
+                      {getCurrencySymbol(item.takeawayPrice.currency)} {formattedItemPrice(item.takeawayPrice.value)}
+                    </>
+                  ) : (
+                    <>
+                      {item.price.value > 0 ? (
+                        <>
+                          {getCurrencySymbol(item.price.currency)} {formattedItemPrice(item.price.value)}
+                        </>
+                      ) : (
+                        <>
+                          {item.modifiers.length === 0 ? (
+                            <>Free</>
+                          ) : (
+                            item.modifiers.map((mod, index) => (
+                              GetModifiersFromItemId(item, items, index).map((modifier) => {
+                                if (modifier._id === item.modifiers.find((modifier) => modifier.defaultSelection)?.defaultSelection) {
+                                  return `${getCurrencySymbol(modifier.price.currency)} ${modifier.price.value}`;
+                                }
+                              })
+                            ))
+                          )}
+                        </>
+                      )}
+                    </>
+                  )}
+                </p>
+              </MenuItemDrawer>
               <div
                 className={cn(
                   "hidden",
-                  !item.images[0] && "flex items-center justify-center",
+                  (item.extras.hideMenuThumbNailImages || !item.images[0]) && "flex items-center justify-center",
                 )}
               >
                 {cartItems.find(
@@ -108,7 +107,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                   <MenuItemDrawer item={item} setChoose={setOpen}>
                     <Button
                       className={cn(
-                        "bottom-2 w-fit rounded-none bg-menuprimary py-5 text-[1.25rem] font-medium leading-[80%] text-menusecondary",
+                        "bottom-2 w-fit rounded-none bg-menuprimary py-5 text-[1.25rem] font-medium leading-[80%] text-menuforeground hover:bg-menuprimary",
                         !BetaMenuActive && "hidden",
                       )}
                     >
@@ -116,7 +115,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                     </Button>
                   </MenuItemDrawer>
                 ) : (
-                  <div className="flex h-fit w-fit items-center gap-3 bg-menuprimary p-2 text-menusecondary">
+                  <div className="flex h-fit w-fit items-center gap-3 bg-menuprimary p-2 text-menuforeground">
                     <MenuItemMinus item={item}>
                       <Button
                         className={cn(
@@ -142,7 +141,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                       //   }
                       // }}
                       >
-                        <Minus className="text-menusecondary" />
+                        <Minus className="text-menuforeground" />
                       </Button>
                     </MenuItemMinus>
                     {
@@ -163,7 +162,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                       //   }
                       // }}
                       >
-                        <Plus className="text-menusecondary" />
+                        <Plus className="text-menuforeground" />
                       </Button>
                     </MenuChoosing>
                   </div>
@@ -176,7 +175,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
         <div
           className={cn(
             "relative z-10 flex h-full w-[40%] py-4",
-            !item.images[0] && "hidden",
+            (item.extras.hideMenuThumbNailImages || !item.images[0]) && "hidden",
           )}
         >
           {!item.extras.hideMenuThumbNailImages && item.images.length > 0 && (
@@ -191,7 +190,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
           <div
             className={cn(
               "absolute -bottom-2 z-50 flex w-full items-center justify-center",
-              !item.images[0] && "hidden",
+              (item.extras.hideMenuThumbNailImages || !item.images[0]) && "hidden",
             )}
           >
             {cartItems.find(
@@ -200,7 +199,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
               <MenuItemDrawer item={item} setChoose={setOpen}>
                 <Button
                   className={cn(
-                    "bottom-2 w-fit rounded-none bg-menuprimary text-[1.25rem] font-medium leading-[80%] text-menusecondary hover:bg-menuprimary",
+                    "bottom-2 w-fit rounded-none bg-menuprimary text-[1.25rem] font-medium leading-[80%] text-menuforeground hover:bg-menuprimary",
                     !BetaMenuActive && "hidden",
                   )}
                 >
@@ -208,7 +207,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                 </Button>
               </MenuItemDrawer>
             ) : (
-              <div className="flex h-fit w-fit items-center gap-3 bg-primary p-2 text-menusecondary">
+              <div className="flex h-fit w-fit items-center gap-3 bg-primary p-2 text-menuforeground">
                 <MenuItemMinus item={item}>
                   <Button
                     className={cn(
@@ -234,7 +233,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                   //   }
                   // }}
                   >
-                    <Minus className="text-menusecondary" />
+                    <Minus className="text-menuforeground" />
                   </Button>
                 </MenuItemMinus>
                 {
@@ -255,14 +254,14 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                   //   }
                   // }}
                   >
-                    <Plus className="text-menusecondary" />
+                    <Plus className="text-menuforeground" />
                   </Button>
                 </MenuChoosing>
               </div>
             )}
           </div>
         </div>
-      </section>
+      </section >
     )
   );
 };

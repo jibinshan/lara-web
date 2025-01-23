@@ -33,17 +33,18 @@ export default function Menu() {
   const isManualScroll = useRef(false);
   const lastActiveCategory = useRef<string>("");
   const [orderType, setOrderType] = useState<2 | 3>(3);
-
   const router = useRouter();
   useEffect(() => {
     const savedOrderType = localStorage.getItem("orderType");
     if (savedOrderType) {
-      setOrderType(parseInt(savedOrderType) as 3 | 2);
+      setOrderType(parseInt(savedOrderType) as 2 | 3);
     }
   }, []);
+
   useEffect(() => {
     localStorage.setItem("orderType", orderType.toString());
   }, [orderType]);
+
   const updateActiveCategory = () => {
     const categories = Object.entries(categoryRefs.current);
     let activeId = "";
@@ -190,6 +191,7 @@ export default function Menu() {
     setExistCategory(updatedCategories);
   }, [organizedMenu]);
 
+
   return (
     <section className="flex w-full max-w-[1300px] flex-row bg-menubg">
       <div className="flex w-full flex-col gap-4 md:w-4/6">
@@ -210,7 +212,7 @@ export default function Menu() {
           </div>
         </div>
         {/* Categories */}
-        <div className="sticky top-0 z-10 flex items-center bg-menuforeground px-4 py-2">
+        <div className="sticky top-0 z-10 flex items-center bg-menubackground px-4 py-2">
           <div
             ref={categoryNavRef}
             className="hidden-scrollbar flex overflow-x-auto py-2"
@@ -224,10 +226,10 @@ export default function Menu() {
                   }}
                   onClick={() => scrollToCategory(category._id)}
                   className={cn(
-                    "shrink-0 rounded-none font-extrabold transition-colors",
+                    "shrink-0 rounded-none font-semibold transition-colors",
                     activeCategory === category._id
-                      ? "bg-menuprimary text-menuforeground"
-                      : "bg-menusecondary text-menuforeground hover:bg-buttonhover",
+                      ? "bg-menuprimary text-white hover:bg-buttonhover"
+                      : "bg-transparent text-menuprimary border-[1px] border-menuprimary hover:bg-buttonhover hover:text-menuforeground",
                     existCategory.find(
                       (categoryid) => categoryid === category._id,
                     ) !== category._id && "hidden w-0 border-0 px-0 py-0",
@@ -252,15 +254,32 @@ export default function Menu() {
                 className="scroll-mt-20"
               >
                 <h2 className={cn(
-                  "text-2xl font-bold text-menusecondary",
+                  "text-2xl font-bold text-menuprimary pb-6",
                   category._id !==
                   existCategory.find(
                     (categoryid) => categoryid === category._id,
                   ) && "mt-0 hidden w-0 gap-0",)}>{category.name}</h2>
                 <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                  {category.items.map((item) => (
+                  {/* {category.items.map((item) => (
                     <MenuItem key={item._id} item={item} />
-                  ))}
+                  ))} */}
+                  {category.items.map((item) => {
+                    if (
+                      item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) &&
+                      item.extras?.menuItemOrderType !== "dinein") {
+                      return <MenuItem key={item._id} item={item} />;
+                    } else if (item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) && item.extras?.menuItemOrderType === "dinein") {
+                      return null;
+                    } else if (!item.extras?.availability?.days && item.extras?.menuItemOrderType !== "dinein") {
+                      return <MenuItem key={item._id} item={item} />;
+                    } else if (!item.extras?.menuItemOrderType && !item.extras?.availability?.days) {
+                      return <MenuItem key={item._id} item={item} />;
+                    } else if (item.extras?.availability?.days && !item.extras?.menuItemOrderType) {
+                      return <MenuItem key={item._id} item={item} />;
+                    } else {
+                      return null;
+                    }
+                  })}
                 </div>
               </div>
             ))}
@@ -279,7 +298,7 @@ export default function Menu() {
                 </span>
               </p>
             ) :
-              <p className="flex items-center justify-center gap-1 pt-6 text-base font-normal tracking-[1.8px] text-menusecondary">Checkout is Not Enabled Now</p>
+              <p className="flex items-center justify-center gap-1 pt-6 text-base font-normal tracking-[1.8px] text-menusecondary">Order Online not available now</p>
             }
             {restaurant?.isDeliveryEnabled && restaurant.isTakeAwayEnabled && (
               <div className="flex w-full gap-4">
@@ -309,7 +328,7 @@ export default function Menu() {
               </div>
             )}
             <Button
-              className="relative flex w-full items-center justify-between rounded-none bg-menuprimary py-6 font-manrope text-lg font-bold uppercase text-background disabled:bg-buttondisabled disabled:text-background"
+              className="relative flex w-full items-center justify-between rounded-none bg-menuprimary py-6 font-manrope text-lg font-bold uppercase hover:bg-menuprimary text-background disabled:bg-buttondisabled disabled:text-background"
               onClick={() => router.push("/checkout")}
               disabled={cartItems.length === 0}
             >
@@ -345,32 +364,46 @@ export default function Menu() {
                               {item?.quantity}&nbsp;&nbsp;{item.name}
                             </p>
                           </div>
-                          <p className="font-[700] text-menuprimary">
-                            {menuitem && getCurrencySymbol(menuitem.price.currency)}{" "}
-                            {menuitem && formattedItemPrice(menuitem.price.value)}
-                          </p>
+                          {menuitem?.price.value ? menuitem?.price.value > 0 && (
+                            <p className="font-[700] text-menuprimary">
+                              {menuitem && getCurrencySymbol(menuitem.price.currency)}{" "}
+                              {menuitem && formattedItemPrice(menuitem.price.value)}
+                            </p>
+                          ) : ''}
                         </div>
+
                         <div className="flex w-full flex-col items-center justify-between gap-2 pl-3">
-                          {item.modifiers.map((modifiers, index) => {
-                            const modifier = items.find(
-                              (item) => item._id === modifiers._idMenuItem,
-                            )?.name;
-                            return (
-                              <div
-                                className="flex w-full items-center justify-between"
-                                key={index}
-                              >
-                                <p className="w-[80%] text-sm font-[300] tracking-[1.4px] text-menusecondary">
-                                  {item?.quantity}&nbsp;&nbsp;{modifier}
-                                </p>
+                          {Object.entries(
+                            item.modifiers.reduce((acc, modifier) => {
+                              const name = items.find(
+                                (i) => i._id === modifier._idMenuItem,
+                              )?.name;
+                              if (name) {
+                                if (!acc[name]) {
+                                  acc[name] = { ...modifier, count: 0 };
+                                }
+                                acc[name].count += 1;
+                              }
+                              return acc;
+                            }, {} as Record<string, typeof item.modifiers[0] & { count: number }>),
+                          ).map(([name, modifier], index) => (
+                            <div
+                              className="flex w-full items-center justify-between"
+                              key={index}
+                            >
+                              <p className="w-[80%] text-sm font-[300] tracking-[1.4px] text-menusecondary">
+                                {modifier.count}&nbsp;&nbsp;{name}
+                              </p>
+                              {modifier.price.value > 0 ? (
                                 <p className="text-sm font-[700] text-menuprimary">
-                                  {getCurrencySymbol(modifiers.price.currency)}{" "}
-                                  {formattedItemPrice(modifiers.price.value)}
+                                  {getCurrencySymbol(modifier.price.currency)}{" "}
+                                  {formattedItemPrice(modifier.price.value)}
                                 </p>
-                              </div>
-                            );
-                          })}
+                              ) : ''}
+                            </div>
+                          ))}
                         </div>
+
                         <div className="flex w-full items-center justify-between pt-6">
                           <Link
                             href={`/cart/${index}`}
@@ -444,14 +477,14 @@ export default function Menu() {
 
             {/* Footer */}
             <div className="flex items-center justify-between">
-              <p className="font-bold text-menuprimary-foreground">Subtotal</p>
+              <p className="font-bold text-menuprimary">Subtotal</p>
               <p className="text-lg font-bold text-menuprimary">
                 {"£"} {formattedItemPrice(totalAmount)}
               </p>
             </div>
           </div>
         </div>
-      </div>
+      </div >
     </section >
   );
 }
