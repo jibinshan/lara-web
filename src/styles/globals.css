@@ -93,9 +93,10 @@
 
   /* menu Checkout Start */
 
+
   --menubackground: 0, 0%, 3%;
   --menuforeground: 0, 0%, 0%;
-  --menuprimary: 38, 41%, 55%;
+  --menuprimary: 42, 50%, 60%;
   --menusecondary: 35, 84%, 90%;
   --buttonhover: 42, 73%, 41%;
   --itembackground: 0, 0%, 6%;
@@ -105,6 +106,11 @@
   --itembutton: 0, 0%, 9%;
   --buttondisabled: 0, 0%, 17%;
   --mobilebg: 0, 0%, 0%;
+  --menuwhite: 0, 0%, 100%;
+  --borderinput: 0, 0%, 7.45%;
+  --tabbg: 0, 0%, 8.63%;
+  --inputbg: 0, 0%, 4.71%;
+  --placeholder: 36, 18%, 70%;
 }
 
 /* Scrolling Text Start */

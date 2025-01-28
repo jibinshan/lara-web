@@ -26,7 +26,7 @@ const Cart = ({ }) => {
   }, [cartItems]);
   const reversedCartItems = [...cartItems].reverse();
   return (
-    <section className="w-full bg-menuforeground">
+    <section className="w-full bg-menubackground">
       <div className="fixed left-0 top-0 z-30 flex h-[10vh] w-full items-center justify-start bg-menubackground px-4">
         <Link href='/menu' className="p-0 text-menusecondary">
           <ArrowLeft />
@@ -42,7 +42,7 @@ const Cart = ({ }) => {
         </div>
       </div>
       <div className="w-full flex-col h-[94vh] overflow-y-hidden bg-menubackground">
-        <p className="mt-16 px-4 text-xl font-[700] text-menusecondary">Your Order</p>
+        <p className="mt-24 px-4 text-xl font-[700] text-menusecondary">Your Order</p>
         <div className="sticky top-0 z-10 h-[80vh] overflow-y-visible bg-menubackground px-4 py-2">
           <div className="scrollbar-none flex flex-col gap-6 overflow-x-auto pb-2">
             <div className="scrollbar-none flex h-[69vh] w-full flex-col gap-4 overflow-y-scroll">

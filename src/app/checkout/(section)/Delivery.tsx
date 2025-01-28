@@ -39,7 +39,7 @@ const Delivery = () => {
     const { apiUrl, restaurantID, restaurant } = useRestaurant();
     const { cartValue } = useCart();
     const router = useRouter();
-    const { cartItems } = useCart();
+    const { cartItems, clearCart } = useCart();
     const [pickup, setPickUp] = useState<string>("Standard");
     const [scheduleTime, setScheduleTime] = useState<ScheduleTime>({
         time: "",
@@ -96,6 +96,7 @@ const Delivery = () => {
         },
         onSuccess: (data) => {
             toast("Order created successfully");
+            clearCart();
             router.push("/payment/" + data._id);
         },
         onError: () => {
@@ -103,58 +104,45 @@ const Delivery = () => {
         },
     });
 
-    const onSubmit = async (data: FormData) => {
-        let valid = true;
-        await axios
-            .post(`${apiUrl}/orders/delivery-check`, {
-                _idRestaurant: restaurantID,
-                postcode: data.pinCode,
-            })
-            .catch(() => {
-                toast.error("Delivery not available in your area");
-                valid = false;
-            });
-        if (!valid) return;
-
+    const onSubmit = (data: FormData) => {
         mutate(data);
     };
-
     return (
         <div>
             <Form {...form}>
                 <form onSubmit={form.handleSubmit(onSubmit)} className="h-full">
 
-                    <div className="flex w-full flex-col items-start justify-between gap-3 border-b-[2px] border-[#131313] py-3 pb-5">
-                        <p className="w-full text-xl font-semibold text-[#7A7875]">Delivery Time</p>
+                    <div className="flex w-full flex-col items-start justify-between gap-3 border-b-[2px] border-borderinput py-3 pb-5">
+                        <p className="w-full text-xl font-semibold text-menusecondary-foreground">Delivery Time</p>
                         <div className="flex w-full flex-col gap-3 px-1 py-1">
                             <div
-                                className={cn("flex w-full items-center gap-3 border-[2px] border-[#282828] px-4 py-3 lg:w-2/3", pickup === "Standard" && "border-[#bc995d]")}
+                                className={cn("flex w-full items-center gap-3 border-[2px] border-borderinput px-4 py-3 lg:w-2/3", pickup === "Standard" && "border-menuprimary")}
                                 onClick={() => setPickUp("Standard")}
                             >
                                 <Calendar />
                                 <div className="flex flex-col">
-                                    <p className="text-lg font-semibold">Standard</p>
-                                    <p className="text-[#666666]">{restaurant?.busyMode ? restaurant?.deliveryETA + restaurant.busyModeTime : restaurant?.deliveryETA} min</p>
+                                    <p className="text-lg font-semibold text-menusecondary">Standard</p>
+                                    <p className="text-menuprimary-foreground">{restaurant?.busyMode ? restaurant?.deliveryETA + restaurant.busyModeTime : restaurant?.deliveryETA} min</p>
                                 </div>
                             </div>
                             <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="delivery">
                                 <div
-                                    className={cn("flex w-full items-center gap-3 border-[2px] border-[#282828] px-4 py-3 lg:w-2/3", pickup === "Schedule" && "border-[#bc995d]")}
+                                    className={cn("flex w-full items-center gap-3 border-[2px] border-borderinput px-4 py-3 lg:w-2/3", pickup === "Schedule" && "border-menuprimary")}
                                     onClick={() => setPickUp("Schedule")}
                                 >
                                     <CalendarClock />
                                     <div className="flex flex-col">
-                                        <p className="text-lg font-semibold">Schedule</p>
-                                        <p className="text-[#666666]">{scheduleTime.date || scheduleTime.time ? `${scheduleTime?.date},${scheduleTime.time} ` : "Choose a time"}</p>
+                                        <p className="text-lg font-semibold text-menusecondary">Schedule</p>
+                                        <p className="text-menuprimary-foreground">{scheduleTime.date || scheduleTime.time ? `${scheduleTime?.date},${scheduleTime.time} ` : "Choose a time"}</p>
                                     </div>
                                 </div>
                             </ScheduleTImePopup>
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-4 border-b-[2px] border-b-[#131313] pb-7 pt-7">
+                    <div className="flex flex-col gap-4 border-b-[2px] border-b-borderinput pb-7 pt-7">
                         <div className="w-full lg:w-2/6">
-                            <p className="text-lg font-semibold text-[#7A7875]">Contact Details</p>
+                            <p className="text-lg font-semibold text-menuprimary-foreground">Contact Details</p>
                         </div>
                         <div className="flex w-full flex-col gap-6">
                             <FormField
@@ -166,7 +154,7 @@ const Delivery = () => {
                                             <Input
                                                 placeholder="Name"
                                                 {...field}
-                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                className="h-12 rounded-none border-b-[3px] placeholder:text-placeholder border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -182,7 +170,7 @@ const Delivery = () => {
                                             <Input
                                                 placeholder="Phone Number"
                                                 {...field}
-                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                className="h-12 rounded-none border-b-[3px] placeholder:text-placeholder border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -198,7 +186,7 @@ const Delivery = () => {
                                             <Input
                                                 placeholder="Email ID"
                                                 {...field}
-                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                className="h-12 rounded-none border-b-[3px] placeholder:text-placeholder border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -208,9 +196,9 @@ const Delivery = () => {
                         </div>
                     </div>
 
-                    <div className="flex flex-col gap-4 border-b-[2px] border-b-[#131313] pb-7 pt-7">
+                    <div className="flex flex-col gap-4 border-b-[2px] border-b-borderinput pb-7 pt-7">
                         <div className="w-full lg:w-2/6">
-                            <p className="text-lg font-semibold text-[#7A7875]">Delivery Address</p>
+                            <p className="text-lg font-semibold text-menuprimary-foreground">Delivery Address</p>
                         </div>
                         <div className="flex w-full flex-col gap-6">
                             <FormField
@@ -222,7 +210,7 @@ const Delivery = () => {
                                             <Input
                                                 placeholder="Building/House/flat No/floor"
                                                 {...field}
-                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                className="h-12 rounded-none border-b-[3px] placeholder:text-placeholder border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -238,7 +226,7 @@ const Delivery = () => {
                                             <Input
                                                 placeholder="City"
                                                 {...field}
-                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                className="h-12 rounded-none border-b-[3px] placeholder:text-placeholder border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -252,9 +240,9 @@ const Delivery = () => {
                                     <FormItem className="w-full lg:w-4/5">
                                         <FormControl>
                                             <Input
-                                                placeholder="Post code"
+                                                placeholder="Pin code"
                                                 {...field}
-                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-[#323232] bg-[#0c0c0c] outline-none focus-visible:border-b-[2px] focus-visible:border-b-[#bc995d] focus-visible:ring-0"
+                                                className="h-12 rounded-none border-b-[3px] placeholder:text-placeholder border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -266,12 +254,12 @@ const Delivery = () => {
                                 name="notes"
                                 render={({ field }) => (
                                     <FormItem className="flex w-full flex-col gap-2">
-                                        <FormLabel className="flex cursor-pointer items-center gap-2 text-[#FBEAD2] pt-10">
+                                        <FormLabel className="flex cursor-pointer items-center gap-2 text-menusecondary pt-10">
                                             <Icons.pencil />
                                             Add Note
                                         </FormLabel>
                                         <FormControl>
-                                            <Textarea rows={3} className="border-none bg-[#0F0F0F] lg:w-4/5" {...field} />
+                                            <Textarea rows={3} className="border-none bg-inputbg placeholder:text-placeholder lg:w-4/5" {...field} />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -281,8 +269,8 @@ const Delivery = () => {
                     </div>
 
                     <div className="flex w-full flex-col pt-7 lg:w-4/5 lg:flex-row">
-                        <div className="w-full bg-background border-t-[1px] border-t-[#131313] fixed bottom-0 left-0 md:static flex flex-col gap-2 px-3 py-3 md:px-0 md:py-0">
-                            <Button className="h-14 w-full bg-primary text-lg font-bold uppercase tracking-[1px] rounded-none" disabled={isPending}>
+                        <div className="w-full bg-background border-t-[1px] border-t-borderinput fixed bottom-0 left-0 md:static flex flex-col gap-2 px-3 py-3 md:px-0 md:py-0">
+                            <Button className="h-14 w-full bg-menuprimary text-menuforeground hover:bg-buttonhover text-lg font-bold uppercase tracking-[1px] rounded-none" disabled={isPending}>
                                 Place Delivery Order
                             </Button>
                         </div>

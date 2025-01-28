@@ -381,7 +381,7 @@ const MenuItems: FC<MenuItemProps> = ({ itemId }) => {
                 </div>
             </div>
 
-            <div className="fixed bottom-0 right-0 z-40 flex h-fit w-full items-center justify-center gap-10 bg-menuforeground py-5 pr-[14%]">
+            <div className="fixed bottom-0 right-0 z-40 flex h-fit w-full items-center justify-center gap-10 bg-itembackground py-5 pr-[14%]">
                 <div className="flex items-center justify-center gap-5">
                     <button
                         className="rounded-full border-[2px] border-menusecondary bg-transparent px-1 py-1 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
