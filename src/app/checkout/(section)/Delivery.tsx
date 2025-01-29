@@ -10,7 +10,7 @@ import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import axios, { type AxiosResponse } from "axios";
+import axios, { type AxiosError, type AxiosResponse } from "axios";
 import { Calendar, CalendarClock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,9 +19,9 @@ import toast from "react-hot-toast";
 import { z } from "zod";
 
 const FormValidation = z.object({
-    name: z.string().min(2, "please enter name"),
-    phone: z.string().min(11, "please enter minimum 11 numbers").max(11, "please enter maximum 11 numbers"),
-    email: z.string().email().min(2, "please enter email"),
+    name: z.string().min(2, "Oops! We need your name to personalise your delicious order. Please enter it to continue."),
+    phone: z.string().min(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order.").max(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order."),
+    email: z.string().min(2, "Oops! That email doesn’t look right. We need it to send you your delicious meal details.").email(),
     address: z.string().min(2, "please enter address"),
     city: z.string().min(2, "please enter city"),
     pinCode: z.string().min(2, "please enter pincode"),
@@ -31,6 +31,16 @@ const FormValidation = z.object({
 interface ScheduleTime {
     time: string; // Change to the appropriate type
     date: string; // Change to the appropriate type (e.g., Date, string, etc.)
+}
+
+interface errordata {
+    response: {
+        data: {
+            success: boolean,
+            code: number,
+            msg: string,
+        }
+    }
 }
 
 type FormData = z.infer<typeof FormValidation>;
@@ -45,7 +55,6 @@ const Delivery = () => {
         time: "",
         date: "",
     });
-    console.log(scheduleTime, "==scheduletime");
 
     const form = useForm<FormData>({
         resolver: zodResolver(FormValidation),
@@ -99,8 +108,8 @@ const Delivery = () => {
             clearCart();
             router.push("/payment/" + data._id);
         },
-        onError: () => {
-            toast.error("Please clear your cart and try again");
+        onError: (error: errordata) => {
+            toast.error(error?.response?.data?.msg);
         },
     });
 
@@ -269,8 +278,8 @@ const Delivery = () => {
                     </div>
 
                     <div className="flex w-full flex-col pt-7 lg:w-4/5 lg:flex-row">
-                        <div className="w-full bg-background border-t-[1px] border-t-borderinput fixed bottom-0 left-0 md:static flex flex-col gap-2 px-3 py-3 md:px-0 md:py-0">
-                            <Button className="h-14 w-full bg-menuprimary text-menuforeground hover:bg-buttonhover text-lg font-bold uppercase tracking-[1px] rounded-none" disabled={isPending}>
+                        <div className="w-full bg-background border-t-[1px] border-t-borderinput fixed bottom-0 left-0 md:static flex flex-col gap-2 md:px-0 md:py-0">
+                            <Button className="h-16 w-full bg-menuprimary text-menuforeground hover:bg-buttonhover text-lg font-bold uppercase tracking-[1px] rounded-none" disabled={isPending}>
                                 Place Delivery Order
                             </Button>
                         </div>

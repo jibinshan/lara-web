@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import axios, { type AxiosResponse } from "axios";
+import axios, { type AxiosError, type AxiosResponse } from "axios";
 import { ArrowRight, Calendar, CalendarClock, MapPin } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -26,16 +26,24 @@ import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 const FormValidation = z.object({
     // date: z.string().min(2, "please select date"),
     // time: z.string().min(2, "please select time"),
-    name: z.string().min(2, "please enter name"),
-    phone: z.string().min(11, "please enter minimum 11 numbers").max(11, "please enter maximum 11 numbers").regex(/^\d+$/),
-    email: z.string().email().min(2, "please enter email"),
+    name: z.string().min(2, "Oops! We need your name to personalise your delicious order. Please enter it to continue."),
+    phone: z.string().min(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order.").max(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order.").regex(/^\d+$/),
+    email: z.string().min(2, "Oops! That email doesn’t look right. We need it to send you your delicious meal details.").email(),
 });
 
 interface ScheduleTime {
     time: string; // Change to the appropriate type
     date: string; // Change to the appropriate type (e.g., Date, string, etc.)
 }
-
+interface errordata {
+    response: {
+        data: {
+            success: boolean,
+            code: number,
+            msg: string,
+        }
+    }
+}
 type FormData = z.infer<typeof FormValidation>;
 const Pickup = () => {
     const { apiUrl, restaurantID, restaurant } = useRestaurant();
@@ -100,8 +108,8 @@ const Pickup = () => {
             clearCart();
             router.push("/payment/" + data._id);
         },
-        onError: () => {
-            toast.error("Please clear your cart and try again");
+        onError: (error: errordata) => {
+            toast.error(error?.response?.data?.msg);
         },
     });
 
@@ -238,8 +246,8 @@ const Pickup = () => {
                     </div>
 
                     <div className="flex w-full flex-col pt-7 lg:w-4/5 lg:flex-row">
-                        <div className="w-full bg-background border-t-[1px] border-t-borderinput fixed bottom-0 left-0 md:static flex flex-col gap-2 px-3 py-3 md:px-0 md:py-0">
-                            <Button className="h-14 w-full bg-menuprimary text-menuforeground hover:bg-buttonhover text-lg font-bold uppercase tracking-[1px] rounded-none" disabled={isPending}>
+                        <div className="w-full bg-background border-t-[1px] border-t-borderinput fixed bottom-0 left-0 md:static flex flex-col gap-2 md:px-0 md:py-0">
+                            <Button className="h-16 w-full bg-menuprimary text-menuforeground hover:bg-buttonhover text-lg font-bold uppercase tracking-[1px] rounded-none" disabled={isPending}>
                                 Place Pickup Order
                             </Button>
                         </div>

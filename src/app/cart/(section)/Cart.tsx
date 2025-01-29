@@ -190,17 +190,17 @@ const Cart = ({ }) => {
             {"£"} {formattedItemPrice(totalAmount)}
           </p>
         </div>
-        <Button
-          disabled={cartItems.length === 0}
-          className="px-0 py-0"
+        <Link
+          href="/checkout"
+          className=""
         >
-          <Link
-            href="/checkout"
-            className="flex h-14 w-full items-center justify-center bg-menuprimary uppercase tracking-[1px] text-menuforeground font-[700]"
+          <Button
+            disabled={cartItems.length === 0}
+            className="flex w-full items-center justify-center bg-menuprimary uppercase tracking-[1px] text-lg py-8 rounded-none hover:bg-buttonhover text-menuforeground font-[700]"
           >
             checkout.{"£"} {formattedItemPrice(totalAmount)}
-          </Link>
-        </Button>
+          </Button>
+        </Link>
       </div>
     </section >
   );

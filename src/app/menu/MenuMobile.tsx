@@ -12,7 +12,7 @@ import SearchInput from "./SearchInput";
 import Image from "next/image";
 import type { OrganizedMenu } from "@/lib/organize-menu";
 import { format } from "date-fns";
-import type { MenuItem } from "@/types/menu";
+import { MenuItem } from "@/types/menu";
 
 export default function MenuMobile() {
     const { organizedMenu } = useRestaurant();
@@ -24,7 +24,7 @@ export default function MenuMobile() {
     const categoryButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
     const isManualScroll = useRef(false);
     const lastActiveCategory = useRef<string>("");
-    const [orderType, setOrderType] = useState<2 | 3>(2);
+    const [orderType, setOrderType] = useState<2 | 3>(3);
     const router = useRouter();
 
     useEffect(() => {
@@ -37,6 +37,7 @@ export default function MenuMobile() {
     useEffect(() => {
         localStorage.setItem("orderType", orderType.toString());
     }, [orderType]);
+
 
     const updateActiveCategory = () => {
         const categories = Object.entries(categoryRefs.current);
@@ -130,6 +131,16 @@ export default function MenuMobile() {
         }
     }, [query, organizedMenu]);
 
+
+    useEffect(() => {
+
+        const category = organizedMenu.filter((cat) => cat.items.length > 0)
+
+        if (activeCategory.length === 0 && category[0]?._id) {
+            setActiveCategory(category[0]?._id)
+        }
+    }, [activeCategory, organizedMenu])
+
     //category filter
     // const [existCategory, setExistCategory] = useState<string[]>([]);
 
@@ -215,7 +226,8 @@ export default function MenuMobile() {
                                         "h-12 shrink-0 rounded-none text-base font-extrabold transition-colors",
                                         activeCategory === category._id
                                             ? "bg-menuprimary text-menuforeground hover:bg-buttonhover hover:text-menuforeground"
-                                            : "border-[1px] border-menuprimary bg-transparent text-menuprimary hover:bg-transparent hover:text-menuprimary"
+                                            : "border-[1px] border-menuprimary bg-transparent text-menuprimary hover:bg-transparent hover:text-menuprimary",
+                                        category.items.length === 0 && "hidden pb-0"
                                     )}
                                 >
                                     {category.name}

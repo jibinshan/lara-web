@@ -15,6 +15,7 @@ import { Minus, Plus } from "lucide-react";
 import Image from "next/image";
 import { useState, type FC } from "react";
 import { isRestaurantOpen } from "@/lib/is-restaurant-open";
+import { format } from "date-fns";
 
 interface MenuItemProps {
     id: string;
@@ -45,7 +46,7 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                 >
                     <div className="flex w-full flex-col gap-2">
                         <MenuItemDrawer item={item} setChoose={setOpen}>
-                            <h2 className="font-inter w-full text-xl font-[600] capitalize leading-[150%] tracking-[1px] text-white">{item.name}</h2>
+                            <h2 className="font-inter w-full text-xl font-[600] capitalize leading-[150%] tracking-[1px] text-menusecondary">{item.name}</h2>
                         </MenuItemDrawer>
                         <MenuItemDrawer item={item} setChoose={setOpen}>
                             <p className="line-clamp-3 w-[95%] text-sm font-medium lowercase text-itemdescription" style={{ wordSpacing: "0.10rem" }}>
@@ -84,69 +85,73 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                                     )}
                                 </p>
                             </MenuItemDrawer>
-                            {isOpen && (
-                                <div className={cn("hidden", (item.extras?.hideMenuThumbNailImages || !item.images[0]) && "flex items-center justify-center")}>
-                                    {cartItems.find((cartItem) => cartItem._idMenuItem === item._id) === undefined ? (
-                                        <MenuItemDrawer item={item} setChoose={setOpen}>
-                                            <Button
-                                                className={cn(
-                                                    "bottom-2 w-fit rounded-none bg-menuprimary py-5 text-[1.25rem] font-medium leading-[80%] text-menuforeground hover:bg-menuprimary",
-                                                    !BetaMenuActive && "hidden"
-                                                )}
-                                            >
-                                                Add
-                                            </Button>
-                                        </MenuItemDrawer>
-                                    ) : (
-                                        <div className="flex h-fit w-fit items-center gap-3 bg-menuprimary p-2 text-menuforeground">
-                                            <MenuItemMinus item={item}>
-                                                <Button
-                                                    className={cn("h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent", !BetaMenuActive && "hidden")}
-                                                // onClick={() => {
-                                                //   if (
-                                                //     cartItems.find(
-                                                //       (cartItem) => cartItem._idMenuItem === item._id,
-                                                //     )!.quantity <= 1
-                                                //   ) {
-                                                //     return removeItem(item._id);
-                                                //   }
-                                                //   if (cartitem?.quantity) {
-                                                //     updateItem(
-                                                //       {
-                                                //         ...cartitem,
-                                                //         quantity: cartitem?.quantity - 1,
-                                                //       },
-                                                //       0,
-                                                //     );
-                                                //   }
-                                                // }}
-                                                >
-                                                    <Minus className="text-menuforeground" />
-                                                </Button>
-                                            </MenuItemMinus>
-                                            {getcartitem(item)}
-                                            <MenuChoosing item={item}>
-                                                <Button
-                                                    className="h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent"
-                                                // onClick={() => {
-                                                //   if (cartitem?.quantity) {
-                                                //     updateItem(
-                                                //       {
-                                                //         ...cartitem,
-                                                //         quantity: cartitem?.quantity + 1,
-                                                //       },
-                                                //       0,
-                                                //     );
-                                                //   }
-                                                // }}
-                                                >
-                                                    <Plus className="text-menuforeground" />
-                                                </Button>
-                                            </MenuChoosing>
-                                        </div>
-                                    )}
-                                </div>
-                            )}
+                            {isOpen &&
+                                item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) &&
+                                item.extras?.menuItemOrderType === "both" &&
+                                (
+                                    <div className={cn("hidden", (item.extras?.hideMenuThumbNailImages || !item.images[0]) && "flex items-center justify-center")}>
+                                        {
+                                            cartItems.find((cartItem) => cartItem._idMenuItem === item._id) === undefined ? (
+                                                <MenuItemDrawer item={item} setChoose={setOpen}>
+                                                    <Button
+                                                        className={cn(
+                                                            "bottom-2 w-fit rounded-none bg-menuprimary py-5 text-[1.25rem] font-medium leading-[80%] text-menuforeground hover:bg-menuprimary",
+                                                            !BetaMenuActive && "hidden"
+                                                        )}
+                                                    >
+                                                        Add
+                                                    </Button>
+                                                </MenuItemDrawer>
+                                            ) : (
+                                                <div className="flex h-fit w-fit items-center gap-3 bg-menuprimary p-2 text-menuforeground">
+                                                    <MenuItemMinus item={item}>
+                                                        <Button
+                                                            className={cn("h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent", !BetaMenuActive && "hidden")}
+                                                        // onClick={() => {
+                                                        //   if (
+                                                        //     cartItems.find(
+                                                        //       (cartItem) => cartItem._idMenuItem === item._id,
+                                                        //     )!.quantity <= 1
+                                                        //   ) {
+                                                        //     return removeItem(item._id);
+                                                        //   }
+                                                        //   if (cartitem?.quantity) {
+                                                        //     updateItem(
+                                                        //       {
+                                                        //         ...cartitem,
+                                                        //         quantity: cartitem?.quantity - 1,
+                                                        //       },
+                                                        //       0,
+                                                        //     );
+                                                        //   }
+                                                        // }}
+                                                        >
+                                                            <Minus className="text-menuforeground" />
+                                                        </Button>
+                                                    </MenuItemMinus>
+                                                    {getcartitem(item)}
+                                                    <MenuChoosing item={item}>
+                                                        <Button
+                                                            className="h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent"
+                                                        // onClick={() => {
+                                                        //   if (cartitem?.quantity) {
+                                                        //     updateItem(
+                                                        //       {
+                                                        //         ...cartitem,
+                                                        //         quantity: cartitem?.quantity + 1,
+                                                        //       },
+                                                        //       0,
+                                                        //     );
+                                                        //   }
+                                                        // }}
+                                                        >
+                                                            <Plus className="text-menuforeground" />
+                                                        </Button>
+                                                    </MenuChoosing>
+                                                </div>
+                                            )}
+                                    </div>
+                                )}
                         </div>
                     </div>
                 </div>
@@ -155,71 +160,74 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                     {!item.extras?.hideMenuThumbNailImages && item.images.length > 0 && (
                         <Image src={item.images[0]!} width={1980} height={1080} alt={item.name} className="z-10 aspect-square h-auto w-full rounded-xl object-cover" />
                     )}
-                    {isOpen && (
-                        <div
-                            className={cn("absolute -bottom-2 z-50 flex w-full items-center justify-center", (item.extras?.hideMenuThumbNailImages || !item.images[0]) && "hidden")}
-                        >
-                            {cartItems.find((cartItem) => cartItem._idMenuItem === item._id) === undefined ? (
-                                <MenuItemDrawer item={item} setChoose={setOpen}>
-                                    <Button
-                                        className={cn(
-                                            "bottom-2 w-fit rounded-none bg-menuprimary text-[1.25rem] font-medium leading-[80%] text-menuforeground hover:bg-menuprimary",
-                                            !BetaMenuActive && "hidden"
-                                        )}
-                                    >
-                                        Add
-                                    </Button>
-                                </MenuItemDrawer>
-                            ) : (
-                                <div className="flex h-fit w-fit items-center gap-3 bg-primary p-2 text-menuforeground">
-                                    <MenuItemMinus item={item}>
+                    {isOpen &&
+                        item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) &&
+                        item.extras?.menuItemOrderType === "both" &&
+                        (
+                            <div
+                                className={cn("absolute -bottom-2 z-50 flex w-full items-center justify-center", (item.extras?.hideMenuThumbNailImages || !item.images[0]) && "hidden")}
+                            >
+                                {cartItems.find((cartItem) => cartItem._idMenuItem === item._id) === undefined ? (
+                                    <MenuItemDrawer item={item} setChoose={setOpen}>
                                         <Button
-                                            className={cn("h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent", !BetaMenuActive && "hidden")}
-                                        // onClick={() => {
-                                        //   if (
-                                        //     cartItems.find(
-                                        //       (cartItem) => cartItem._idMenuItem === item._id,
-                                        //     )!.quantity <= 1
-                                        //   ) {
-                                        //     return removeItem(item._id);
-                                        //   }
-                                        //   if (cartitem?.quantity) {
-                                        //     updateItem(
-                                        //       {
-                                        //         ...cartitem,
-                                        //         quantity: cartitem?.quantity - 1,
-                                        //       },
-                                        //       0,
-                                        //     );
-                                        //   }
-                                        // }}
+                                            className={cn(
+                                                "bottom-2 w-fit rounded-none bg-menuprimary text-[1.25rem] font-medium leading-[80%] text-menuforeground hover:bg-menuprimary",
+                                                !BetaMenuActive && "hidden"
+                                            )}
                                         >
-                                            <Minus className="text-menuforeground" />
+                                            Add
                                         </Button>
-                                    </MenuItemMinus>
-                                    {getcartitem(item)}
-                                    <MenuChoosing item={item}>
-                                        <Button
-                                            className="h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent"
-                                        // onClick={() => {
-                                        //   if (cartitem?.quantity) {
-                                        //     updateItem(
-                                        //       {
-                                        //         ...cartitem,
-                                        //         quantity: cartitem?.quantity + 1,
-                                        //       },
-                                        //       0,
-                                        //     );
-                                        //   }
-                                        // }}
-                                        >
-                                            <Plus className="text-menuforeground" />
-                                        </Button>
-                                    </MenuChoosing>
-                                </div>
-                            )}
-                        </div>
-                    )}
+                                    </MenuItemDrawer>
+                                ) : (
+                                    <div className="flex h-fit w-fit items-center gap-3 bg-primary p-2 text-menuforeground">
+                                        <MenuItemMinus item={item}>
+                                            <Button
+                                                className={cn("h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent", !BetaMenuActive && "hidden")}
+                                            // onClick={() => {
+                                            //   if (
+                                            //     cartItems.find(
+                                            //       (cartItem) => cartItem._idMenuItem === item._id,
+                                            //     )!.quantity <= 1
+                                            //   ) {
+                                            //     return removeItem(item._id);
+                                            //   }
+                                            //   if (cartitem?.quantity) {
+                                            //     updateItem(
+                                            //       {
+                                            //         ...cartitem,
+                                            //         quantity: cartitem?.quantity - 1,
+                                            //       },
+                                            //       0,
+                                            //     );
+                                            //   }
+                                            // }}
+                                            >
+                                                <Minus className="text-menuforeground" />
+                                            </Button>
+                                        </MenuItemMinus>
+                                        {getcartitem(item)}
+                                        <MenuChoosing item={item}>
+                                            <Button
+                                                className="h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent"
+                                            // onClick={() => {
+                                            //   if (cartitem?.quantity) {
+                                            //     updateItem(
+                                            //       {
+                                            //         ...cartitem,
+                                            //         quantity: cartitem?.quantity + 1,
+                                            //       },
+                                            //       0,
+                                            //     );
+                                            //   }
+                                            // }}
+                                            >
+                                                <Plus className="text-menuforeground" />
+                                            </Button>
+                                        </MenuChoosing>
+                                    </div>
+                                )}
+                            </div>
+                        )}
                 </div>
             </section>
         )

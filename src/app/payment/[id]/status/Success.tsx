@@ -1,3 +1,4 @@
+import { Icons } from "@/components/Icon";
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
@@ -5,7 +6,7 @@ import { cn } from "@/lib/utils";
 import type { RefreshPayment } from "@/types/refresh-payment.type";
 import { useQuery } from "@tanstack/react-query";
 import axios, { type AxiosResponse } from "axios";
-import { ChevronDown, Search } from "lucide-react";
+import { ChevronDown, MoveLeft, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, type FC } from "react";
@@ -69,11 +70,11 @@ const Success: FC<SuccessProps> = ({ id }) => {
         //     <Link href="/">Go Home</Link>
         //   </Button>
         // </main>
-        <section className="relative flex h-full w-full flex-col bg-menubackground">
-            <div>
+        <section className="relative flex h-full w-full flex-col bg-menubackground md:px-[130px]">
+            <div className="w-full flex flex-col justify-center items-end">
                 {/*head section */}
-                <div className="flex flex-row items-center justify-between bg-menubackground px-4 py-4 md:px-24 md:py-8">
-                    <Link href="/menu">
+                <div className="w-full flex flex-row md:flex-col items-center md:items-start md:gap-12 justify-between bg-menubackground px-4 py-4 md:px-24 md:py-8">
+                    <Link href="/menu" className="md:hidden">
                         <Image
                             src={"/images/home/checkout/arrow.png"}
                             width={30}
@@ -89,12 +90,15 @@ const Success: FC<SuccessProps> = ({ id }) => {
                             alt="heart"
                         />
                     </Link>
-
+                    <Link href="/menu" className="hidden md:flex justify-center items-center gap-2 text-menusecondary text-lg font-manrope px-[120px]">
+                        <MoveLeft />
+                        <p className="text-menusecondary text-lg font-manrope">Back To Menu</p>
+                    </Link>
                     <Search className="h-0  w-0" />
                 </div>
 
                 {/*first section */}
-                <div className="relative h-full w-full bg-menubackground pb-6">
+                <div className="relative h-full w-full md:w-2/4 bg-menubackground pb-6">
                     <div className="absolute bottom-1 left-0 top-1">
                         <Image
                             src={"/images/home/checkout/left.png"}
@@ -140,8 +144,8 @@ const Success: FC<SuccessProps> = ({ id }) => {
                 </div>
 
                 {/*second section */}
-                <div className="flex flex-col gap-6 bg-menubackground px-4 py-4 md:px-24 md:py-8">
-                    <div className="flex flex-col gap-2">
+                <div className="w-full md:w-2/4 flex flex-col gap-6 bg-menubackground px-4 py-4 md:px-0 md:py-8">
+                    <div className="flex flex-col gap-2 bg-itembackground p-4 md:p-6">
                         <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-lg">
                             Restaurant Details
                         </h5>
@@ -154,14 +158,14 @@ const Success: FC<SuccessProps> = ({ id }) => {
                         <span className="font-manrope text-xs font-[400] leading-[150%] tracking-[1.02px] text-menusecondary underline decoration-menusecondary decoration-1 underline-offset-4 md:text-base">
                             {restaurant?.contactNumber}
                         </span>
-                    </div>
-                    <div className="flex flex-row gap-3">
-                        <Link href={`https://www.google.com/maps/place/${restaurant?.address?.coords[0]},${restaurant?.address?.coords[1]}`} className="border border-menuprimary px-4 py-3 text-center font-inter text-sm font-[700] uppercase leading-[22px] text-menuprimary hover:bg-menuprimary hover:text-menusecondary md:text-base">
-                            Get Directions
-                        </Link>
-                        <Link href={`tel:${restaurant?.contactNumber}`} className="border border-menuprimary px-4 py-3 text-center font-inter text-sm font-[700] uppercase leading-[22px] text-menuprimary hover:bg-menuprimary hover:text-menusecondary md:text-base">
-                            Call restaurant
-                        </Link>
+                        <div className="flex flex-row gap-3 pt-6">
+                            <Link href={`https://www.google.com/maps/place/${restaurant?.address?.coords[0]},${restaurant?.address?.coords[1]}`} className="border border-menuprimary px-4 py-3 text-center font-inter text-sm font-[700] uppercase leading-[22px] text-menuprimary bg-menubackground hover:bg-menuprimary hover:text-menusecondary md:text-base">
+                                Get Directions
+                            </Link>
+                            <Link href={`tel:${restaurant?.contactNumber}`} className="border border-menuprimary px-4 py-3 text-center font-inter text-sm font-[700] uppercase leading-[22px] text-menuprimary bg-menubackground hover:bg-menuprimary hover:text-menusecondary md:text-base">
+                                Call restaurant
+                            </Link>
+                        </div>
                     </div>
                     <div className="flex flex-col gap-3 pb-4 md:pb-6">
                         <div className="flex flex-row justify-between border-b border-menuprimary pb-2"
@@ -208,7 +212,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                 </div>
 
                 {/*last section */}
-                <div className="flex flex-col bg-menubackground">
+                <div className="w-full md:w-2/4 flex flex-col bg-menubackground">
                     <div className="flex w-full flex-row items-center justify-center gap-2 bg-menuprimary px-2 py-4">
                         <Image
                             src={"/images/home/checkout/heart.png"}

@@ -167,13 +167,13 @@ const Checkout = () => {
                 >
                   Pickup
                 </TabsTrigger>
-                {/* <TabsTrigger
+                <TabsTrigger
                   value="delivery"
                   className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-menusecondary data-[state=active]:bg-menuprimary data-[state=active]:text-menusecondary"
                   onClick={() => setCheckoutType("delivery")}
                 >
                   Delivery
-                </TabsTrigger> */}
+                </TabsTrigger>
               </TabsList>
             </div>
             <TabsContent value="pickup">
@@ -190,8 +190,8 @@ const Checkout = () => {
                   restaurant?.serviceCharge ?? 0,
                 ) ? (
                 <p>
-                  The total amount must be greater than{" "}
-                  {restaurant?.minimumCollectionOrderAmount}.
+                  Your basket is just under &nbsp; {restaurant?.minimumCollectionOrderAmount}. Why not try something new from our delicious offerings?
+
                 </p>
               ) : (
                 <Pickup />
@@ -210,8 +210,7 @@ const Checkout = () => {
                   restaurant?.serviceCharge ?? 0,
                 ) ? (
                 <p>
-                  The total amount must be greater than{" "}
-                  {restaurant?.minimumDeliveryOrderAmount}.
+                  Your order must total at least &nbsp; {restaurant?.minimumDeliveryOrderAmount}. Why not have another look and add a few more tempting treats?
                 </p>
               ) : (
                 <Delivery />
@@ -318,7 +317,7 @@ const Checkout = () => {
                   </div>
                   <div>
                     <p className="text-xs text-menuprimary-foreground">
-                      ALLERGIES:If you or someone you`re ordering for ha an
+                      ALLERGIES:If you or someone you`re ordering for have an
                       allergy, please contact the merchant directly to let them
                       know.
                     </p>
