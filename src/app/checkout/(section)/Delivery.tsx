@@ -10,7 +10,7 @@ import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import axios, { type AxiosError, type AxiosResponse } from "axios";
+import axios, { type AxiosResponse } from "axios";
 import { Calendar, CalendarClock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";

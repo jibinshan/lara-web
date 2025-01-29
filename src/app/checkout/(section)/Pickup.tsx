@@ -5,7 +5,7 @@ import { z } from "zod";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
-import axios, { type AxiosError, type AxiosResponse } from "axios";
+import axios, { type AxiosResponse } from "axios";
 import { ArrowRight, Calendar, CalendarClock, MapPin } from "lucide-react";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";

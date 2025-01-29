@@ -1,4 +1,3 @@
-import { Icons } from "@/components/Icon";
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
