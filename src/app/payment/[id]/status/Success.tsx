@@ -63,7 +63,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
         //   </Button>
         // </main>
         <section className="relative flex h-full w-full flex-col bg-menubackground md:px-[130px]">
-            <div className="flex w-full flex-col items-end justify-center">
+            <div className="flex w-full flex-col items-center justify-center">
                 {/*head section */}
                 <div className="flex w-full flex-row items-center justify-between bg-menubackground px-4 py-4 md:flex-col md:items-start md:gap-12 md:px-24 md:py-8">
                     <Link href="/menu" className="md:hidden">
@@ -172,7 +172,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                     <div className="flex w-full flex-row items-center justify-center gap-2 bg-menuprimary px-2 py-4">
                         <Image src={"/images/home/checkout/heart.png"} width={55} height={42} alt="heart" />
                         <p className="font-manrope text-xs font-[500] capitalize leading-[20px] tracking-[0.74px] text-menubackground md:text-lg">
-                            You are now 2 cillies away from a Reward{" "}
+                            Thanks for choosing us! Your food will be freshly prepared and ready soon.
                         </p>
                     </div>
                     {data.orderType !== 2 && (
