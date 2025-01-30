@@ -2,20 +2,21 @@
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
+import { isRestaurantOpen } from "@/lib/is-restaurant-open";
+import type { OrganizedMenu } from "@/lib/organize-menu";
 import { cn } from "@/lib/utils";
+import type { MenuItem } from "@/types/menu";
+import { format } from "date-fns";
 import { ArrowLeft, Search } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import MenuItemMobile from "./MenuItemMobile";
 import SearchInput from "./SearchInput";
-import Image from "next/image";
-import type { OrganizedMenu } from "@/lib/organize-menu";
-import { format } from "date-fns";
-import { MenuItem } from "@/types/menu";
 
 export default function MenuMobile() {
-    const { organizedMenu } = useRestaurant();
+    const { organizedMenu, restaurant } = useRestaurant();
     const [activeCategory, setActiveCategory] = useState<string>("");
     const [showSearch, setShowSearch] = useState<boolean>(false);
     const [query, setQuery] = useState("");
@@ -26,6 +27,7 @@ export default function MenuMobile() {
     const lastActiveCategory = useRef<string>("");
     const [orderType, setOrderType] = useState<2 | 3>(3);
     const router = useRouter();
+    const isOpen = isRestaurantOpen(restaurant);
 
     useEffect(() => {
         const savedOrderType = localStorage.getItem("orderType");
@@ -37,7 +39,6 @@ export default function MenuMobile() {
     useEffect(() => {
         localStorage.setItem("orderType", orderType.toString());
     }, [orderType]);
-
 
     const updateActiveCategory = () => {
         const categories = Object.entries(categoryRefs.current);
@@ -131,15 +132,13 @@ export default function MenuMobile() {
         }
     }, [query, organizedMenu]);
 
-
     useEffect(() => {
-
-        const category = organizedMenu.filter((cat) => cat.items.length > 0)
+        const category = organizedMenu.filter((cat) => cat.items.length > 0);
 
         if (activeCategory.length === 0 && category[0]?._id) {
-            setActiveCategory(category[0]?._id)
+            setActiveCategory(category[0]?._id);
         }
-    }, [activeCategory, organizedMenu])
+    }, [activeCategory, organizedMenu]);
 
     //category filter
     // const [existCategory, setExistCategory] = useState<string[]>([]);
@@ -254,6 +253,12 @@ export default function MenuMobile() {
                                         const isDineIn = item.extras?.menuItemOrderType === "dinein";
                                         const hasAvailabilityDays = item.extras?.availability?.days;
                                         const isAvailableToday = hasAvailabilityDays?.includes(format(Date.now(), "EEEE").toLowerCase());
+                                        const isOpenAndNotAvailableToday = isOpen && !isAvailableToday;
+                                        const isOnlineOrder = restaurant?.onlineOrder;
+
+                                        if (isOpenAndNotAvailableToday && isOnlineOrder) {
+                                            return null;
+                                        }
 
                                         if (isDineIn && isAvailableToday) {
                                             return null;
