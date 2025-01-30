@@ -65,10 +65,10 @@ export default function MenuItem({ item }: { item: MenuItem }) {
                         </>
                     )}
                 </Link>
-                {
-                    isOpen &&
+                {isOpen &&
                     item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) &&
                     item.extras?.menuItemOrderType === "both" &&
+                    restaurant?.onlineOrder &&
                     (cartItems.find((cart) => cart._idMenuItem === item._id)?._idMenuItem === item._id ? (
                         item && (
                             <MenuChoosing item={item}>

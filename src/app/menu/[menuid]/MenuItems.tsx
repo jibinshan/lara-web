@@ -98,7 +98,7 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
     return (
         <section className="flex w-full flex-col gap-6 bg-menubackground px-4 py-10 md:px-[100px]">
             <Button
-                className="flex w-fit items-center justify-center gap-2 rounded-none bg-menuprimary px-6 py-6 font-manrope text-lg font-[600] text-menuforeground hover:bg-buttonhover"
+                className="font-manrope flex w-fit items-center justify-center gap-2 rounded-none bg-menuprimary px-6 py-6 text-lg font-[600] text-menuforeground hover:bg-buttonhover"
                 onClick={() => router.push("/menu")}
             >
                 <Image src="/images/arrowleft.svg" width={26} height={19} alt="Back" className="h-5 w-5" />
@@ -124,7 +124,7 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                         )}
                     </div>
                     <p className="font-manrope text-2xl font-[700] tracking-[1px] text-menusecondary">{item?.name}</p>
-                    <p className="max-w-[70%] font-manrope text-base font-[500] lowercase text-itemdescription">{item?.description}</p>
+                    <p className="font-manrope max-w-[70%] text-base font-[500] lowercase text-itemdescription">{item?.description}</p>
                     <div className="flex items-center justify-center gap-4">
                         <p className="rounded-full bg-menusecondary-foreground px-4 py-1 text-xl font-[400] tracking-[1.5px] text-menuprimary">
                             {item && item.takeawayPrice.value > 0 ? (
@@ -155,11 +155,11 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                 </>
                             )}
                         </p>
-                        <p>{item?.isVeg && <span className="rounded-full bg-[#1a8425] px-3 py-1 font-manrope text-lg font-[700] text-white">V</span>}</p>
+                        <p>{item?.isVeg && <span className="font-manrope rounded-full bg-[#1a8425] px-3 py-1 text-lg font-[700] text-white">V</span>}</p>
                     </div>
                     <div className="flex items-center justify-center gap-2">
                         <p>
-                            <span className="rounded-full bg-[#2752a7] px-3 py-1 font-manrope text-sm font-[700] text-white">i</span>
+                            <span className="font-manrope rounded-full bg-[#2752a7] px-3 py-1 text-sm font-[700] text-white">i</span>
                         </p>
                         <p className="font-manrope text-base tracking-[1px] text-menusecondary underline">Allergens & Nutrition</p>
                     </div>
@@ -206,102 +206,102 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                 </div>
                                 {mod.multiSelection
                                     ? item &&
-                                    GetModifiersFromItemId(item, items, index).length > 0 && (
-                                        <div>
-                                            {GetModifiersFromItemId(item, items, index).map((modifier) => (
-                                                <div className="flex items-center justify-between gap-5 border-b-[1px] border-b-menuprimary py-5" key={modifier._id}>
-                                                    <div className="flex items-center justify-center gap-5">
-                                                        <Checkbox
-                                                            id={modifier._id}
-                                                            checked={selectedModifiers.some((m) => m._id === modifier._id)}
-                                                            onCheckedChange={(checked) => handleModifierChange(modifier, checked as boolean)}
-                                                            className="h-6 w-6 border-menuprimary"
-                                                        />
-                                                        <div className="flex flex-col items-start justify-center">
-                                                            <Label htmlFor={modifier._id} className="items-center gap-2 text-lg font-[700] text-menusecondary">
-                                                                {modifier.name}
-                                                            </Label>
-                                                            <Label htmlFor={modifier._id} className="items-center gap-2 font-manrope text-base font-[400] text-menusecondary">
-                                                                {modifier.description}
-                                                            </Label>
-                                                        </div>
-                                                    </div>
+                                      GetModifiersFromItemId(item, items, index).length > 0 && (
+                                          <div>
+                                              {GetModifiersFromItemId(item, items, index).map((modifier) => (
+                                                  <div className="flex items-center justify-between gap-5 border-b-[1px] border-b-menuprimary py-5" key={modifier._id}>
+                                                      <div className="flex items-center justify-center gap-5">
+                                                          <Checkbox
+                                                              id={modifier._id}
+                                                              checked={selectedModifiers.some((m) => m._id === modifier._id)}
+                                                              onCheckedChange={(checked) => handleModifierChange(modifier, checked as boolean)}
+                                                              className="h-6 w-6 border-menuprimary"
+                                                          />
+                                                          <div className="flex flex-col items-start justify-center">
+                                                              <Label htmlFor={modifier._id} className="items-center gap-2 text-lg font-[700] text-menusecondary">
+                                                                  {modifier.name}
+                                                              </Label>
+                                                              <Label htmlFor={modifier._id} className="font-manrope items-center gap-2 text-base font-[400] text-menusecondary">
+                                                                  {modifier.description}
+                                                              </Label>
+                                                          </div>
+                                                      </div>
 
-                                                    <div className="flex w-fit items-center justify-center gap-5">
-                                                        {modifierquantity(modifier) > 0 && mod.extraAllowed && (
-                                                            <div className="flex items-center justify-center gap-3">
-                                                                <Button
-                                                                    className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                    onClick={() => {
-                                                                        setSelectedModifiers((prev) => {
-                                                                            const index = prev.findIndex((m) => m._id === modifier._id);
-                                                                            if (index !== -1) {
-                                                                                const newModifiers = [...prev];
-                                                                                newModifiers.splice(index, 1);
-                                                                                return newModifiers;
-                                                                            }
-                                                                            return prev;
-                                                                        });
-                                                                    }}
-                                                                >
-                                                                    <Minus className="h-4 w-4" />
-                                                                </Button>
-                                                                <p className="text-base font-[500] text-menuprimary">{modifierquantity(modifier)}</p>
-                                                                <Button
-                                                                    className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                    onClick={() => {
-                                                                        setSelectedModifiers((prev) => [...prev, modifier]);
-                                                                    }}
-                                                                >
-                                                                    <Plus className="h-4 w-4" />
-                                                                </Button>
-                                                            </div>
-                                                        )}
-                                                        <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
-                                                            {modifier.price && modifier.price.value > 0
-                                                                ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                : "FREE"}
-                                                        </p>
-                                                    </div>
-                                                </div>
-                                            ))}
-                                        </div>
-                                    )
+                                                      <div className="flex w-fit items-center justify-center gap-5">
+                                                          {modifierquantity(modifier) > 0 && mod.extraAllowed && (
+                                                              <div className="flex items-center justify-center gap-3">
+                                                                  <Button
+                                                                      className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                      onClick={() => {
+                                                                          setSelectedModifiers((prev) => {
+                                                                              const index = prev.findIndex((m) => m._id === modifier._id);
+                                                                              if (index !== -1) {
+                                                                                  const newModifiers = [...prev];
+                                                                                  newModifiers.splice(index, 1);
+                                                                                  return newModifiers;
+                                                                              }
+                                                                              return prev;
+                                                                          });
+                                                                      }}
+                                                                  >
+                                                                      <Minus className="h-4 w-4" />
+                                                                  </Button>
+                                                                  <p className="text-base font-[500] text-menuprimary">{modifierquantity(modifier)}</p>
+                                                                  <Button
+                                                                      className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                      onClick={() => {
+                                                                          setSelectedModifiers((prev) => [...prev, modifier]);
+                                                                      }}
+                                                                  >
+                                                                      <Plus className="h-4 w-4" />
+                                                                  </Button>
+                                                              </div>
+                                                          )}
+                                                          <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
+                                                              {modifier.price && modifier.price.value > 0
+                                                                  ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                                                                  : "FREE"}
+                                                          </p>
+                                                      </div>
+                                                  </div>
+                                              ))}
+                                          </div>
+                                      )
                                     : item &&
-                                    GetModifiersFromItemId(item, items, index).length > 0 && (
-                                        <div>
-                                            <RadioGroup
-                                                value={selectedRadioValue}
-                                                onValueChange={(value) => {
-                                                    const selectedradio = GetModifiersFromItemId(item, items, index).find((m) => m._id === value);
-                                                    if (selectedradio) {
-                                                        handleRadioChange(selectedradio);
-                                                    }
-                                                }}
-                                            >
-                                                {GetModifiersFromItemId(item, items, index).map((modifier) => (
-                                                    <div className="flex items-center justify-between gap-5 border-b-[1px] border-b-menuprimary py-5" key={modifier._id}>
-                                                        <div className="flex items-center justify-center gap-5">
-                                                            <RadioGroupItem id={modifier._id} value={modifier._id} className="h-6 w-6 border-menuprimary" />
-                                                            <div className="flex flex-col items-start justify-center">
-                                                                <Label htmlFor={modifier._id} className="items-center gap-2 text-lg font-[700] text-menusecondary">
-                                                                    {modifier.name}
-                                                                </Label>
-                                                                <Label htmlFor={modifier._id} className="items-center gap-2 font-manrope text-base font-[400] text-menusecondary">
-                                                                    {modifier.description}
-                                                                </Label>
-                                                            </div>
-                                                        </div>
-                                                        <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
-                                                            {modifier.price && modifier.price.value > 0
-                                                                ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                : "FREE"}
-                                                        </p>
-                                                    </div>
-                                                ))}
-                                            </RadioGroup>
-                                        </div>
-                                    )}
+                                      GetModifiersFromItemId(item, items, index).length > 0 && (
+                                          <div>
+                                              <RadioGroup
+                                                  value={selectedRadioValue}
+                                                  onValueChange={(value) => {
+                                                      const selectedradio = GetModifiersFromItemId(item, items, index).find((m) => m._id === value);
+                                                      if (selectedradio) {
+                                                          handleRadioChange(selectedradio);
+                                                      }
+                                                  }}
+                                              >
+                                                  {GetModifiersFromItemId(item, items, index).map((modifier) => (
+                                                      <div className="flex items-center justify-between gap-5 border-b-[1px] border-b-menuprimary py-5" key={modifier._id}>
+                                                          <div className="flex items-center justify-center gap-5">
+                                                              <RadioGroupItem id={modifier._id} value={modifier._id} className="h-6 w-6 border-menuprimary" />
+                                                              <div className="flex flex-col items-start justify-center">
+                                                                  <Label htmlFor={modifier._id} className="items-center gap-2 text-lg font-[700] text-menusecondary">
+                                                                      {modifier.name}
+                                                                  </Label>
+                                                                  <Label htmlFor={modifier._id} className="font-manrope items-center gap-2 text-base font-[400] text-menusecondary">
+                                                                      {modifier.description}
+                                                                  </Label>
+                                                              </div>
+                                                          </div>
+                                                          <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
+                                                              {modifier.price && modifier.price.value > 0
+                                                                  ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                                                                  : "FREE"}
+                                                          </p>
+                                                      </div>
+                                                  ))}
+                                              </RadioGroup>
+                                          </div>
+                                      )}
                             </div>
                         );
                     })}
@@ -309,69 +309,71 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
             </div>
 
             <div className="fixed bottom-0 right-0 z-40 flex h-fit w-full items-center justify-center gap-10 bg-itembackground py-5 pr-[14%]">
-                <div className="flex items-center justify-center gap-5">
-                    <button
-                        className="rounded-full border-[2px] border-menusecondary bg-transparent px-1 py-1 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                        onClick={() => {
-                            setQuantity((prev) => Math.max(prev - 1, 1));
-                        }}
-                    >
-                        <Minus className="h-4 w-4" />
-                    </button>
-                    <p className="font-manrope text-5xl font-[600] text-menuprimary">{quantity && quantity}</p>
-                    <button
-                        className="rounded-full border-[2px] border-menusecondary bg-transparent px-1 py-1 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                        onClick={() => {
-                            setQuantity((prev) => prev + 1);
-                        }}
-                    >
-                        <Plus className="h-4 w-4" />
-                    </button>
-                </div>
-                {
-                    isOpen && item?.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) && item.extras?.menuItemOrderType === "both" &&
-                    (
-                        <Button
-                            className="relative flex w-[400px] items-center justify-between rounded-none bg-menuprimary px-5 py-7 font-manrope text-lg font-[700] text-menuforeground hover:bg-buttonhover"
-                            onClick={() => {
-                                const modifiers: CartItemModifier[] = [];
-                                for (const selectedModifier of selectedModifiers) {
-                                    modifiers.push({
-                                        _idModifiers: item?.modifiers[0]?._id ? item?.modifiers[0]?._id : "",
-                                        price: selectedModifier.price,
-                                        _idMenuItem: selectedModifier._id,
-                                    });
-                                }
+                {restaurant?.onlineOrder && (
+                    <>
+                        <div className="flex items-center justify-center gap-5">
+                            <button
+                                className="rounded-full border-[2px] border-menusecondary bg-transparent px-1 py-1 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                onClick={() => {
+                                    setQuantity((prev) => Math.max(prev - 1, 1));
+                                }}
+                            >
+                                <Minus className="h-4 w-4" />
+                            </button>
+                            <p className="font-manrope text-5xl font-[600] text-menuprimary">{quantity && quantity}</p>
+                            <button
+                                className="rounded-full border-[2px] border-menusecondary bg-transparent px-1 py-1 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                onClick={() => {
+                                    setQuantity((prev) => prev + 1);
+                                }}
+                            >
+                                <Plus className="h-4 w-4" />
+                            </button>
+                        </div>
+                        {isOpen && item?.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) && item.extras?.menuItemOrderType === "both" && (
+                            <Button
+                                className="font-manrope relative flex w-[400px] items-center justify-between rounded-none bg-menuprimary px-5 py-7 text-lg font-[700] text-menuforeground hover:bg-buttonhover"
+                                onClick={() => {
+                                    const modifiers: CartItemModifier[] = [];
+                                    for (const selectedModifier of selectedModifiers) {
+                                        modifiers.push({
+                                            _idModifiers: item?.modifiers[0]?._id ? item?.modifiers[0]?._id : "",
+                                            price: selectedModifier.price,
+                                            _idMenuItem: selectedModifier._id,
+                                        });
+                                    }
 
-                                addItem({
-                                    name: item?.name ? item?.name : "",
-                                    _idMenuItem: item?._id ? item?._id : "",
-                                    quantity,
-                                    price: {
-                                        value: price ? price : 0,
-                                        currency: item?.price.currency ? item?.price.currency : "",
-                                    },
-                                    notes: note,
-                                    modifiers: modifiers,
-                                    images: item?.images ? item?.images : [],
-                                    description: item?.description,
-                                });
-                                toast.success("Item added to cart");
-                                setQuantity(1);
-                                setNote("");
-                                setSelectedModifiers([]);
-                                router.push("/menu");
-                            }}
-                        >
-                            <span className="absolute -top-2 left-4">
-                                <Triangle fill="#fbead2" className="rotate-180 text-menusecondary" />
-                            </span>
-                            <span className="font-bold">ADD TO CART</span>{" "}
-                            <span>
-                                {item && getCurrencySymbol(item.price.currency)} {price && formattedItemPrice(price)}
-                            </span>
-                        </Button>
-                    )}
+                                    addItem({
+                                        name: item?.name ? item?.name : "",
+                                        _idMenuItem: item?._id ? item?._id : "",
+                                        quantity,
+                                        price: {
+                                            value: price ? price : 0,
+                                            currency: item?.price.currency ? item?.price.currency : "",
+                                        },
+                                        notes: note,
+                                        modifiers: modifiers,
+                                        images: item?.images ? item?.images : [],
+                                        description: item?.description,
+                                    });
+                                    toast.success("Item added to cart");
+                                    setQuantity(1);
+                                    setNote("");
+                                    setSelectedModifiers([]);
+                                    router.push("/menu");
+                                }}
+                            >
+                                <span className="absolute -top-2 left-4">
+                                    <Triangle fill="#fbead2" className="rotate-180 text-menusecondary" />
+                                </span>
+                                <span className="font-bold">ADD TO CART</span>{" "}
+                                <span>
+                                    {item && getCurrencySymbol(item.price.currency)} {price && formattedItemPrice(price)}
+                                </span>
+                            </Button>
+                        )}
+                    </>
+                )}
             </div>
         </section>
     );

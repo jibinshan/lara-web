@@ -7,6 +7,7 @@ import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { getCurrencySymbol } from "@/lib/get-currency-symbol";
+import { isRestaurantOpen } from "@/lib/is-restaurant-open";
 import { cn } from "@/lib/utils";
 import type { MenuItem as MenuItemType } from "@/types/menu";
 import { format } from "date-fns";
@@ -26,6 +27,7 @@ export default function Menu() {
     const lastActiveCategory = useRef<string>("");
     const [orderType, setOrderType] = useState<2 | 3>(3);
     const router = useRouter();
+    const isOpen = isRestaurantOpen(restaurant);
 
     useEffect(() => {
         const savedOrderType = localStorage.getItem("orderType");
@@ -124,16 +126,12 @@ export default function Menu() {
     }, [cartItems]);
     const reversedCartItems = [...cartItems].reverse();
 
-
-
     useEffect(() => {
-
-        const category = organizedMenu.filter((cat) => cat.items.length > 0)
+        const category = organizedMenu.filter((cat) => cat.items.length > 0);
         if (activeCategory.length === 0 && category[0]?._id) {
-            setActiveCategory(category[0]?._id)
+            setActiveCategory(category[0]?._id);
         }
-    }, [activeCategory, organizedMenu])
-
+    }, [activeCategory, organizedMenu]);
 
     //category filter
     // const [existCategory, setExistCategory] = useState<string[]>([]);
@@ -186,9 +184,6 @@ export default function Menu() {
         // setExistCategory(updatedCategories);
     }, [organizedMenu]);
 
-
-
-
     return (
         <section className="bg-menubg flex w-full max-w-[1300px] flex-row">
             <div className="flex w-full flex-col gap-4 md:w-4/6">
@@ -223,7 +218,7 @@ export default function Menu() {
                                             "shrink-0 rounded-none font-semibold transition-colors",
                                             activeCategory === category._id
                                                 ? "bg-menuprimary text-menuforeground hover:bg-buttonhover"
-                                                : "border-[1px] border-menuprimary bg-transparent text-menuprimary hover:bg-menuprimary hover:text-menuforeground",
+                                                : "border-[1px] border-menuprimary bg-transparent text-menuprimary hover:bg-menuprimary hover:text-menuforeground"
                                             // existCategory.find((categoryid) => categoryid === category._id) !== category._id && "hidden w-0 border-0 px-0 py-0"
                                             // category.items.length === 0 && "hidden pb-0 h-0 border-0 px-0 py-0"
                                         )}
@@ -239,38 +234,41 @@ export default function Menu() {
                 <div className="px-4">
                     <div className="flex flex-col">
                         {organizedMenu.map((category) => {
-                            return category.items.length > 0 ?
-                                (
-                                    <div
-                                        key={category._id}
-                                        id={category._id}
-                                        ref={(el) => {
-                                            categoryRefs.current[category._id] = el;
-                                        }}
-                                        className="scroll-mt-20 pb-6"
-                                    >
-                                        <h2 className={cn("pb-4 text-2xl font-bold text-menuprimary",
-                                            category.items.length === 0 && "hidden pb-0"
-                                        )}>{category.name}</h2>
-                                        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
-                                            {category.items.map((item) => {
-                                                const isDineIn = item.extras?.menuItemOrderType === "dinein";
-                                                const hasAvailabilityDays = item.extras?.availability?.days;
-                                                const isAvailableToday = hasAvailabilityDays?.includes(format(Date.now(), "EEEE").toLowerCase());
+                            return category.items.length > 0 ? (
+                                <div
+                                    key={category._id}
+                                    id={category._id}
+                                    ref={(el) => {
+                                        categoryRefs.current[category._id] = el;
+                                    }}
+                                    className="scroll-mt-20 pb-6"
+                                >
+                                    <h2 className={cn("pb-4 text-2xl font-bold text-menuprimary", category.items.length === 0 && "hidden pb-0")}>{category.name}</h2>
+                                    <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                                        {category.items.map((item) => {
+                                            const isDineIn = item.extras?.menuItemOrderType === "dinein";
+                                            const hasAvailabilityDays = item.extras?.availability?.days;
+                                            const isAvailableToday = hasAvailabilityDays?.includes(format(Date.now(), "EEEE").toLowerCase());
+                                            const isOpenAndNotAvailableToday = isOpen && !isAvailableToday;
+                                            const isOnlineOrder = restaurant?.onlineOrder;
 
-                                                if (isDineIn && isAvailableToday) {
-                                                    return null;
-                                                }
-
-                                                if (!isDineIn || !item.extras?.menuItemOrderType || !hasAvailabilityDays || (hasAvailabilityDays && !item.extras?.menuItemOrderType)) {
-                                                    return <MenuItem key={item._id} item={item} />;
-                                                }
-
+                                            if (isOpenAndNotAvailableToday && isOnlineOrder) {
                                                 return null;
-                                            })}
-                                        </div>
+                                            }
+
+                                            if (isDineIn && isAvailableToday) {
+                                                return null;
+                                            }
+
+                                            if (!isDineIn || !item.extras?.menuItemOrderType || !hasAvailabilityDays || (hasAvailabilityDays && !item.extras?.menuItemOrderType)) {
+                                                return <MenuItem key={item._id} item={item} />;
+                                            }
+
+                                            return null;
+                                        })}
                                     </div>
-                                ) : null;
+                                </div>
+                            ) : null;
                         })}
                     </div>
                 </div>
@@ -284,10 +282,8 @@ export default function Menu() {
                         <div className="flex w-full gap-4">
                             <Button
                                 className={cn(
-                                    "w-full rounded-none bg-menuprimary text-menuforeground font-bold uppercase hover:bg-buttonhover",
-                                    orderType === 3
-                                        ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground"
-                                        : "",
+                                    "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
+                                    orderType === 3 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground" : ""
                                 )}
                                 onClick={() => setOrderType(3)}
                             >
@@ -295,10 +291,8 @@ export default function Menu() {
                             </Button>
                             <Button
                                 className={cn(
-                                    "w-full rounded-none bg-menuprimary text-menuforeground font-bold uppercase hover:bg-buttonhover",
-                                    orderType === 2
-                                        ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground"
-                                        : "",
+                                    "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
+                                    orderType === 2 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground" : ""
                                 )}
                                 onClick={() => setOrderType(2)}
                             >
@@ -306,7 +300,7 @@ export default function Menu() {
                             </Button>
                         </div>
                         <Button
-                            className="relative flex w-full items-center justify-between rounded-none bg-menuprimary py-6 font-manrope text-lg font-bold uppercase text-menuforeground hover:bg-buttonhover disabled:bg-buttondisabled disabled:text-menuforeground"
+                            className="font-manrope relative flex w-full items-center justify-between rounded-none bg-menuprimary py-6 text-lg font-bold uppercase text-menuforeground hover:bg-buttonhover disabled:bg-buttondisabled disabled:text-menuforeground"
                             onClick={() => router.push("/checkout")}
                             disabled={cartItems.length === 0}
                         >
@@ -338,10 +332,10 @@ export default function Menu() {
                                                     </div>
                                                     {menuitem?.price.value
                                                         ? menuitem?.price.value > 0 && (
-                                                            <p className="font-[700] text-menuprimary">
-                                                                {menuitem && getCurrencySymbol(menuitem.price.currency)} {menuitem && formattedItemPrice(menuitem.price.value)}
-                                                            </p>
-                                                        )
+                                                              <p className="font-[700] text-menuprimary">
+                                                                  {menuitem && getCurrencySymbol(menuitem.price.currency)} {menuitem && formattedItemPrice(menuitem.price.value)}
+                                                              </p>
+                                                          )
                                                         : ""}
                                                 </div>
 
@@ -447,6 +441,6 @@ export default function Menu() {
                     </div>
                 </div>
             </div>
-        </section >
+        </section>
     );
 }
