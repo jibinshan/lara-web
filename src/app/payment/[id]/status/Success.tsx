@@ -148,7 +148,12 @@ const Success: FC<SuccessProps> = ({ id }) => {
                             <h5 className="font-manrope text-lg font-[700] leading-[150%] text-menusecondary md:text-xl">View order details</h5>
                             <ChevronDown className={cn("h-6 w-6 transition-all duration-500 ease-in", !close && "rotate-180")} />
                         </div>
-                        <div className={cn("flex w-full flex-col gap-3 transition-all duration-500 ease-in", !close && "hidden")}>
+                        <div
+                            className={cn(
+                                "flex w-full flex-col gap-3 overflow-hidden transition-all duration-500 ease-in",
+                                close ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
+                            )}
+                        >
                             <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
@@ -159,8 +164,12 @@ const Success: FC<SuccessProps> = ({ id }) => {
                             </div>
                             {data.cart.map((item, index) => (
                                 <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={index}>
-                                    <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">{item?.menuItemName}</h5>
-                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">{item.quantity}</span>
+                                    <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
+                                        {item.quantity} x {item?.menuItemName}
+                                    </h5>
+                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                        £{formattedItemPrice(item?.price.value * item.quantity)}
+                                    </span>
                                 </div>
                             ))}
                         </div>
