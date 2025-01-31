@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 
 const Cart = ({ }) => {
   const { cartItems, updateItem, removeItem } = useCart();
+  const { restaurant } = useRestaurant()
   const [totalAmount, setTotalAmount] = useState(0);
   const { items } = useRestaurant();
   useEffect(() => {
@@ -28,10 +29,10 @@ const Cart = ({ }) => {
   return (
     <section className="w-full bg-menubackground">
       <div className="fixed left-0 top-0 z-30 flex h-[10vh] w-full items-center justify-start bg-menubackground px-4">
-        <Link href='/menu' className="p-0 text-menusecondary">
-          <ArrowLeft />
+        <Link href='/menu' className="p-0 text-menusecondary flex gap-1">
+          <ArrowLeft />Menu
         </Link>
-        <div className="flex w-[90%] justify-center">
+        <div className="flex w-[55%] justify-center">
           <Image
             src="/images/logo.png"
             width={177}
@@ -195,8 +196,8 @@ const Cart = ({ }) => {
           className=""
         >
           <Button
-            disabled={cartItems.length === 0}
-            className="flex w-full items-center justify-center bg-menuprimary uppercase tracking-[1px] text-lg py-8 rounded-none hover:bg-buttonhover text-menuforeground font-[700]"
+            disabled={cartItems.length === 0 || !restaurant?.onlineOrder || (!restaurant?.isDeliveryEnabled && !restaurant.isTakeAwayEnabled)}
+            className="flex w-full items-center justify-center bg-menuprimary uppercase tracking-[1px] text-lg py-8 rounded-none hover:bg-buttonhover text-menuforeground font-[700] disabled:bg-buttondisabled"
           >
             checkout.{"£"} {formattedItemPrice(totalAmount)}
           </Button>

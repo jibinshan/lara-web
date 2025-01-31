@@ -37,6 +37,14 @@ export default function MenuMobile() {
     }, []);
 
     useEffect(() => {
+        if (restaurant?.isDeliveryEnabled && !restaurant?.isTakeAwayEnabled) {
+            setOrderType(2)
+        } else if (!restaurant?.isDeliveryEnabled && restaurant?.isTakeAwayEnabled) {
+            setOrderType(3)
+        }
+    }, [restaurant])
+
+    useEffect(() => {
         localStorage.setItem("orderType", orderType.toString());
     }, [orderType]);
 
@@ -276,15 +284,17 @@ export default function MenuMobile() {
                     </div>
                 </div>
             </div>
-            {cartItems.length > 0 ? (
-                <Link className={cn("fixed bottom-0 left-0 z-30 flex h-14 w-full items-center justify-between bg-menuprimary px-3 md:hidden")} href="/cart">
-                    <p className="w-full text-center text-lg font-semibold uppercase text-menuforeground">View Basket ({cartItems.length})</p>
-                </Link>
-            ) : (
-                <div className={cn("fixed bottom-0 left-0 z-30 flex h-14 w-full items-center justify-between bg-menuprimary px-3 md:hidden")}>
-                    <p className="w-full text-center text-lg font-bold uppercase text-menuforeground">Add Items To Order</p>
-                </div>
-            )}
+            {restaurant?.onlineOrder &&
+                (restaurant?.isDeliveryEnabled || restaurant.isTakeAwayEnabled) &&
+                (cartItems.length > 0 ? (
+                    <Link className={cn("fixed bottom-0 left-0 z-30 flex h-14 w-full items-center justify-between bg-menuprimary px-3 md:hidden")} href="/cart">
+                        <p className="w-full text-center text-lg font-semibold uppercase text-menuforeground">View Basket ({cartItems.length})</p>
+                    </Link>
+                ) : (
+                    <div className={cn("fixed bottom-0 left-0 z-30 flex h-14 w-full items-center justify-between bg-menuprimary px-3 md:hidden")}>
+                        <p className="w-full text-center text-lg font-bold uppercase text-menuforeground">Add Items To Order</p>
+                    </div>
+                ))}
         </section>
     );
 }

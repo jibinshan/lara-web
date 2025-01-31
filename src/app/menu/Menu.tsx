@@ -37,6 +37,14 @@ export default function Menu() {
     }, []);
 
     useEffect(() => {
+        if (restaurant?.isDeliveryEnabled && !restaurant?.isTakeAwayEnabled) {
+            setOrderType(2)
+        } else if (!restaurant?.isDeliveryEnabled && restaurant?.isTakeAwayEnabled) {
+            setOrderType(3)
+        }
+    }, [restaurant])
+
+    useEffect(() => {
         localStorage.setItem("orderType", orderType.toString());
     }, [orderType]);
 
@@ -277,32 +285,35 @@ export default function Menu() {
                 <div className="sticky top-0 z-10 h-fit overflow-y-visible bg-itembackground px-4 py-2">
                     <div className="scrollbar-none relative flex h-[85vh] flex-col gap-6 overflow-x-auto pb-2">
                         <p className="flex items-center justify-center gap-1 pt-6 text-base font-normal tracking-[1.8px] text-menusecondary">
-                            <ShoppingBag fill="#ccad64" className="text-itembackground" /> <span>Collection from {restaurant?.name}</span>
+                            <ShoppingBag fill="#ccad64" className="text-itembackground" /> <span>{orderType === 2 ? "Delivery" : "Collection"} from {restaurant?.name}</span>
                         </p>
-                        <div className="flex w-full gap-4">
-                            <Button
-                                className={cn(
-                                    "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
-                                    orderType === 3 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground" : ""
-                                )}
-                                onClick={() => setOrderType(3)}
-                            >
-                                I&apos;ll Collect
-                            </Button>
-                            <Button
-                                className={cn(
-                                    "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
-                                    orderType === 2 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menuprimary hover:text-menuforeground" : ""
-                                )}
-                                onClick={() => setOrderType(2)}
-                            >
-                                Delivery
-                            </Button>
-                        </div>
+                        {(restaurant?.isDeliveryEnabled && restaurant.isTakeAwayEnabled) && (
+                            restaurant?.onlineOrder &&
+                            <div className="flex w-full gap-4">
+                                <Button
+                                    className={cn(
+                                        "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
+                                        orderType === 3 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary" : ""
+                                    )}
+                                    onClick={() => setOrderType(3)}
+                                >
+                                    I&apos;ll Collect
+                                </Button>
+                                <Button
+                                    className={cn(
+                                        "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
+                                        orderType === 2 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary" : ""
+                                    )}
+                                    onClick={() => setOrderType(2)}
+                                >
+                                    Delivery
+                                </Button>
+                            </div>
+                        )}
                         <Button
                             className="font-manrope relative flex w-full items-center justify-between rounded-none bg-menuprimary py-6 text-lg font-bold uppercase text-menuforeground hover:bg-buttonhover disabled:bg-buttondisabled disabled:text-menuforeground"
                             onClick={() => router.push("/checkout")}
-                            disabled={cartItems.length === 0}
+                            disabled={cartItems.length === 0 || !restaurant?.onlineOrder || (!restaurant?.isDeliveryEnabled && !restaurant.isTakeAwayEnabled)}
                         >
                             <Link href="/checkout">
                                 <span className="absolute -top-2 left-4">
@@ -332,10 +343,10 @@ export default function Menu() {
                                                     </div>
                                                     {menuitem?.price.value
                                                         ? menuitem?.price.value > 0 && (
-                                                              <p className="font-[700] text-menuprimary">
-                                                                  {menuitem && getCurrencySymbol(menuitem.price.currency)} {menuitem && formattedItemPrice(menuitem.price.value)}
-                                                              </p>
-                                                          )
+                                                            <p className="font-[700] text-menuprimary">
+                                                                {menuitem && getCurrencySymbol(menuitem.price.currency)} {menuitem && formattedItemPrice(menuitem.price.value)}
+                                                            </p>
+                                                        )
                                                         : ""}
                                                 </div>
 
@@ -441,6 +452,6 @@ export default function Menu() {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 }

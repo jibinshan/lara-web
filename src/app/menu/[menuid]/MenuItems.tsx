@@ -206,102 +206,102 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                 </div>
                                 {mod.multiSelection
                                     ? item &&
-                                      GetModifiersFromItemId(item, items, index).length > 0 && (
-                                          <div>
-                                              {GetModifiersFromItemId(item, items, index).map((modifier) => (
-                                                  <div className="flex items-center justify-between gap-5 border-b-[1px] border-b-menuprimary py-5" key={modifier._id}>
-                                                      <div className="flex items-center justify-center gap-5">
-                                                          <Checkbox
-                                                              id={modifier._id}
-                                                              checked={selectedModifiers.some((m) => m._id === modifier._id)}
-                                                              onCheckedChange={(checked) => handleModifierChange(modifier, checked as boolean)}
-                                                              className="h-6 w-6 border-menuprimary"
-                                                          />
-                                                          <div className="flex flex-col items-start justify-center">
-                                                              <Label htmlFor={modifier._id} className="items-center gap-2 text-lg font-[700] text-menusecondary">
-                                                                  {modifier.name}
-                                                              </Label>
-                                                              <Label htmlFor={modifier._id} className="font-manrope items-center gap-2 text-base font-[400] text-menusecondary">
-                                                                  {modifier.description}
-                                                              </Label>
-                                                          </div>
-                                                      </div>
+                                    GetModifiersFromItemId(item, items, index).length > 0 && (
+                                        <div>
+                                            {GetModifiersFromItemId(item, items, index).map((modifier) => (
+                                                <div className="flex items-center justify-between gap-5 border-b-[1px] border-b-menuprimary py-5" key={modifier._id}>
+                                                    <div className="flex items-center justify-center gap-5">
+                                                        <Checkbox
+                                                            id={modifier._id}
+                                                            checked={selectedModifiers.some((m) => m._id === modifier._id)}
+                                                            onCheckedChange={(checked) => handleModifierChange(modifier, checked as boolean)}
+                                                            className="h-6 w-6 border-menuprimary"
+                                                        />
+                                                        <div className="flex flex-col items-start justify-center">
+                                                            <Label htmlFor={modifier._id} className="items-center gap-2 text-lg font-[700] text-menusecondary">
+                                                                {modifier.name}
+                                                            </Label>
+                                                            <Label htmlFor={modifier._id} className="font-manrope items-center gap-2 text-base font-[400] text-menusecondary">
+                                                                {modifier.description}
+                                                            </Label>
+                                                        </div>
+                                                    </div>
 
-                                                      <div className="flex w-fit items-center justify-center gap-5">
-                                                          {modifierquantity(modifier) > 0 && mod.extraAllowed && (
-                                                              <div className="flex items-center justify-center gap-3">
-                                                                  <Button
-                                                                      className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                      onClick={() => {
-                                                                          setSelectedModifiers((prev) => {
-                                                                              const index = prev.findIndex((m) => m._id === modifier._id);
-                                                                              if (index !== -1) {
-                                                                                  const newModifiers = [...prev];
-                                                                                  newModifiers.splice(index, 1);
-                                                                                  return newModifiers;
-                                                                              }
-                                                                              return prev;
-                                                                          });
-                                                                      }}
-                                                                  >
-                                                                      <Minus className="h-4 w-4" />
-                                                                  </Button>
-                                                                  <p className="text-base font-[500] text-menuprimary">{modifierquantity(modifier)}</p>
-                                                                  <Button
-                                                                      className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                      onClick={() => {
-                                                                          setSelectedModifiers((prev) => [...prev, modifier]);
-                                                                      }}
-                                                                  >
-                                                                      <Plus className="h-4 w-4" />
-                                                                  </Button>
-                                                              </div>
-                                                          )}
-                                                          <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
-                                                              {modifier.price && modifier.price.value > 0
-                                                                  ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                  : "FREE"}
-                                                          </p>
-                                                      </div>
-                                                  </div>
-                                              ))}
-                                          </div>
-                                      )
+                                                    <div className="flex w-fit items-center justify-center gap-5">
+                                                        {modifierquantity(modifier) > 0 && mod.extraAllowed && (
+                                                            <div className="flex items-center justify-center gap-3">
+                                                                <Button
+                                                                    className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                    onClick={() => {
+                                                                        setSelectedModifiers((prev) => {
+                                                                            const index = prev.findIndex((m) => m._id === modifier._id);
+                                                                            if (index !== -1) {
+                                                                                const newModifiers = [...prev];
+                                                                                newModifiers.splice(index, 1);
+                                                                                return newModifiers;
+                                                                            }
+                                                                            return prev;
+                                                                        });
+                                                                    }}
+                                                                >
+                                                                    <Minus className="h-4 w-4" />
+                                                                </Button>
+                                                                <p className="text-base font-[500] text-menuprimary">{modifierquantity(modifier)}</p>
+                                                                <Button
+                                                                    className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                    onClick={() => {
+                                                                        setSelectedModifiers((prev) => [...prev, modifier]);
+                                                                    }}
+                                                                >
+                                                                    <Plus className="h-4 w-4" />
+                                                                </Button>
+                                                            </div>
+                                                        )}
+                                                        <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
+                                                            {modifier.price && modifier.price.value > 0
+                                                                ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                                                                : "FREE"}
+                                                        </p>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )
                                     : item &&
-                                      GetModifiersFromItemId(item, items, index).length > 0 && (
-                                          <div>
-                                              <RadioGroup
-                                                  value={selectedRadioValue}
-                                                  onValueChange={(value) => {
-                                                      const selectedradio = GetModifiersFromItemId(item, items, index).find((m) => m._id === value);
-                                                      if (selectedradio) {
-                                                          handleRadioChange(selectedradio);
-                                                      }
-                                                  }}
-                                              >
-                                                  {GetModifiersFromItemId(item, items, index).map((modifier) => (
-                                                      <div className="flex items-center justify-between gap-5 border-b-[1px] border-b-menuprimary py-5" key={modifier._id}>
-                                                          <div className="flex items-center justify-center gap-5">
-                                                              <RadioGroupItem id={modifier._id} value={modifier._id} className="h-6 w-6 border-menuprimary" />
-                                                              <div className="flex flex-col items-start justify-center">
-                                                                  <Label htmlFor={modifier._id} className="items-center gap-2 text-lg font-[700] text-menusecondary">
-                                                                      {modifier.name}
-                                                                  </Label>
-                                                                  <Label htmlFor={modifier._id} className="font-manrope items-center gap-2 text-base font-[400] text-menusecondary">
-                                                                      {modifier.description}
-                                                                  </Label>
-                                                              </div>
-                                                          </div>
-                                                          <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
-                                                              {modifier.price && modifier.price.value > 0
-                                                                  ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                  : "FREE"}
-                                                          </p>
-                                                      </div>
-                                                  ))}
-                                              </RadioGroup>
-                                          </div>
-                                      )}
+                                    GetModifiersFromItemId(item, items, index).length > 0 && (
+                                        <div>
+                                            <RadioGroup
+                                                value={selectedRadioValue}
+                                                onValueChange={(value) => {
+                                                    const selectedradio = GetModifiersFromItemId(item, items, index).find((m) => m._id === value);
+                                                    if (selectedradio) {
+                                                        handleRadioChange(selectedradio);
+                                                    }
+                                                }}
+                                            >
+                                                {GetModifiersFromItemId(item, items, index).map((modifier) => (
+                                                    <div className="flex items-center justify-between gap-5 border-b-[1px] border-b-menuprimary py-5" key={modifier._id}>
+                                                        <div className="flex items-center justify-center gap-5">
+                                                            <RadioGroupItem id={modifier._id} value={modifier._id} className="h-6 w-6 border-menuprimary" />
+                                                            <div className="flex flex-col items-start justify-center">
+                                                                <Label htmlFor={modifier._id} className="items-center gap-2 text-lg font-[700] text-menusecondary">
+                                                                    {modifier.name}
+                                                                </Label>
+                                                                <Label htmlFor={modifier._id} className="font-manrope items-center gap-2 text-base font-[400] text-menusecondary">
+                                                                    {modifier.description}
+                                                                </Label>
+                                                            </div>
+                                                        </div>
+                                                        <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
+                                                            {modifier.price && modifier.price.value > 0
+                                                                ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                                                                : "FREE"}
+                                                        </p>
+                                                    </div>
+                                                ))}
+                                            </RadioGroup>
+                                        </div>
+                                    )}
                             </div>
                         );
                     })}
@@ -309,7 +309,7 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
             </div>
 
             <div className="fixed bottom-0 right-0 z-40 flex h-fit w-full items-center justify-center gap-10 bg-itembackground py-5 pr-[14%]">
-                {restaurant?.onlineOrder && (
+                {restaurant?.onlineOrder && (restaurant?.isDeliveryEnabled || restaurant.isTakeAwayEnabled) && (
                     <>
                         <div className="flex items-center justify-center gap-5">
                             <button

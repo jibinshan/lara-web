@@ -313,64 +313,65 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                         );
                     })}
                 </div>
-                {BetaMenuActive && isOpen && item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) && item.extras?.menuItemOrderType === "both" && (
-                    <DrawerFooter className="flex w-full flex-row justify-start gap-5">
-                        <div className="flex h-12 w-1/2 items-center justify-center gap-3 rounded-none bg-menuprimary p-2 text-menuforeground">
+                {BetaMenuActive && isOpen && item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) && item.extras?.menuItemOrderType === "both" && restaurant?.onlineOrder &&
+                    (restaurant?.isDeliveryEnabled || restaurant.isTakeAwayEnabled) && (
+                        <DrawerFooter className="flex w-full flex-row justify-start gap-5">
+                            <div className="flex h-12 w-1/2 items-center justify-center gap-3 rounded-none bg-menuprimary p-2 text-menuforeground">
+                                <Button
+                                    className="h-full w-1/3 rounded-full bg-transparent p-0 text-menuforeground shadow-none hover:bg-transparent"
+                                    onClick={() => {
+                                        setQuantity((prev) => Math.max(prev - 1, 1));
+                                    }}
+                                >
+                                    <Minus className="text-menuforeground" />
+                                </Button>
+                                <span className="text-lg font-medium text-menuforeground">{quantity}</span>
+                                <Button
+                                    className="h-full w-1/3 rounded-full bg-transparent p-0 shadow-none hover:bg-transparent"
+                                    onClick={() => {
+                                        setQuantity((prev) => prev + 1);
+                                    }}
+                                >
+                                    <Plus className="text-menuforeground" />
+                                </Button>
+                            </div>
                             <Button
-                                className="h-full w-1/3 rounded-full bg-transparent p-0 text-menuforeground shadow-none hover:bg-transparent"
+                                type="submit"
+                                className="h-12 w-1/2 rounded-none bg-menuprimary text-lg font-medium text-menuforeground"
                                 onClick={() => {
-                                    setQuantity((prev) => Math.max(prev - 1, 1));
-                                }}
-                            >
-                                <Minus className="text-menuforeground" />
-                            </Button>
-                            <span className="text-lg font-medium text-menuforeground">{quantity}</span>
-                            <Button
-                                className="h-full w-1/3 rounded-full bg-transparent p-0 shadow-none hover:bg-transparent"
-                                onClick={() => {
-                                    setQuantity((prev) => prev + 1);
-                                }}
-                            >
-                                <Plus className="text-menuforeground" />
-                            </Button>
-                        </div>
-                        <Button
-                            type="submit"
-                            className="h-12 w-1/2 rounded-none bg-menuprimary text-lg font-medium text-menuforeground"
-                            onClick={() => {
-                                const modifiers: CartItemModifier[] = [];
-                                for (const selectedModifier of selectedModifiers) {
-                                    modifiers.push({
-                                        _idModifiers: item?.modifiers[0]?._id ? item?.modifiers[0]?._id : "",
-                                        price: selectedModifier.price,
-                                        _idMenuItem: selectedModifier._id,
+                                    const modifiers: CartItemModifier[] = [];
+                                    for (const selectedModifier of selectedModifiers) {
+                                        modifiers.push({
+                                            _idModifiers: item?.modifiers[0]?._id ? item?.modifiers[0]?._id : "",
+                                            price: selectedModifier.price,
+                                            _idMenuItem: selectedModifier._id,
+                                        });
+                                    }
+                                    addItem({
+                                        name: item.name,
+                                        _idMenuItem: item._id,
+                                        quantity,
+                                        price: {
+                                            value: price,
+                                            currency: item.price.currency,
+                                        },
+                                        modifiers: modifiers,
+                                        notes: note,
+                                        images: item.images,
+                                        description: item.description,
                                     });
-                                }
-                                addItem({
-                                    name: item.name,
-                                    _idMenuItem: item._id,
-                                    quantity,
-                                    price: {
-                                        value: price,
-                                        currency: item.price.currency,
-                                    },
-                                    modifiers: modifiers,
-                                    notes: note,
-                                    images: item.images,
-                                    description: item.description,
-                                });
-                                toast.success("Item added to cart");
-                                setOpen(false);
-                                setChoose(false);
-                                setQuantity(1);
-                                setSelectedModifiers([]);
-                            }}
-                        >
-                            Add &nbsp;{getCurrencySymbol(item.price.currency)}
-                            <span className="tracking-[1px]">{formattedItemPrice(price)}</span>
-                        </Button>
-                    </DrawerFooter>
-                )}
+                                    toast.success("Item added to cart");
+                                    setOpen(false);
+                                    setChoose(false);
+                                    setQuantity(1);
+                                    setSelectedModifiers([]);
+                                }}
+                            >
+                                Add &nbsp;{getCurrencySymbol(item.price.currency)}
+                                <span className="tracking-[1px]">{formattedItemPrice(price)}</span>
+                            </Button>
+                        </DrawerFooter>
+                    )}
             </DrawerContent>
         </Drawer>
     );

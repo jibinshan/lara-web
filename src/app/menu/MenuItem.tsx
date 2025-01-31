@@ -55,7 +55,7 @@ export default function MenuItem({ item }: { item: MenuItem }) {
                                         item.modifiers.map((mod, index) =>
                                             GetModifiersFromItemId(item, items, index).map((modifier) => {
                                                 if (modifier._id === item.modifiers.find((modifier) => modifier.defaultSelection)?.defaultSelection) {
-                                                    return `${getCurrencySymbol(modifier.price.currency)} ${modifier.price.value}`;
+                                                    return `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`;
                                                 }
                                             })
                                         )
@@ -69,6 +69,7 @@ export default function MenuItem({ item }: { item: MenuItem }) {
                     item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) &&
                     item.extras?.menuItemOrderType === "both" &&
                     restaurant?.onlineOrder &&
+                    (restaurant?.isDeliveryEnabled || restaurant.isTakeAwayEnabled) &&
                     (cartItems.find((cart) => cart._idMenuItem === item._id)?._idMenuItem === item._id ? (
                         item && (
                             <MenuChoosing item={item}>
