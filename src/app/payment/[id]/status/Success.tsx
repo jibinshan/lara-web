@@ -103,7 +103,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                         </div>
                         <h4 className="font-manrope text-center text-2xl font-[500] leading-[150%] text-menubackground md:text-4xl">We’ve got your order</h4>
                         <div className="flex flex-col">
-                            <h5 className="font-manrope text-center text-base font-[800] leading-[150%] text-menubackground md:text-lg">
+                            <h5 className="font-manrope text-center text-base font-[800] leading-[150%] text-menubackground md:text-lg border-b-[1px] border-b-black">
                                 Scheduled {data?.orderType === 2 ? "Delivery" : "Pickup"} Time
                             </h5>
                             <span className="font-manrope text-center text-lg font-[800] leading-[150%] text-menubackground md:text-xl">
@@ -131,12 +131,14 @@ const Success: FC<SuccessProps> = ({ id }) => {
                         <div className="flex flex-row gap-3 pt-6">
                             <Link
                                 href={`https://www.google.com/maps/place/${restaurant?.address?.coords[0]},${restaurant?.address?.coords[1]}`}
+                                target="_blank"
                                 className="font-inter border border-menuprimary bg-menubackground px-4 py-3 text-center text-sm font-[700] uppercase leading-[22px] text-menuprimary hover:bg-menuprimary hover:text-menusecondary md:text-base"
                             >
                                 Get Directions
                             </Link>
                             <Link
                                 href={`tel:${restaurant?.contactNumber}`}
+                                target="_blank"
                                 className="font-inter border border-menuprimary bg-menubackground px-4 py-3 text-center text-sm font-[700] uppercase leading-[22px] text-menuprimary hover:bg-menuprimary hover:text-menusecondary md:text-base"
                             >
                                 Call restaurant
@@ -146,7 +148,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                     <div className="flex flex-col gap-3 pb-4 md:pb-6">
                         <div className="flex flex-row justify-between border-b border-menuprimary pb-2" onClick={() => setClose(!close)}>
                             <h5 className="font-manrope text-lg font-[700] leading-[150%] text-menusecondary md:text-xl">View order details</h5>
-                            <ChevronDown className={cn("h-6 w-6 transition-all duration-500 ease-in", !close && "rotate-180")} />
+                            <ChevronDown className={cn("h-6 w-6 transition-all duration-500 ease-in rotate-180", !close && "rotate-0")} />
                         </div>
                         <div
                             className={cn(
@@ -162,10 +164,14 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
                             </div>
+                            {/* <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">{data.}</h5>
+                            </div> */}
                             {data.cart.map((item, index) => (
                                 <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={index}>
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
-                                        {item.quantity} x {item?.menuItemName}
+                                        {item.quantity} x {item?.menuItemName}<br />
+                                        {item.notes}
                                     </h5>
                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
                                         £{formattedItemPrice(item?.price.value * item.quantity)}
@@ -179,7 +185,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                 {/*last section */}
                 <div className="flex w-full flex-col bg-menubackground md:w-2/4">
                     <div className="flex w-full flex-row items-center justify-center gap-2 bg-menuprimary px-2 py-4">
-                        <Image src={"/images/home/checkout/heart.png"} width={55} height={42} alt="heart" />
+                        {/* <Image src={"/images/home/checkout/heart.png"} width={55} height={42} alt="heart" /> */}
                         <p className="font-manrope text-xs font-[500] capitalize leading-[20px] tracking-[0.74px] text-menubackground md:text-lg">
                             Thanks for choosing us! Your food will be freshly prepared and ready soon.
                         </p>
@@ -204,7 +210,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                     Powered By Foodo
                 </Link>
             </div>
-        </section>
+        </section >
     );
 };
 

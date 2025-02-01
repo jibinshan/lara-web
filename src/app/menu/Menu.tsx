@@ -328,7 +328,7 @@ export default function Menu() {
                         {/* Separator */}
                         <div className="h-[1px] w-full rounded-full bg-menuprimary"></div>
 
-                        <div className="hidden-scrollbar flex max-h-[360px] w-full flex-col gap-4 overflow-y-scroll">
+                        <div className="hidden-scrollbar flex max-h-[360px] w-full flex-col gap-4 overflow-y-scroll mb-6">
                             {cartItems.length !== 0 ? (
                                 <div className="flex w-full flex-col">
                                     {reversedCartItems.map((item, index) => {
@@ -443,7 +443,7 @@ export default function Menu() {
                         </div>
 
                         {/* Footer */}
-                        <div className="absolute bottom-0 left-0 z-30 flex w-full items-center justify-between">
+                        <div className="absolute bottom-0 left-0 z-30 flex w-full items-center justify-between bg-itembackground">
                             <p className="font-bold text-menuprimary">Subtotal</p>
                             <p className="text-lg font-bold text-menuprimary">
                                 {"£"} {formattedItemPrice(totalAmount)}

@@ -48,7 +48,7 @@ type FormData = z.infer<typeof FormValidation>;
 const Pickup = () => {
     const { apiUrl, restaurantID, restaurant } = useRestaurant();
     const router = useRouter();
-    const { cartItems, clearCart } = useCart();
+    const { cartItems } = useCart();
     const [pickup, setPickUp] = useState<string>("Standard");
     const [scheduleTime, setScheduleTime] = useState<ScheduleTime>({
         time: "",
@@ -105,7 +105,6 @@ const Pickup = () => {
         },
         onSuccess: (data) => {
             toast("Order created successfully");
-            clearCart();
             router.push("/payment/" + data._id);
         },
         onError: (error: errordata) => {
