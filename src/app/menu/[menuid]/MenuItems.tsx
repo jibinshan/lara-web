@@ -185,7 +185,7 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                             }}
                         >
                             <Icons.pencil />
-                            Write a note
+                            Cooking Instructions
                         </p>
                     )}
                 </div>

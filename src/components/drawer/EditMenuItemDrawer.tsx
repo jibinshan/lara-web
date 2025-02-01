@@ -224,7 +224,7 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                             }}
                                         >
                                             <Icons.pencil />
-                                            Write a note
+                                            Cooking Instructions
                                         </p>
                                     )}
                                 </div>

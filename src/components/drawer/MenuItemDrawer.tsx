@@ -186,7 +186,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                             }}
                                         >
                                             <Icons.pencil />
-                                            Write a note
+                                            Cooking Instructions
                                         </p>
                                     )}
                                 </div>
