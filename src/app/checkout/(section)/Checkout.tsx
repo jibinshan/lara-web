@@ -22,8 +22,19 @@ const Checkout = () => {
     "pickup",
   );
   const [isPickupNow, setIsPickupNow] = useState(true);
+  const [Coupon, setCoupon] = useState('')
+  const [couponApply, setCouponApply] = useState(false)
   const [isDeliveryNow, setIsDeliveryNow] = useState(true);
   const { restaurant, items } = useRestaurant();
+
+  useEffect(() => {
+    const savedOrderType = localStorage.getItem("orderType");
+    if (savedOrderType?.toString() === "2") {
+      setCheckoutType("delivery")
+    } else {
+      setCheckoutType("pickup")
+    }
+  }, [])
 
   const checkPickupTime = () => {
     const pickupstart = restaurant?.takeAwayWindow.find(
@@ -145,7 +156,7 @@ const Checkout = () => {
       <div className="flex h-full w-full max-w-[1300px] flex-col gap-[2.5rem] px-3 pt-3 md:pt-[2.5rem] pb-[2.5rem]">
         <div className="flex flex-col gap-3 lg:flex-row lg:justify-between lg:gap-28">
           <Tabs
-            defaultValue="pickup"
+            value={checkoutType}
             className="flex w-full flex-col gap-4 lg:w-2/3"
           >
             <Button
@@ -160,20 +171,24 @@ const Checkout = () => {
                 {checkoutType === "delivery" ? "Delivery" : "Pickup"} Details
               </p>
               <TabsList className="flex h-fit w-fit gap-1 rounded-full bg-tabbg px-1 py-1">
-                <TabsTrigger
-                  value="pickup"
-                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-menusecondary data-[state=active]:bg-menuprimary data-[state=active]:text-menusecondary"
-                  onClick={() => setCheckoutType("pickup")}
-                >
-                  Pickup
-                </TabsTrigger>
-                <TabsTrigger
-                  value="delivery"
-                  className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-menusecondary data-[state=active]:bg-menuprimary data-[state=active]:text-menusecondary"
-                  onClick={() => setCheckoutType("delivery")}
-                >
-                  Delivery
-                </TabsTrigger>
+                {restaurant?.isTakeAwayEnabled && (
+                  <TabsTrigger
+                    value="pickup"
+                    className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-menusecondary data-[state=active]:bg-menuprimary data-[state=active]:text-menusecondary"
+                    onClick={() => setCheckoutType("pickup")}
+                  >
+                    Pickup
+                  </TabsTrigger>
+                )}
+                {restaurant?.isDeliveryEnabled && (
+                  <TabsTrigger
+                    value="delivery"
+                    className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-menusecondary data-[state=active]:bg-menuprimary data-[state=active]:text-menusecondary"
+                    onClick={() => setCheckoutType("delivery")}
+                  >
+                    Delivery
+                  </TabsTrigger>
+                )}
               </TabsList>
             </div>
             <TabsContent value="pickup">
@@ -245,25 +260,39 @@ const Checkout = () => {
                             alt="item-placeholder"
                             width={106}
                             height={108}
-                            className="aspect-square h-[70px] max-h-[70px] w-auto rounded-md"
+                            className="aspect-square h-[70px] max-h-[70px] w-auto rounded-md object-cover"
                           />
                         )}
                         <div className="flex flex-col justify-between py-1">
-                          <p className="line-clamp-1 text-lg font-normal text-menusecondary">
-                            {item.name}
+                          <p className="line-clamp-1 text-lg text-menusecondary tracking-[1px] font-[600]">
+                            {item?.quantity}&nbsp; {item.name}
                           </p>
                           {/* {item.description && (
                             <p className="line-clamp-2 text-lg font-normal text-[#FBEAD2]">
                               {item.description}
                             </p>
                           )} */}
-                          {item.modifiers.map((mod) => {
-                            const modifier = items.find(
-                              (item) => item._id === mod._idMenuItem,
-                            )?.name;
+                          {Object.entries(
+                            item.modifiers.reduce(
+                              (acc, modifier) => {
+                                const name = items.find((i) => i._id === modifier._idMenuItem)?.name;
+                                if (name) {
+                                  if (!acc[name]) {
+                                    acc[name] = { ...modifier, count: 0 };
+                                  }
+                                  acc[name].count += 1;
+                                }
+                                return acc;
+                              },
+                              {} as Record<string, (typeof item.modifiers)[0] & { count: number }>
+                            )
+                          ).map(([name, modifier], index) => {
+                            // const modifier = items.find(
+                            //   (item) => item._id === mod._idMenuItem,
+                            // )?.name;
                             return (
-                              <div key={mod._idMenuItem}>
-                                <p>1 X {modifier ? modifier : ""}</p>
+                              <div key={index}>
+                                <p>{modifier?.count} X {name}</p>
                               </div>
                             );
                           })}
@@ -285,12 +314,28 @@ const Checkout = () => {
                 </div>
                 <div className="flex flex-col gap-4 pt-6">
                   <p className="text-lg font-light text-menuprimary-foreground">Rewards & promos</p>
-                  <div className="flex gap-2">
-                    <Input
-                      placeholder="Gift or discount code"
-                      className="h-12 rounded-none placeholder:text-placeholder border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
-                    />
-                    <Button className="h-12 text-menuforeground bg-menuprimary hover:bg-buttonhover">Apply</Button>
+                  <div className="flex flex-col gap-1">
+                    <div className="flex gap-2">
+                      <Input
+                        placeholder="Gift or discount code"
+                        onChange={(e) => { setCoupon(e.target.value) }}
+                        className="h-12 rounded-none placeholder:text-placeholder border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
+                      />
+                      <Button className="h-12 text-menuforeground bg-menuprimary hover:bg-buttonhover"
+                        type="button"
+                        onClick={() => {
+                          if (Coupon.length > 0) {
+                            setCoupon('')
+                          }
+                          setCouponApply(true)
+                        }}
+                      >
+                        Apply
+                      </Button>
+                    </div>
+                    {couponApply && (
+                      <p className="w-full text-start text-xs text-red-700">The Coupon Code is Invalid</p>
+                    )}
                   </div>
                   <div className="flex justify-between">
                     <p className="text-sm font-semibold text-menusecondary">Service Charge</p>
@@ -327,8 +372,8 @@ const Checkout = () => {
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </div >
+    </section >
   );
 };
 

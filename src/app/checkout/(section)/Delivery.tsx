@@ -265,7 +265,7 @@ const Delivery = () => {
                                     <FormItem className="flex w-full flex-col gap-2">
                                         <FormLabel className="flex cursor-pointer items-center gap-2 text-menusecondary pt-10">
                                             <Icons.pencil />
-                                            Add Note
+                                            Packing/Delivery Instructions
                                         </FormLabel>
                                         <FormControl>
                                             <Textarea rows={3} className="border-none bg-inputbg placeholder:text-placeholder lg:w-4/5" {...field} />

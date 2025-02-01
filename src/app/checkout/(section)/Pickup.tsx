@@ -231,7 +231,7 @@ const Pickup = () => {
                             <div className="z-40 flex w-full flex-col gap-2">
                                 <Label htmlFor="note" className="flex cursor-pointer items-center gap-2 text-menusecondary pt-10">
                                     <Icons.pencil />
-                                    Add Note
+                                    Packing/Pickup Instructions
                                 </Label>
                                 <Textarea
                                     id="note"
