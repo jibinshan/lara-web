@@ -292,11 +292,42 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                                                 </Label>
                                                             </div>
                                                         </div>
-                                                        <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
-                                                            {modifier.price && modifier.price.value > 0
-                                                                ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                : "FREE"}
-                                                        </p>
+                                                        <div className="flex w-fit items-center justify-center gap-5">
+                                                            {modifierquantity(modifier) > 0 && mod.extraAllowed && (
+                                                                <div className="flex items-center justify-center gap-3">
+                                                                    <Button
+                                                                        className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                        onClick={() => {
+                                                                            setSelectedModifiers((prev) => {
+                                                                                const index = prev.findIndex((m) => m._id === modifier._id);
+                                                                                if (index !== -1) {
+                                                                                    const newModifiers = [...prev];
+                                                                                    newModifiers.splice(index, 1);
+                                                                                    return newModifiers;
+                                                                                }
+                                                                                return prev;
+                                                                            });
+                                                                        }}
+                                                                    >
+                                                                        <Minus className="h-4 w-4" />
+                                                                    </Button>
+                                                                    <p className="text-base font-[500] text-menuprimary">{modifierquantity(modifier)}</p>
+                                                                    <Button
+                                                                        className="rounded-full border-[2px] border-menusecondary bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                        onClick={() => {
+                                                                            setSelectedModifiers((prev) => [...prev, modifier]);
+                                                                        }}
+                                                                    >
+                                                                        <Plus className="h-4 w-4" />
+                                                                    </Button>
+                                                                </div>
+                                                            )}
+                                                            <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
+                                                                {modifier.price && modifier.price.value > 0
+                                                                    ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                                                                    : "FREE"}
+                                                            </p>
+                                                        </div>
                                                     </div>
                                                 ))}
                                             </RadioGroup>

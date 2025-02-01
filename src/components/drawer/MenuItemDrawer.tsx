@@ -221,9 +221,17 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                                 // }
                                                 >
                                                     <div className="flex w-fit items-center justify-center gap-5">
-                                                        <Label htmlFor={modifier._id} className="flex items-center gap-2 text-menusecondary">
-                                                            {modifier.name}
-                                                        </Label>
+                                                        <div className="flex flex-col items-start justify-center">
+                                                            <Label htmlFor={modifier._id} className="items-center gap-2 text-menusecondary">
+                                                                {modifier.name}
+                                                            </Label>
+                                                            <Label
+                                                                htmlFor={modifier._id}
+                                                                className="items-center gap-2 font-manrope text-base font-[400] text-menusecondary"
+                                                            >
+                                                                {modifier.description}
+                                                            </Label>
+                                                        </div>
                                                         {modifierquantity(modifier) > 0 && mod.extraAllowed && (
                                                             <div className="flex items-center justify-center gap-3">
                                                                 <button
@@ -283,16 +291,47 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                                     >
                                                         {GetModifiersFromItemId(item, items, index).map((modifier) => (
                                                             <div className="flex items-center justify-between gap-5 py-5" key={modifier._id}>
-                                                                <div className="flex flex-col items-start justify-center">
-                                                                    <Label htmlFor={modifier._id} className="items-center gap-2 text-menusecondary">
-                                                                        {modifier.name}
-                                                                    </Label>
-                                                                    <Label
-                                                                        htmlFor={modifier._id}
-                                                                        className="items-center gap-2 font-manrope text-base font-[400] text-menusecondary"
-                                                                    >
-                                                                        {modifier.description}
-                                                                    </Label>
+                                                                <div className="flex w-fit items-center justify-center gap-5">
+                                                                    <div className="flex flex-col items-start justify-center">
+                                                                        <Label htmlFor={modifier._id} className="items-center gap-2 text-menusecondary">
+                                                                            {modifier.name}
+                                                                        </Label>
+                                                                        <Label
+                                                                            htmlFor={modifier._id}
+                                                                            className="items-center gap-2 font-manrope text-base font-[400] text-menusecondary"
+                                                                        >
+                                                                            {modifier.description}
+                                                                        </Label>
+                                                                    </div>
+                                                                    {modifierquantity(modifier) > 0 && mod.extraAllowed && (
+                                                                        <div className="flex items-center justify-center gap-3">
+                                                                            <button
+                                                                                className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                onClick={() => {
+                                                                                    setSelectedModifiers((prev) => {
+                                                                                        const index = prev.findIndex((m) => m._id === modifier._id);
+                                                                                        if (index !== -1) {
+                                                                                            const newModifiers = [...prev];
+                                                                                            newModifiers.splice(index, 1);
+                                                                                            return newModifiers;
+                                                                                        }
+                                                                                        return prev;
+                                                                                    });
+                                                                                }}
+                                                                            >
+                                                                                <Minus className="h-4 w-4" />
+                                                                            </button>
+                                                                            <p className="text-base font-[500] text-menuprimary">{modifierquantity(modifier)}</p>
+                                                                            <button
+                                                                                className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                onClick={() => {
+                                                                                    setSelectedModifiers((prev) => [...prev, modifier]);
+                                                                                }}
+                                                                            >
+                                                                                <Plus className="h-4 w-4" />
+                                                                            </button>
+                                                                        </div>
+                                                                    )}
                                                                 </div>
                                                                 <div className="flex items-center justify-center gap-1">
                                                                     <Label htmlFor={modifier._id} className="flex items-center gap-2 text-menusecondary">

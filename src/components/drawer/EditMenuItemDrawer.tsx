@@ -269,12 +269,14 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                                         // }
                                                         >
                                                             <div className="w-fit flex justify-center items-center gap-5">
-                                                                <Label
-                                                                    htmlFor={modifier._id}
-                                                                    className="flex items-center gap-2 text-menusecondary"
-                                                                >
-                                                                    {modifier.name}
-                                                                </Label>
+                                                                <div className="flex flex-col items-start justify-center">
+                                                                    <Label htmlFor={modifier._id} className="items-center gap-2 text-menusecondary">
+                                                                        {modifier.name}
+                                                                    </Label>
+                                                                    <Label htmlFor={modifier._id} className="items-center gap-2 font-manrope text-base font-[400] text-menusecondary">
+                                                                        {modifier.description}
+                                                                    </Label>
+                                                                </div>
                                                                 {modifierquantity(modifier) > 0 && mod.extraAllowed && (
                                                                     <div className="flex gap-3 items-center justify-center">
                                                                         <button
@@ -350,13 +352,48 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                                             >
                                                                 {GetModifiersFromItemId(menuitem, items, index).map((modifier) => (
                                                                     <div className="flex items-center justify-between gap-5 py-5" key={modifier._id}>
-                                                                        <div className="flex flex-col items-start justify-center">
-                                                                            <Label htmlFor={modifier._id} className="items-center gap-2 text-menusecondary">
-                                                                                {modifier.name}
-                                                                            </Label>
-                                                                            <Label htmlFor={modifier._id} className="items-center gap-2 font-manrope text-base font-[400] text-menusecondary">
-                                                                                {modifier.description}
-                                                                            </Label>
+                                                                        <div className="w-fit flex justify-center items-center gap-5">
+                                                                            <div className="flex flex-col items-start justify-center">
+                                                                                <Label htmlFor={modifier._id} className="items-center gap-2 text-menusecondary">
+                                                                                    {modifier.name}
+                                                                                </Label>
+                                                                                <Label htmlFor={modifier._id} className="items-center gap-2 font-manrope text-base font-[400] text-menusecondary">
+                                                                                    {modifier.description}
+                                                                                </Label>
+                                                                            </div>
+                                                                            {modifierquantity(modifier) > 0 && mod.extraAllowed && (
+                                                                                <div className="flex gap-3 items-center justify-center">
+                                                                                    <button
+                                                                                        className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                        onClick={() => {
+                                                                                            setSelectedModifiers((prev) => {
+                                                                                                const index = prev.findIndex((m) => m._id === modifier._id);
+                                                                                                if (index !== -1) {
+                                                                                                    const newModifiers = [...prev];
+                                                                                                    newModifiers.splice(index, 1);
+                                                                                                    return newModifiers;
+                                                                                                }
+                                                                                                return prev;
+                                                                                            });
+                                                                                        }}
+                                                                                    >
+                                                                                        <Minus className="h-4 w-4" />
+                                                                                    </button>
+                                                                                    <p className="text-base text-menuprimary font-[500]">
+                                                                                        {
+                                                                                            modifierquantity(modifier)
+                                                                                        }
+                                                                                    </p>
+                                                                                    <button
+                                                                                        className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                        onClick={() => {
+                                                                                            setSelectedModifiers((prev) => [...prev, modifier]);
+                                                                                        }}
+                                                                                    >
+                                                                                        <Plus className="h-4 w-4" />
+                                                                                    </button>
+                                                                                </div>
+                                                                            )}
                                                                         </div>
                                                                         <div className="flex items-center justify-center gap-1">
                                                                             <Label
