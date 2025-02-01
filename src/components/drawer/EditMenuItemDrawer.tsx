@@ -277,62 +277,66 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                                                         {modifier.description}
                                                                     </Label>
                                                                 </div>
-                                                                {modifierquantity(modifier) > 0 && mod.extraAllowed && (
-                                                                    <div className="flex gap-3 items-center justify-center">
-                                                                        <button
-                                                                            className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                            onClick={() => {
-                                                                                setSelectedModifiers((prev) => {
-                                                                                    const index = prev.findIndex((m) => m._id === modifier._id);
-                                                                                    if (index !== -1) {
-                                                                                        const newModifiers = [...prev];
-                                                                                        newModifiers.splice(index, 1);
-                                                                                        return newModifiers;
-                                                                                    }
-                                                                                    return prev;
-                                                                                });
-                                                                            }}
-                                                                        >
-                                                                            <Minus className="h-4 w-4" />
-                                                                        </button>
-                                                                        <p className="text-base text-menuprimary font-[500]">
-                                                                            {
-                                                                                modifierquantity(modifier)
-                                                                            }
-                                                                        </p>
-                                                                        <button
-                                                                            className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                            onClick={() => {
-                                                                                setSelectedModifiers((prev) => [...prev, modifier]);
-                                                                            }}
-                                                                        >
-                                                                            <Plus className="h-4 w-4" />
-                                                                        </button>
-                                                                    </div>
-                                                                )}
                                                             </div>
-                                                            <div className="flex gap-1">
-                                                                <Label
-                                                                    htmlFor={modifier._id}
-                                                                    className="flex items-center gap-2 text-menusecondary"
-                                                                >
-                                                                    {modifier.price &&
-                                                                        modifier.price.value > 0 ?
-                                                                        `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                        :
-                                                                        "FREE"
-                                                                    }
-                                                                </Label>
-                                                                <Checkbox
-                                                                    id={modifier._id}
-                                                                    checked={selectedModifiers.some(
-                                                                        (m) => m._id === modifier._id,
+                                                            <div className="flex flex-col gap-2 items-end justify-start">
+                                                                <div className="flex gap-1">
+                                                                    <Label
+                                                                        htmlFor={modifier._id}
+                                                                        className="flex items-center gap-2 text-menusecondary"
+                                                                    >
+                                                                        {modifier.price &&
+                                                                            modifier.price.value > 0 ?
+                                                                            `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                                                                            :
+                                                                            "FREE"
+                                                                        }
+                                                                    </Label>
+                                                                    <Checkbox
+                                                                        id={modifier._id}
+                                                                        checked={selectedModifiers.some(
+                                                                            (m) => m._id === modifier._id,
+                                                                        )}
+                                                                        onCheckedChange={(checked) =>
+                                                                            handleModifierChange(modifier, checked as boolean)
+                                                                        }
+                                                                        className="border-menusecondary"
+                                                                    />
+                                                                </div>
+                                                                <div className="h-[25px]">
+                                                                    {modifierquantity(modifier) > 0 && mod.extraAllowed && (
+                                                                        <div className="flex gap-3 items-center justify-center">
+                                                                            <button
+                                                                                className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                onClick={() => {
+                                                                                    setSelectedModifiers((prev) => {
+                                                                                        const index = prev.findIndex((m) => m._id === modifier._id);
+                                                                                        if (index !== -1) {
+                                                                                            const newModifiers = [...prev];
+                                                                                            newModifiers.splice(index, 1);
+                                                                                            return newModifiers;
+                                                                                        }
+                                                                                        return prev;
+                                                                                    });
+                                                                                }}
+                                                                            >
+                                                                                <Minus className="h-4 w-4" />
+                                                                            </button>
+                                                                            <p className="text-base text-menuprimary font-[500]">
+                                                                                {
+                                                                                    modifierquantity(modifier)
+                                                                                }
+                                                                            </p>
+                                                                            <button
+                                                                                className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                onClick={() => {
+                                                                                    setSelectedModifiers((prev) => [...prev, modifier]);
+                                                                                }}
+                                                                            >
+                                                                                <Plus className="h-4 w-4" />
+                                                                            </button>
+                                                                        </div>
                                                                     )}
-                                                                    onCheckedChange={(checked) =>
-                                                                        handleModifierChange(modifier, checked as boolean)
-                                                                    }
-                                                                    className="border-menusecondary"
-                                                                />
+                                                                </div>
                                                             </div>
                                                         </div>
                                                     ),
@@ -361,56 +365,60 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                                                                     {modifier.description}
                                                                                 </Label>
                                                                             </div>
-                                                                            {modifierquantity(modifier) > 0 && mod.extraAllowed && (
-                                                                                <div className="flex gap-3 items-center justify-center">
-                                                                                    <button
-                                                                                        className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                                        onClick={() => {
-                                                                                            setSelectedModifiers((prev) => {
-                                                                                                const index = prev.findIndex((m) => m._id === modifier._id);
-                                                                                                if (index !== -1) {
-                                                                                                    const newModifiers = [...prev];
-                                                                                                    newModifiers.splice(index, 1);
-                                                                                                    return newModifiers;
-                                                                                                }
-                                                                                                return prev;
-                                                                                            });
-                                                                                        }}
-                                                                                    >
-                                                                                        <Minus className="h-4 w-4" />
-                                                                                    </button>
-                                                                                    <p className="text-base text-menuprimary font-[500]">
-                                                                                        {
-                                                                                            modifierquantity(modifier)
-                                                                                        }
-                                                                                    </p>
-                                                                                    <button
-                                                                                        className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                                        onClick={() => {
-                                                                                            setSelectedModifiers((prev) => [...prev, modifier]);
-                                                                                        }}
-                                                                                    >
-                                                                                        <Plus className="h-4 w-4" />
-                                                                                    </button>
-                                                                                </div>
-                                                                            )}
                                                                         </div>
-                                                                        <div className="flex items-center justify-center gap-1">
-                                                                            <Label
-                                                                                htmlFor={modifier._id}
-                                                                                className="flex items-center gap-2 text-menusecondary">
-                                                                                {modifier.price &&
-                                                                                    modifier.price.value > 0 ?
-                                                                                    `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                                    :
-                                                                                    "FREE"
-                                                                                }
-                                                                            </Label>
-                                                                            <RadioGroupItem
-                                                                                id={modifier._id}
-                                                                                value={modifier._id}
-                                                                                className="h-4 w-4 border-menuprimary"
-                                                                            />
+                                                                        <div className="flex flex-col items-end justify-start gap-2">
+                                                                            <div className="flex items-start justify-end gap-1">
+                                                                                <Label
+                                                                                    htmlFor={modifier._id}
+                                                                                    className="flex items-center gap-2 text-menusecondary">
+                                                                                    {modifier.price &&
+                                                                                        modifier.price.value > 0 ?
+                                                                                        `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                                                                                        :
+                                                                                        "FREE"
+                                                                                    }
+                                                                                </Label>
+                                                                                <RadioGroupItem
+                                                                                    id={modifier._id}
+                                                                                    value={modifier._id}
+                                                                                    className="h-4 w-4 border-menuprimary"
+                                                                                />
+                                                                            </div>
+                                                                            <div className="h-[25px] ">
+                                                                                {modifierquantity(modifier) > 0 && mod.extraAllowed && (
+                                                                                    <div className="flex gap-3 items-center justify-center">
+                                                                                        <button
+                                                                                            className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                            onClick={() => {
+                                                                                                setSelectedModifiers((prev) => {
+                                                                                                    const index = prev.findIndex((m) => m._id === modifier._id);
+                                                                                                    if (index !== -1) {
+                                                                                                        const newModifiers = [...prev];
+                                                                                                        newModifiers.splice(index, 1);
+                                                                                                        return newModifiers;
+                                                                                                    }
+                                                                                                    return prev;
+                                                                                                });
+                                                                                            }}
+                                                                                        >
+                                                                                            <Minus className="h-4 w-4" />
+                                                                                        </button>
+                                                                                        <p className="text-base text-menuprimary font-[500]">
+                                                                                            {
+                                                                                                modifierquantity(modifier)
+                                                                                            }
+                                                                                        </p>
+                                                                                        <button
+                                                                                            className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                            onClick={() => {
+                                                                                                setSelectedModifiers((prev) => [...prev, modifier]);
+                                                                                            }}
+                                                                                        >
+                                                                                            <Plus className="h-4 w-4" />
+                                                                                        </button>
+                                                                                    </div>
+                                                                                )}
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                 ))}
@@ -425,72 +433,74 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                         )
                     })}
                 </div>
-                {BetaMenuActive && (
-                    <DrawerFooter className="flex w-full flex-row justify-start gap-5">
-                        <div className="flex h-12 w-1/2 items-center justify-center gap-3 rounded-none bg-menuprimary text-menuforeground p-2 text-menu">
+                {
+                    BetaMenuActive && (
+                        <DrawerFooter className="flex w-full flex-row justify-start gap-5">
+                            <div className="flex h-12 w-1/2 items-center justify-center gap-3 rounded-none bg-menuprimary text-menuforeground p-2 text-menu">
+                                <Button
+                                    className="h-full w-1/3 rounded-full bg-transparent p-0 hover:bg-transparent"
+                                    onClick={() => {
+                                        setQuantity((prev) => Math.max(prev - 1, 1));
+                                    }}
+                                >
+                                    <Minus className="text-menuforeground" />
+                                </Button>
+                                {quantity}
+                                <Button
+                                    className="h-full w-1/3 rounded-full bg-transparent p-0 hover:bg-transparent"
+                                    onClick={() => {
+                                        setQuantity((prev) => prev + 1);
+                                    }}
+                                >
+                                    <Plus className="text-menuforeground" />
+                                </Button>
+                            </div>
                             <Button
-                                className="h-full w-1/3 rounded-full bg-transparent p-0 hover:bg-transparent"
+                                type="submit"
+                                className="w-1/2 h-12 text-base text-menuforeground bg-menuprimary hover:bg-menuprimary font-medium rounded-none"
                                 onClick={() => {
-                                    setQuantity((prev) => Math.max(prev - 1, 1));
+                                    if (!item || !item) {
+                                        toast.error("Cart item not found");
+                                        return;
+                                    }
+
+                                    // Convert selected modifiers to CartItemModifier format
+                                    const modifiers: CartItemModifier[] = selectedModifiers.map((mod) => ({
+                                        _idModifiers: menuitem?.modifiers[0]?._id ?? "",
+                                        _idMenuItem: mod._id,
+                                        price: mod.price,
+                                    }));
+
+                                    // Create updated item while preserving the original item's properties
+                                    const updatedItem: CartItem = {
+                                        ...item,
+                                        quantity,
+                                        price: {
+                                            value: price ?? 0,
+                                            currency: item.price.currency,
+                                        },
+                                        notes: note,
+                                        modifiers,
+                                    };
+
+                                    updateItem(updatedItem, index);
+                                    console.log(updatedItem, index, "===update");
+
+                                    toast.success("Item updated");
+                                    setOpen(false);
+                                    setQuantity(1);
+                                    setSelectedModifiers([]);
+
                                 }}
                             >
-                                <Minus className="text-menuforeground" />
+                                Update . &nbsp;{getCurrencySymbol(item.price.currency)}
+                                <span className="tracking-[1px]">
+                                    {formattedItemPrice(price)}
+                                </span>
                             </Button>
-                            {quantity}
-                            <Button
-                                className="h-full w-1/3 rounded-full bg-transparent p-0 hover:bg-transparent"
-                                onClick={() => {
-                                    setQuantity((prev) => prev + 1);
-                                }}
-                            >
-                                <Plus className="text-menuforeground" />
-                            </Button>
-                        </div>
-                        <Button
-                            type="submit"
-                            className="w-1/2 h-12 text-base text-menuforeground bg-menuprimary hover:bg-menuprimary font-medium rounded-none"
-                            onClick={() => {
-                                if (!item || !item) {
-                                    toast.error("Cart item not found");
-                                    return;
-                                }
-
-                                // Convert selected modifiers to CartItemModifier format
-                                const modifiers: CartItemModifier[] = selectedModifiers.map((mod) => ({
-                                    _idModifiers: menuitem?.modifiers[0]?._id ?? "",
-                                    _idMenuItem: mod._id,
-                                    price: mod.price,
-                                }));
-
-                                // Create updated item while preserving the original item's properties
-                                const updatedItem: CartItem = {
-                                    ...item,
-                                    quantity,
-                                    price: {
-                                        value: price ?? 0,
-                                        currency: item.price.currency,
-                                    },
-                                    notes: note,
-                                    modifiers,
-                                };
-
-                                updateItem(updatedItem, index);
-                                console.log(updatedItem, index, "===update");
-
-                                toast.success("Item updated");
-                                setOpen(false);
-                                setQuantity(1);
-                                setSelectedModifiers([]);
-
-                            }}
-                        >
-                            Update . &nbsp;{getCurrencySymbol(item.price.currency)}
-                            <span className="tracking-[1px]">
-                                {formattedItemPrice(price)}
-                            </span>
-                        </Button>
-                    </DrawerFooter>
-                )}
+                        </DrawerFooter>
+                    )
+                }
             </DrawerContent>
         </Drawer >
     );
