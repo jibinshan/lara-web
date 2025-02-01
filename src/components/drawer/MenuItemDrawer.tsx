@@ -290,7 +290,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                                         }}
                                                     >
                                                         {GetModifiersFromItemId(item, items, index).map((modifier) => (
-                                                            <div className="flex items-center justify-between gap-5 py-5" key={modifier._id}>
+                                                            <div className="flex items-start justify-between gap-5 py-5" key={modifier._id}>
                                                                 <div className="flex w-fit items-center justify-center gap-5">
                                                                     <div className="flex flex-col items-start justify-center">
                                                                         <Label htmlFor={modifier._id} className="items-center gap-2 text-menusecondary">
@@ -303,43 +303,47 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                                                             {modifier.description}
                                                                         </Label>
                                                                     </div>
-                                                                    {modifierquantity(modifier) > 0 && mod.extraAllowed && (
-                                                                        <div className="flex items-center justify-center gap-3">
-                                                                            <button
-                                                                                className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                                onClick={() => {
-                                                                                    setSelectedModifiers((prev) => {
-                                                                                        const index = prev.findIndex((m) => m._id === modifier._id);
-                                                                                        if (index !== -1) {
-                                                                                            const newModifiers = [...prev];
-                                                                                            newModifiers.splice(index, 1);
-                                                                                            return newModifiers;
-                                                                                        }
-                                                                                        return prev;
-                                                                                    });
-                                                                                }}
-                                                                            >
-                                                                                <Minus className="h-4 w-4" />
-                                                                            </button>
-                                                                            <p className="text-base font-[500] text-menuprimary">{modifierquantity(modifier)}</p>
-                                                                            <button
-                                                                                className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
-                                                                                onClick={() => {
-                                                                                    setSelectedModifiers((prev) => [...prev, modifier]);
-                                                                                }}
-                                                                            >
-                                                                                <Plus className="h-4 w-4" />
-                                                                            </button>
-                                                                        </div>
-                                                                    )}
                                                                 </div>
-                                                                <div className="flex items-center justify-center gap-1">
-                                                                    <Label htmlFor={modifier._id} className="flex items-center gap-2 text-menusecondary">
-                                                                        {modifier.price && modifier.price.value > 0
-                                                                            ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                            : "FREE"}
-                                                                    </Label>
-                                                                    <RadioGroupItem id={modifier._id} value={modifier._id} className="h-4 w-4 border-menuprimary" />
+                                                                <div className="flex flex-col items-end justify-start gap-2">
+                                                                    <div className="flex items-start justify-end gap-1">
+                                                                        <Label htmlFor={modifier._id} className="flex items-center gap-2 text-menusecondary">
+                                                                            {modifier.price && modifier.price.value > 0
+                                                                                ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
+                                                                                : "FREE"}
+                                                                        </Label>
+                                                                        <RadioGroupItem id={modifier._id} value={modifier._id} className="h-4 w-4 border-menuprimary" />
+                                                                    </div>
+                                                                    <div className="h-[25px] ">
+                                                                        {modifierquantity(modifier) > 0 && mod.extraAllowed && (
+                                                                            <div className="flex items-center justify-center gap-3">
+                                                                                <button
+                                                                                    className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                    onClick={() => {
+                                                                                        setSelectedModifiers((prev) => {
+                                                                                            const index = prev.findIndex((m) => m._id === modifier._id);
+                                                                                            if (index !== -1) {
+                                                                                                const newModifiers = [...prev];
+                                                                                                newModifiers.splice(index, 1);
+                                                                                                return newModifiers;
+                                                                                            }
+                                                                                            return prev;
+                                                                                        });
+                                                                                    }}
+                                                                                >
+                                                                                    <Minus className="h-4 w-4" />
+                                                                                </button>
+                                                                                <p className="text-base font-[500] text-menuprimary">{modifierquantity(modifier)}</p>
+                                                                                <button
+                                                                                    className="rounded-full bg-transparent p-0 px-2 py-0 text-menusecondary transition-all duration-150 ease-out hover:scale-[1.2]"
+                                                                                    onClick={() => {
+                                                                                        setSelectedModifiers((prev) => [...prev, modifier]);
+                                                                                    }}
+                                                                                >
+                                                                                    <Plus className="h-4 w-4" />
+                                                                                </button>
+                                                                            </div>
+                                                                        )}
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         ))}
@@ -352,7 +356,8 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                         );
                     })}
                 </div>
-                {BetaMenuActive && isOpen && item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) && item.extras?.menuItemOrderType === "both" && restaurant?.onlineOrder &&
+                {
+                    BetaMenuActive && isOpen && item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) && item.extras?.menuItemOrderType === "both" && restaurant?.onlineOrder &&
                     (restaurant?.isDeliveryEnabled || restaurant.isTakeAwayEnabled) && (
                         <DrawerFooter className="flex w-full flex-row justify-start gap-5">
                             <div className="flex h-12 w-1/2 items-center justify-center gap-3 rounded-none bg-menuprimary p-2 text-menuforeground">
@@ -410,9 +415,10 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                 <span className="tracking-[1px]">{formattedItemPrice(price)}</span>
                             </Button>
                         </DrawerFooter>
-                    )}
-            </DrawerContent>
-        </Drawer>
+                    )
+                }
+            </DrawerContent >
+        </Drawer >
     );
 };
 
