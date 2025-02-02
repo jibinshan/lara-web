@@ -220,7 +220,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                                 //   )
                                                 // }
                                                 >
-                                                    <div className="flex w-fit items-center justify-center gap-5">
+                                                    <div className="flex w-fit items-center justify-start gap-5">
                                                         <div className="flex flex-col items-start justify-center">
                                                             <Label htmlFor={modifier._id} className="items-center gap-2 text-menusecondary">
                                                                 {modifier.name}

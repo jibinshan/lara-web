@@ -121,7 +121,7 @@ const Delivery = () => {
                 <form onSubmit={form.handleSubmit(onSubmit)} className="h-full">
 
                     <div className="flex w-full flex-col items-start justify-between gap-3 border-b-[2px] border-borderinput py-3 pb-5">
-                        <p className="w-full text-xl font-semibold text-menusecondary-foreground">Delivery Time</p>
+                        <p className="w-full text-xl font-semibold text-menuprimary-foreground">Delivery Time</p>
                         <div className="flex w-full flex-col gap-3 px-1 py-1">
                             <div
                                 className={cn("flex w-full items-center gap-3 border-[2px] border-borderinput px-4 py-3 lg:w-2/3", pickup === "Standard" && "border-menuprimary")}

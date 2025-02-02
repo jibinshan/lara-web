@@ -119,7 +119,7 @@ const Pickup = () => {
     };
     return (
         <div>
-            <div className="flex w-full flex-col items-start justify-between gap-3 border-b-[2px] border-inputbg py-3 pb-5">
+            <div className="flex w-full flex-col items-start justify-between gap-3 border-b-[2px] border-borderinput py-3 pb-5">
                 <p className="text-xl font-semibold text-menuprimary-foreground">Pickup Location</p>
                 <div className="flex w-full items-center justify-between gap-1 px-1 py-1">
                     <div className="flex items-center gap-2">
@@ -202,7 +202,7 @@ const Pickup = () => {
                         </div>
                     </div>
 
-                    <div className="flex w-full flex-col items-start justify-between gap-3 border-b-[2px] border-[#131313] py-3 pb-5">
+                    <div className="flex w-full flex-col items-start justify-between gap-3 border-b-[2px] border-borderinput py-3 pb-5">
                         <p className="w-full text-xl font-semibold text-menuprimary-foreground">Pickup Time</p>
                         <div className="flex w-full flex-col gap-3 px-1 py-1">
                             <div

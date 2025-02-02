@@ -244,7 +244,7 @@ export default function MenuMobile() {
                     </div>
                 </div>
                 {/* Items */}
-                <div className="px-4 pt-2">
+                <div className="px-4 pt-2 pb-20">
                     <div className="flex flex-col gap-2 md:hidden">
                         {sorted.map((category) => (
                             <div
