@@ -195,9 +195,9 @@ export default function Menu() {
 
     return (
         <section className="bg-menubg flex w-full max-w-[1300px] flex-row">
-            {(!restaurant?.isTakeAwayEnabled && restaurant?.isDeliveryEnabled) && (
+            {/* {(!restaurant?.isTakeAwayEnabled && restaurant?.isDeliveryEnabled) && (
                 <DeliveryCheck setOrderType={setOrderType} />
-            )}
+            )} */}
             <div className="flex w-full flex-col gap-4 md:w-4/6">
                 <div
                     className="relative hidden h-[30vh] w-full bg-black md:flex"
