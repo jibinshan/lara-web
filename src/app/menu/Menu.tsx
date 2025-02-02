@@ -2,6 +2,7 @@
 
 import MenuItem from "@/app/menu/MenuItem";
 import CartDeletePopup from "@/components/popups/CartDeletePopup";
+import DeliveryCheck from "@/components/popups/DeliveryCheck";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
@@ -194,6 +195,9 @@ export default function Menu() {
 
     return (
         <section className="bg-menubg flex w-full max-w-[1300px] flex-row">
+            {(!restaurant?.isTakeAwayEnabled && restaurant?.isDeliveryEnabled) && (
+                <DeliveryCheck setOrderType={setOrderType} />
+            )}
             <div className="flex w-full flex-col gap-4 md:w-4/6">
                 <div
                     className="relative hidden h-[30vh] w-full bg-black md:flex"
@@ -299,15 +303,17 @@ export default function Menu() {
                                 >
                                     I&apos;ll Collect
                                 </Button>
-                                <Button
-                                    className={cn(
-                                        "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
-                                        orderType === 2 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary" : ""
-                                    )}
-                                    onClick={() => setOrderType(2)}
-                                >
-                                    Delivery
-                                </Button>
+                                <DeliveryCheck setOrderType={setOrderType}>
+                                    <Button
+                                        className={cn(
+                                            "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
+                                            orderType === 2 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary" : ""
+                                        )}
+                                    // onClick={() => setOrderType(2)}
+                                    >
+                                        Delivery
+                                    </Button>
+                                </DeliveryCheck>
                             </div>
                         )}
                         <Button
@@ -452,6 +458,6 @@ export default function Menu() {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 }

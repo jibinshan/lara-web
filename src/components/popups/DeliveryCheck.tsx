@@ -13,7 +13,7 @@ import toast from 'react-hot-toast';
 
 interface DeliveryCheckProps {
     setOrderType: (orderType: 2 | 3) => void
-    children: React.ReactNode;
+    children?: React.ReactNode;
 }
 
 const FormValidation = z.object({
@@ -25,6 +25,7 @@ type FormData = z.infer<typeof FormValidation>;
 
 const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
     const [open, setOpen] = useState(false);
+    const { restaurant } = useRestaurant()
     // const [success, setSuccess] = useState(false);
     // const [error, setError] = useState(false);
     const { apiUrl, restaurantID } = useRestaurant();
@@ -34,7 +35,11 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
             pinCode: "",
         }
     });
-
+    useEffect(() => {
+        if (!restaurant?.isTakeAwayEnabled && restaurant?.isDeliveryEnabled) {
+            setOpen(true)
+        }
+    }, [])
     const { mutate, isPending } = useMutation({
         mutationFn: async (data: FormData) => {
             const res: AxiosResponse<{
@@ -73,7 +78,9 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>{children}</DialogTrigger>
+            {(restaurant?.isDeliveryEnabled && restaurant.isTakeAwayEnabled) && (
+                <DialogTrigger asChild>{children}</DialogTrigger>
+            )}
             <DialogContent className="flex flex-col gap-3 w-[90%] md:w-full border-none rounded-none bg-menubackground lg:max-w-[465px] lg:h-[305px] p-0">
                 <DialogHeader className='py-5 px-5'>
                     <DialogTitle>
