@@ -380,7 +380,7 @@ export default function Menu() {
                                                         </div>
                                                     ))}
                                                 </div>
-                                                {/* <p className="w-full text-sm font-[300] tracking-[1.4px] text-menusecondary">{item.notes}</p> */}
+                                                <p className="w-full text-sm font-[300] tracking-[1.4px] text-menusecondary">{item.notes}</p>
                                                 <div className="flex w-full items-center justify-between pt-6">
                                                     <Link href={`/cart/${index}`} className="font-[400] capitalize text-menuprimary underline">
                                                         Edit Item

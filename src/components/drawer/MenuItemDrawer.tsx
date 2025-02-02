@@ -175,7 +175,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                                 value={note}
                                                 onChange={(e) => setNote(e.target.value)}
                                                 rows={3}
-                                                className="border-none bg-menusecondary-foreground"
+                                                className="border-none bg-menubackground"
                                             />
                                         </div>
                                     ) : (

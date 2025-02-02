@@ -175,7 +175,7 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                 <Icons.pencil />
                                 Add Note
                             </Label>
-                            <Textarea id="note" value={note} onChange={(e) => setNote(e.target.value)} rows={3} className="border-none bg-menusecondary-foreground" />
+                            <Textarea id="note" value={note} onChange={(e) => setNote(e.target.value)} rows={3} className="border-none bg-menubackground" />
                         </div>
                     ) : (
                         <p

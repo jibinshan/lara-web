@@ -102,6 +102,9 @@ const Cart = ({ }) => {
                             </div>
                           ))}
                         </div>
+                        <p className="text-lg font-[700] tracking-[1.8px] text-menusecondary">
+                          {item?.notes}
+                        </p>
                         <div className={cn("flex w-full items-center justify-between pt-0",
                           item.modifiers.length > 0 && "pt-3"
                         )}>

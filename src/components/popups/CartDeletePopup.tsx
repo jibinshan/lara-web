@@ -32,7 +32,7 @@ const CartDeletePopup: FC<CartDeletePopupProps> = ({ children, item }) => {
                 </div> */}
                 <DialogFooter>
                     <div className='w-full flex items-center justify-center gap-4 py-5 px-5'>
-                        <Button variant='outline' onClick={() => setOpen(false)} className='w-1/2 text-menusecondary hover:bg-menusecondary hover:text-menubackground'>NO</Button>
+                        <Button variant='outline' onClick={() => setOpen(false)} className='w-1/2 border-[1px] border-menusecondary text-menusecondary  hover:bg-menusecondary hover:text-menubackground'>NO</Button>
                         <Button onClick={() => {
                             removeItem(item._idMenuItem, item.modifiers);
                             setOpen(false)

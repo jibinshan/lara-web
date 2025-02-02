@@ -224,7 +224,7 @@ const MenuItems: FC<MenuItemProps> = ({ itemId }) => {
                                 value={note}
                                 onChange={(e) => setNote(e.target.value)}
                                 rows={3}
-                                className="border-none bg-menusecondary-foreground"
+                                className="border-none bg-menubackground"
                             />
                         </div>
                     ) : (

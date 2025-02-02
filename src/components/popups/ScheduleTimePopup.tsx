@@ -133,7 +133,7 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
                         <div className="flex w-full flex-col justify-end gap-2">
                             <Button
                                 type="button"
-                                className="text-base font-medium leading-[80%] bg-menuprimary text-menuforeground hover:to-buttonhover"
+                                className="text-base font-medium leading-[80%] bg-menuprimary text-menuforeground hover:bg-buttonhover"
                                 onClick={() => {
                                     setScheduleTime({
                                         time: form.watch("time"),

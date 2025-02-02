@@ -7,12 +7,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios, { type AxiosResponse } from "axios";
 import { ArrowRight, Calendar, CalendarClock, MapPin } from "lucide-react";
-import { Label } from "@/components/ui/label";
+// import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Icons } from "@/components/Icon";
 import ScheduleTImePopup from "@/components/popups/ScheduleTimePopup";
 import { Button } from "@/components/ui/button";
-import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import Link from "next/link";
@@ -29,6 +29,7 @@ const FormValidation = z.object({
     name: z.string().min(2, "Oops! We need your name to personalise your delicious order. Please enter it to continue."),
     phone: z.string().min(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order.").max(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order.").regex(/^\d+$/),
     email: z.string().min(2, "Oops! That email doesn’t look right. We need it to send you your delicious meal details.").email(),
+    notes: z.string().optional(),
 });
 
 interface ScheduleTime {
@@ -54,7 +55,7 @@ const Pickup = () => {
         time: "",
         date: "",
     });
-    const [note, setNote] = useState("");
+    // const [note, setNote] = useState("");
     const form = useForm<FormData>({
         resolver: zodResolver(FormValidation),
         defaultValues: {},
@@ -76,6 +77,7 @@ const Pickup = () => {
                 description: "Order for " + data.name,
                 orderStatus: "placed_order",
                 items: cartItems,
+                notes: data.notes,
                 userDetails: {
                     name: data.name,
                     email: data.email,
@@ -227,20 +229,36 @@ const Pickup = () => {
                             </ScheduleTImePopup>
                         </div>
                         <div className="w-full rounded-lg">
-                            <div className="z-40 flex w-full flex-col gap-2">
+                            {/* <div className="z-40 flex w-full flex-col gap-2">
                                 <Label htmlFor="note" className="flex cursor-pointer items-center gap-2 text-menusecondary pt-10">
                                     <Icons.pencil />
                                     Packing/Pickup Instructions
                                 </Label>
                                 <Textarea
-                                    id="note"
+                                    id="notes"
                                     placeholder="Write your Note here"
                                     value={note}
                                     onChange={(e) => setNote(e.target.value)}
                                     rows={3}
                                     className="border-none bg-inputbg lg:w-4/5"
                                 />
-                            </div>
+                            </div> */}
+                            <FormField
+                                control={form.control}
+                                name="notes"
+                                render={({ field }) => (
+                                    <FormItem className="flex w-full flex-col gap-2">
+                                        <FormLabel className="flex cursor-pointer items-center gap-2 text-menusecondary pt-10">
+                                            <Icons.pencil />
+                                            Packing/Pickup Instructions
+                                        </FormLabel>
+                                        <FormControl>
+                                            <Textarea rows={3} className="border-none bg-inputbg placeholder:text-placeholder lg:w-4/5" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                         </div>
                     </div>
 

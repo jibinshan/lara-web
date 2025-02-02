@@ -95,7 +95,7 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
                                             <Input
                                                 placeholder="Post code"
                                                 {...field}
-                                                className="h-12 rounded-none border-none bg-[#0c0c0c] outline-none focus-visible:border-b-[2px] focus-visible:ring-0"
+                                                className="h-12 rounded-none border-none bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
