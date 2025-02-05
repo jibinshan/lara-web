@@ -164,9 +164,9 @@ const Cart = ({}) => {
                     </div>
                 </div>
             </div>
-            <div className="fixed bottom-0 left-0 z-40 flex w-full flex-col gap-4">
+            <div className="fixed bottom-0 left-0 z-40 flex w-full flex-col gap-4 bg-background">
                 <div className="flex w-full items-center justify-between px-4">
-                    <p className="text-lg font-bold capitalize tracking-[1px] text-menuprimary">your Total Bill</p>
+                    <p className="text-lg font-bold capitalize tracking-[1px] text-menuprimary">Your Total Bill</p>
                     <p className="text-lg font-bold text-menuprimary">
                         {"£"} {formattedItemPrice(totalAmount)}
                     </p>
