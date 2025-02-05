@@ -57,6 +57,7 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
             // setSuccess(true);
             // setError(false);
             setOrderType(2);
+            setOpen(false)
         },
         onError: () => {
             toast.error("Oops! Delivery isn’t available here. But you can still place an order for pickup!");
