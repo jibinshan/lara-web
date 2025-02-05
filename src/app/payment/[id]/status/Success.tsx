@@ -37,6 +37,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
         if (data?._id) {
             clearCart();
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
 
     if (!data) {
