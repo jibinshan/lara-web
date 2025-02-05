@@ -143,11 +143,12 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                                                     GetModifiersFromItemId(item, items, index).map((modifier) => {
                                                                         if (modifier._id === item.modifiers.find((modifier) => modifier.defaultSelection)?.defaultSelection) {
                                                                             return `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`;
-                                                                        } else {
-                                                                            const _item = GetModifiersFromItemId(item, items, index);
-                                                                            if (!_item[0]) return null;
-                                                                            return `${getCurrencySymbol(_item[0].price.currency)} ${formattedItemPrice(_item[0].price.value)}`;
                                                                         }
+                                                                        // else {
+                                                                        //     const _item = GetModifiersFromItemId(item, items, index);
+                                                                        //     if (!_item[0]) return null;
+                                                                        //     return `${getCurrencySymbol(_item[0].price.currency)} ${formattedItemPrice(_item[0].price.value)}`;
+                                                                        // }
                                                                     })
                                                                 )
                                                             )}
