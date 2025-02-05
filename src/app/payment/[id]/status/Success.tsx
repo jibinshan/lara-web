@@ -66,13 +66,13 @@ const Success: FC<SuccessProps> = ({ id }) => {
             <div className="flex w-full flex-col items-center justify-center">
                 {/*head section */}
                 <div className="flex w-full flex-row items-center justify-between bg-menubackground px-4 py-4 md:flex-col md:items-start md:gap-12 md:px-24 md:py-8">
-                    <Link href="/menu" className="md:hidden">
+                    <Link href="/menu" replace className="md:hidden">
                         <Image src={"/images/home/checkout/arrow.png"} width={30} height={26} alt="heart" />
                     </Link>
-                    <Link href={"#"} className="pt-4">
+                    <Link href="/" replace className="pt-4">
                         <Image src={"/images/logo.png"} width={129} height={48} alt="heart" />
                     </Link>
-                    <Link href="/menu" className="font-manrope hidden items-center justify-center gap-2 px-[120px] text-lg text-menusecondary md:flex">
+                    <Link href="/menu" replace className="font-manrope hidden items-center justify-center gap-2 px-[120px] text-lg text-menusecondary md:flex">
                         <MoveLeft />
                         <p className="font-manrope text-lg text-menusecondary">Back To Menu</p>
                     </Link>
@@ -103,7 +103,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                         </div>
                         <h4 className="font-manrope text-center text-2xl font-[500] leading-[150%] text-menubackground md:text-4xl">We’ve got your order</h4>
                         <div className="flex flex-col">
-                            <h5 className="font-manrope text-center text-base font-[800] leading-[150%] text-menubackground md:text-lg border-b-[1px] border-b-black">
+                            <h5 className="font-manrope border-b-[1px] border-b-black text-center text-base font-[800] leading-[150%] text-menubackground md:text-lg">
                                 Scheduled {data?.orderType === 2 ? "Delivery" : "Pickup"} Time
                             </h5>
                             <span className="font-manrope text-center text-lg font-[800] leading-[150%] text-menubackground md:text-xl">
@@ -148,7 +148,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                     <div className="flex flex-col gap-3 pb-4 md:pb-6">
                         <div className="flex flex-row justify-between border-b border-menuprimary pb-2" onClick={() => setClose(!close)}>
                             <h5 className="font-manrope text-lg font-[700] leading-[150%] text-menusecondary md:text-xl">View order details</h5>
-                            <ChevronDown className={cn("h-6 w-6 transition-all duration-500 ease-in rotate-180", !close && "rotate-0")} />
+                            <ChevronDown className={cn("h-6 w-6 rotate-180 transition-all duration-500 ease-in", !close && "rotate-0")} />
                         </div>
                         <div
                             className={cn(
@@ -170,7 +170,8 @@ const Success: FC<SuccessProps> = ({ id }) => {
                             {data.cart.map((item, index) => (
                                 <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={index}>
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
-                                        {item.quantity} x {item?.menuItemName}<br />
+                                        {item.quantity} x {item?.menuItemName}
+                                        <br />
                                         {item.notes}
                                     </h5>
                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
@@ -210,7 +211,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                     Powered By Foodo
                 </Link>
             </div>
-        </section >
+        </section>
     );
 };
 
