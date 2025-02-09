@@ -296,7 +296,7 @@ const Checkout = () => {
                               </div>
                             );
                           })}
-                          <p className="text-sm font-[300]">{item.notes}</p>
+                          <p className="text-sm font-[300] text-menusecondary"><span className="border-b-[1px] font-[500] border-b-menusecondary">Instructions</span><br />{item.notes}</p>
                           <p className="text-lg font-normal text-menusecondary">
                             {getCurrencySymbol(item.price.currency)}{" "}
                             {formattedItemPrice(item.price.value)}

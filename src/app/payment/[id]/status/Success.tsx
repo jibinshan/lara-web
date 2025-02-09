@@ -170,6 +170,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
                                         {item.quantity} x {item?.menuItemName}
                                         <br />
+                                        <span className="border-b-[1px] border-b-menusecondary">Instructions</span><br />
                                         {item.notes}
                                     </h5>
                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
@@ -184,12 +185,12 @@ const Success: FC<SuccessProps> = ({ id }) => {
                 {/*last section */}
                 <div className="flex w-full flex-col bg-menubackground md:w-2/4 gap-4">
                     {data?.notes && (
-                        <div className="flex w-full flex-col items-center justify-center gap-2 bg-menuprimary px-2 py-4">
-                            <p className="w-full text-start font-manrope text-xs font-[500] capitalize leading-[20px] tracking-[0.74px] text-menubackground md:text-lg">
-                                Instructions Given
+                        <div className="flex w-full flex-col items-center justify-center gap-2 bg-menubackground px-2 py-4">
+                            <p className="w-full text-start font-manrope text-xs font-[500] capitalize leading-[20px] tracking-[0.74px] text-menusecondary md:text-lg">
+                                Packaging Instructions Given
                             </p>
                             {/* <Image src={"/images/home/checkout/heart.png"} width={55} height={42} alt="heart" /> */}
-                            <p className="w-full text-start font-manrope text-xs font-[400] capitalize text-menubackground md:text-base">
+                            <p className="w-full text-start font-manrope text-xs font-[400] capitalize text-menusecondary md:text-base">
                                 {data?.notes}
                             </p>
                         </div>
