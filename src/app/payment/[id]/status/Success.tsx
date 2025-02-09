@@ -165,9 +165,6 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
                             </div>
-                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
-                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">{data?.notes}</h5>
-                            </div>
                             {data.cart.map((item, index) => (
                                 <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={index}>
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
@@ -185,7 +182,18 @@ const Success: FC<SuccessProps> = ({ id }) => {
                 </div>
 
                 {/*last section */}
-                <div className="flex w-full flex-col bg-menubackground md:w-2/4">
+                <div className="flex w-full flex-col bg-menubackground md:w-2/4 gap-4">
+                    {data?.notes && (
+                        <div className="flex w-full flex-col items-center justify-center gap-2 bg-menuprimary px-2 py-4">
+                            <p className="w-full text-start font-manrope text-xs font-[500] capitalize leading-[20px] tracking-[0.74px] text-menubackground md:text-lg">
+                                Instructions Given
+                            </p>
+                            {/* <Image src={"/images/home/checkout/heart.png"} width={55} height={42} alt="heart" /> */}
+                            <p className="w-full text-start font-manrope text-xs font-[400] capitalize text-menubackground md:text-base">
+                                {data?.notes}
+                            </p>
+                        </div>
+                    )}
                     <div className="flex w-full flex-row items-center justify-center gap-2 bg-menuprimary px-2 py-4">
                         {/* <Image src={"/images/home/checkout/heart.png"} width={55} height={42} alt="heart" /> */}
                         <p className="font-manrope text-xs font-[500] capitalize leading-[20px] tracking-[0.74px] text-menubackground md:text-lg">

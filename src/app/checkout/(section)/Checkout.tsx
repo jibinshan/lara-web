@@ -205,7 +205,7 @@ const Checkout = () => {
                   restaurant?.serviceCharge ?? 0,
                 ) ? (
                 <p>
-                  Your basket is just under &nbsp; {restaurant?.minimumCollectionOrderAmount}. Why not try something new from our delicious offerings?
+                  Your basket is just under &nbsp; £{restaurant?.minimumCollectionOrderAmount}. Why not try something new from our delicious offerings?
 
                 </p>
               ) : (
@@ -225,7 +225,7 @@ const Checkout = () => {
                   restaurant?.serviceCharge ?? 0,
                 ) ? (
                 <p>
-                  Your order must total at least &nbsp; {restaurant?.minimumDeliveryOrderAmount}. Why not have another look and add a few more tempting treats?
+                  Your order must total at least &nbsp; £{restaurant?.minimumDeliveryOrderAmount}. Why not have another look and add a few more tempting treats?
                 </p>
               ) : (
                 <Delivery />
@@ -296,6 +296,7 @@ const Checkout = () => {
                               </div>
                             );
                           })}
+                          <p className="text-sm font-[300]">{item.notes}</p>
                           <p className="text-lg font-normal text-menusecondary">
                             {getCurrencySymbol(item.price.currency)}{" "}
                             {formattedItemPrice(item.price.value)}
