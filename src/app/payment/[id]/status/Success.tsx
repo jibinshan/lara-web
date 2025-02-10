@@ -1,5 +1,6 @@
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
+import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { cn } from "@/lib/utils";
 import type { RefreshPayment } from "@/types/refresh-payment.type";
@@ -165,12 +166,27 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
                             </div>
+                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Service Charge</h5>
+                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£
+                                    {calculateServiceCharge(
+                                        data?.totalCartAmount,
+                                        restaurant?.serviceCharge ?? 0,
+                                    ).toFixed(2)}
+                                </span>
+                            </div>
                             {data.cart.map((item, index) => (
                                 <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={index}>
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
                                         {item.quantity} x {item?.menuItemName}
                                         <br />
-                                        <span className="border-b-[1px] border-b-menusecondary">Instructions</span><br />
+
+                                        {item?.notes && (
+                                            <span className="border-b-[1px] border-b-menusecondary">Instructions</span>
+
+                                        )
+                                        }
+                                        < br />
                                         {item.notes}
                                     </h5>
                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
@@ -221,7 +237,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                     Powered By Foodo
                 </Link>
             </div>
-        </section>
+        </section >
     );
 };
 
