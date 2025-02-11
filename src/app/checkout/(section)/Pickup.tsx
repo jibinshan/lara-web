@@ -215,7 +215,7 @@ const Pickup = () => {
                                     <p className="text-menuprimary-foreground">{restaurant?.busyMode ? restaurant?.deliveryETA + restaurant.busyModeTime : restaurant?.deliveryETA} min</p>
                                 </div>
                             </div>
-                            <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="pickup">
+                            <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="Collection">
                                 <div
                                     className={cn("flex w-full items-center gap-3 border-[2px] border-inputbg px-4 py-3 lg:w-2/3", pickup === "Schedule" && "border-menuprimary")}
                                     onClick={() => setPickUp("Schedule")}
@@ -223,7 +223,7 @@ const Pickup = () => {
                                     <CalendarClock />
                                     <div className="flex flex-col">
                                         <p className="text-lg font-semibold text-menusecondary">Schedule</p>
-                                        <p className="text-menuprimary-foreground">{scheduleTime.date || scheduleTime.time ? `${scheduleTime?.date},${scheduleTime.time} ` : "Choose a time"}</p>
+                                        <p className="text-menuprimary-foreground">{scheduleTime.date || scheduleTime.time ? `${scheduleTime?.date},\u00A0${scheduleTime.time} ` : "Choose a time"}</p>
                                     </div>
                                 </div>
                             </ScheduleTImePopup>

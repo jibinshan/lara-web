@@ -133,7 +133,7 @@ const Delivery = () => {
                                     <p className="text-menuprimary-foreground">{restaurant?.busyMode ? restaurant?.deliveryETA + restaurant.busyModeTime : restaurant?.deliveryETA} min</p>
                                 </div>
                             </div>
-                            <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="delivery">
+                            <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="Delivery">
                                 <div
                                     className={cn("flex w-full items-center gap-3 border-[2px] border-borderinput px-4 py-3 lg:w-2/3", pickup === "Schedule" && "border-menuprimary")}
                                     onClick={() => setPickUp("Schedule")}
@@ -141,7 +141,7 @@ const Delivery = () => {
                                     <CalendarClock />
                                     <div className="flex flex-col">
                                         <p className="text-lg font-semibold text-menusecondary">Schedule</p>
-                                        <p className="text-menuprimary-foreground">{scheduleTime.date || scheduleTime.time ? `${scheduleTime?.date},${scheduleTime.time} ` : "Choose a time"}</p>
+                                        <p className="text-menuprimary-foreground">{scheduleTime.date || scheduleTime.time ? `${scheduleTime?.date},\u00A0${scheduleTime.time} ` : "Choose a time"}</p>
                                     </div>
                                 </div>
                             </ScheduleTImePopup>
@@ -248,7 +248,7 @@ const Delivery = () => {
                                     <FormItem className="w-full lg:w-4/5">
                                         <FormControl>
                                             <Input
-                                                placeholder="Pin code"
+                                                placeholder="PostCode"
                                                 {...field}
                                                 className="h-12 rounded-none border-b-[3px] placeholder:text-placeholder border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />

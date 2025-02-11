@@ -100,7 +100,7 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
             <DialogTrigger asChild>{children}</DialogTrigger>
             <DialogContent className="flex max-w-[525px] flex-col gap-6 border-[1px] border-borderinput bg-menubackground">
                 <DialogHeader>
-                    <DialogTitle className="text-menusecondary">Schedule pick - Up</DialogTitle>
+                    <DialogTitle className="text-menusecondary">Schedule &nbsp; {orderType}</DialogTitle>
                 </DialogHeader>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full flex-col gap-3">
@@ -117,9 +117,9 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
                                         >
                                             {timeslot?.map((time) => (
                                                 <FormItem className="flex items-center justify-between space-y-0" key={time}>
-                                                    <Label className="text-base font-semibold text-menusecondary">{time}</Label>
+                                                    <Label className="w-11/12 text-base font-semibold text-menusecondary" htmlFor={time}>{time}</Label>
                                                     <FormControl>
-                                                        <RadioGroupItem value={time} className="border-menuprimary" />
+                                                        <RadioGroupItem value={time} className="border-menuprimary" id={time} />
                                                     </FormControl>
                                                 </FormItem>
                                             ))}
@@ -137,7 +137,7 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
                                 onClick={() => {
                                     setScheduleTime({
                                         time: form.watch("time"),
-                                        date: format(Date.now(), "yyyy-MM-dd"),
+                                        date: format(Date.now(), "dd/MM/yyyy"),
                                     });
                                     setOpen(false);
                                 }}
@@ -151,7 +151,7 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
                     </form>
                 </Form>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     );
 };
 
