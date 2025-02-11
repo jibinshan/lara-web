@@ -169,14 +169,16 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                                 }}
                                             >
                                                 <Icons.pencil />
-                                                Add Note
+                                                cooking Instruction
                                             </Label>
                                             <Textarea
                                                 id="note"
                                                 value={note}
                                                 onChange={(e) => setNote(e.target.value)}
                                                 rows={3}
-                                                className="border-none bg-menubackground"
+                                                className="border-none bg-menubackground placeholder:text-placeholder text-[17px]"
+                                                maxLength={200}
+                                                placeholder="write here"
                                             />
                                         </div>
                                     ) : (

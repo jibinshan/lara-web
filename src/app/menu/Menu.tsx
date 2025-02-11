@@ -296,8 +296,8 @@ export default function Menu() {
                             <div className="flex w-full gap-4">
                                 <Button
                                     className={cn(
-                                        "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
-                                        orderType === 3 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary" : ""
+                                        "w-full rounded-none border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary",
+                                        orderType === 3 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover" : ""
                                     )}
                                     onClick={() => setOrderType(3)}
                                 >
@@ -306,8 +306,8 @@ export default function Menu() {
                                 <DeliveryCheck setOrderType={setOrderType}>
                                     <Button
                                         className={cn(
-                                            "w-full rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover",
-                                            orderType === 2 ? "border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary" : ""
+                                            "w-full rounded-none border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary",
+                                            orderType === 2 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover" : ""
                                         )}
                                     // onClick={() => setOrderType(2)}
                                     >

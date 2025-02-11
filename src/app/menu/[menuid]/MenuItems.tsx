@@ -173,9 +173,9 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                 }}
                             >
                                 <Icons.pencil />
-                                Add Note
+                                Cooking Instruction
                             </Label>
-                            <Textarea id="note" value={note} onChange={(e) => setNote(e.target.value)} rows={3} className="border-none bg-menubackground" />
+                            <Textarea id="note" value={note} onChange={(e) => setNote(e.target.value)} rows={3} className="border-none bg-menubackground placeholder:text-placeholder text-[17px]" placeholder="write here" maxLength={200} />
                         </div>
                     ) : (
                         <p
