@@ -19,7 +19,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL;
     const { restaurant } = useRestaurant();
     const { clearCart } = useCart();
-    const [close, setClose] = useState(true);
+    const [close, setClose] = useState(false);
     const { data } = useQuery({
         queryKey: ["stripe", id, "refresh-payment"],
         queryFn: async () => {
@@ -148,7 +148,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                         </div>
                     </div>
                     <div className="flex flex-col gap-3 pb-4 md:pb-6">
-                        <div className="flex flex-row justify-between border-b border-menuprimary pb-2" onClick={() => setClose(!close)}>
+                        <div className="flex flex-row justify-between border-b-[0.5px] border-menuprimary pb-2" onClick={() => setClose(!close)}>
                             <h5 className="font-manrope text-lg font-[700] leading-[150%] text-menusecondary md:text-xl">View order details</h5>
                             <ChevronDown className={cn("h-6 w-6 rotate-180 transition-all duration-500 ease-in", !close && "rotate-0")} />
                         </div>
@@ -157,8 +157,8 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                 "flex w-full flex-col gap-3 overflow-hidden",
                             )}
                         >
-                            {data.cart.map((item, index) => (
-                                <div className={cn("flex flex-row justify-between border-b border-menuprimary pb-2 transition-all duration-500 ease-in", close ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0")} key={index}>
+                            {close && data.cart.map((item, index) => (
+                                <div className={cn("flex flex-row justify-between border-b border-menuprimary pb-2 transition-all duration-500 ease-in max-h-[1000px] ")} key={index}>
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
                                         {item.quantity} x {item?.menuItemName}
                                         <br />
@@ -168,7 +168,11 @@ const Success: FC<SuccessProps> = ({ id }) => {
 
                                         )
                                         }
-                                        < br />
+                                        {item?.notes &&
+                                            (
+                                                < br />
+                                            )
+                                        }
                                         {item.notes}
                                     </h5>
                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
@@ -230,7 +234,7 @@ const Success: FC<SuccessProps> = ({ id }) => {
                         </div>
                     )}
                 </div>
-            </div>
+            </div >
             <div className="flex w-full justify-end bg-menubackground px-7 py-6">
                 <Link href="https://foodo.ai" className="text-primary hover:underline" target="_blank">
                     Powered By Foodo
