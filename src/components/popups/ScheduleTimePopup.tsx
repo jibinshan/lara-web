@@ -137,7 +137,7 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
                                 onClick={() => {
                                     setScheduleTime({
                                         time: form.watch("time"),
-                                        date: format(Date.now(), "dd/MM/yyyy"),
+                                        date: format(Date.now(), "yyyy-MM-dd"),
                                     });
                                     setOpen(false);
                                 }}
