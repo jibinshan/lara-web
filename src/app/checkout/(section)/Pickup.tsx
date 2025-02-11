@@ -19,6 +19,7 @@ import Link from "next/link";
 import { Input } from "@/components/ui/input";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { calculateServiceCharge } from "@/lib/calculate-service-charge";
+import { format } from "date-fns";
 
 // interface PickupProps {
 
@@ -223,7 +224,7 @@ const Pickup = () => {
                                     <CalendarClock />
                                     <div className="flex flex-col">
                                         <p className="text-lg font-semibold text-menusecondary">Schedule</p>
-                                        <p className="text-menuprimary-foreground">{scheduleTime.date || scheduleTime.time ? `${scheduleTime?.date},\u00A0${scheduleTime.time} ` : "Choose a time"}</p>
+                                        <p className="text-menuprimary-foreground">{scheduleTime.date || scheduleTime.time ? `${format(scheduleTime?.date, "dd-mm-yyyy")},\u00A0${scheduleTime.time} ` : "Choose a time"}</p>
                                     </div>
                                 </div>
                             </ScheduleTImePopup>
