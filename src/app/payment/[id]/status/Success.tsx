@@ -158,23 +158,6 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                 close ? "max-h-[1000px] opacity-100" : "max-h-0 opacity-0"
                             )}
                         >
-                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
-                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>
-                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
-                            </div>
-                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
-                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
-                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
-                            </div>
-                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
-                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Service Charge</h5>
-                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£
-                                    {calculateServiceCharge(
-                                        data?.totalCartAmount,
-                                        restaurant?.serviceCharge ?? 0,
-                                    ).toFixed(2)}
-                                </span>
-                            </div>
                             {data.cart.map((item, index) => (
                                 <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={index}>
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
@@ -194,6 +177,23 @@ const Success: FC<SuccessProps> = ({ id }) => {
                                     </span>
                                 </div>
                             ))}
+                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>
+                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
+                            </div>
+                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Service Charge</h5>
+                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£
+                                    {calculateServiceCharge(
+                                        data?.totalCartAmount,
+                                        restaurant?.serviceCharge ?? 0,
+                                    ).toFixed(2)}
+                                </span>
+                            </div>
+                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
+                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
+                            </div>
                         </div>
                     </div>
                 </div>
