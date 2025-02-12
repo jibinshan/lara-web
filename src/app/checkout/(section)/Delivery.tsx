@@ -14,7 +14,7 @@ import axios, { type AxiosResponse } from "axios";
 import { format } from "date-fns";
 import { Calendar, CalendarClock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -46,12 +46,29 @@ interface errordata {
 
 type FormData = z.infer<typeof FormValidation>;
 
+type DeliveryData = {
+    name?: string;
+    phone?: string;
+    email?: string;
+    notes?: string;
+    address?: string;
+    city?: string;
+    pinCode?: string;
+    scheduleTime: {
+        time?: string;
+        date?: string;
+    };
+    pickup: string;
+};
+
+
 const Delivery = () => {
     const { apiUrl, restaurantID, restaurant } = useRestaurant();
     const { cartValue } = useCart();
     const router = useRouter();
     const { cartItems } = useCart();
-    const [pickup, setPickUp] = useState<string>("Standard");
+    const parsedPickup = JSON.parse(localStorage.getItem('delivery') as string) as DeliveryData
+    const [pickup, setPickUp] = useState<string>(parsedPickup.pickup ? parsedPickup.pickup : "Standard");
     const [scheduleTime, setScheduleTime] = useState<ScheduleTime>({
         time: "",
         date: "",
@@ -112,6 +129,58 @@ const Delivery = () => {
             toast.error(error?.response?.data?.msg);
         },
     });
+
+    useEffect(() => {
+        const localpickup = localStorage.getItem('delivery')
+        if (localpickup) {
+            // form.setValue('name')
+            const parsedPickup = JSON.parse(localpickup) as DeliveryData
+            form.setValue('name', parsedPickup.name as string)
+            form.setValue('phone', parsedPickup.phone as string)
+            form.setValue('email', parsedPickup.email as string)
+            form.setValue('notes', parsedPickup.notes as string)
+            form.setValue('address', parsedPickup.address as string)
+            form.setValue('city', parsedPickup.city as string)
+            form.setValue('pinCode', parsedPickup.pinCode as string)
+            if (parsedPickup.pickup) {
+                setPickUp(parsedPickup.pickup)
+                console.log(parsedPickup.pickup, "====parsedPickup");
+                if (parsedPickup.pickup === "Standard") {
+                    setScheduleTime({
+                        date: '',
+                        time: ''
+                    } as ScheduleTime)
+                }
+            }
+            if (parsedPickup?.scheduleTime as ScheduleTime &&
+                parsedPickup?.scheduleTime?.date &&
+                parsedPickup.scheduleTime.time &&
+                parsedPickup.scheduleTime.date.length > 0 &&
+                parsedPickup.scheduleTime.time.length > 0) {
+                setScheduleTime({
+                    date: parsedPickup.scheduleTime.date,
+                    time: parsedPickup.scheduleTime.time
+                } as ScheduleTime)
+            }
+        }
+    }, [])
+
+    useEffect(() => {
+        localStorage.setItem("delivery", JSON.stringify({
+            name: form.watch("name"),
+            phone: form.watch("phone"),
+            email: form.watch("email"),
+            notes: form.watch("notes"),
+            address: form.watch('address'),
+            city: form.watch('city'),
+            pinCode: form.watch('pinCode'),
+            scheduleTime: {
+                time: scheduleTime.time,
+                date: scheduleTime.date,
+            },
+            pickup: pickup
+        }))
+    }, [form.watch("name"), scheduleTime, form.watch("phone"), form.watch("email"), form.watch("notes"), form, pickup])
 
 
     const onSubmit = (data: FormData) => {

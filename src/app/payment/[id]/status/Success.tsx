@@ -22,6 +22,9 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
     useEffect(() => {
         if (data?._id) {
             clearCart();
+            localStorage.removeItem('pickup')
+            localStorage.removeItem('delivery')
+            localStorage.removeItem('scrollCategory')
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
