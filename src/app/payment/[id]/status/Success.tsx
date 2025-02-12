@@ -156,16 +156,20 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                         </span>
                                     </div>
                                 ))}
-                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
-                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>
-                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
-                            </div>
-                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
-                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Service Charge</h5>
-                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
-                                    £{calculateServiceCharge(data?.totalCartAmount, restaurant?.serviceCharge ?? 0).toFixed(2)}
-                                </span>
-                            </div>
+                            {close && (
+                                <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                    <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>
+                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
+                                </div>
+                            )}
+                            {close && (
+                                <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                    <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Service Charge</h5>
+                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                        £{calculateServiceCharge(data?.totalCartAmount, restaurant?.serviceCharge ?? 0).toFixed(2)}
+                                    </span>
+                                </div>
+                            )}
                             <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
