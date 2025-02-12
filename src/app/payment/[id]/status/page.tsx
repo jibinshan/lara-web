@@ -2,9 +2,9 @@
 import type { RefreshPayment } from "@/types/refresh-payment.type";
 import { useQuery } from "@tanstack/react-query";
 import axios, { type AxiosResponse } from "axios";
-import Success from "./Success";
 import Image from "next/image";
-import Failed from "@/app/payment/[id]/status/Failed";
+import Failed from "./Failed";
+import Success from "./Success";
 
 const PaymentStatusPage = (props: {
     params: {
