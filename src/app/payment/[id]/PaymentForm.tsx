@@ -1,3 +1,4 @@
+'use client'
 import { Button } from "@/components/ui/button";
 import { useRestaurant } from "@/context/RestaurantContext";
 import {
@@ -5,6 +6,8 @@ import {
   useElements,
   useStripe,
 } from "@stripe/react-stripe-js";
+import { MoveLeft } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { useState, type FC } from "react";
 
 const PaymentForm: FC<{
@@ -14,6 +17,7 @@ const PaymentForm: FC<{
   const { restaurant } = useRestaurant();
   const stripe = useStripe();
   const elements = useElements();
+  const router = useRouter()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -41,6 +45,9 @@ const PaymentForm: FC<{
       onSubmit={handleSubmit}
       className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4"
     >
+      <div className="w-full flex">
+        <MoveLeft onClick={() => router.push('/checkout')} />
+      </div>
       <PaymentElement
         className="w-full max-w-[400px]"
         options={{

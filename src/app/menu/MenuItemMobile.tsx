@@ -28,13 +28,12 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
     const [open, setOpen] = useState(false);
     const isOpen = isRestaurantOpen(restaurant);
 
-    console.log(open);
 
     const getcartitem = (item: MenuItem) => {
         const cartitem = cartItems.filter((cartItem) => cartItem._idMenuItem === item._id);
         return cartitem[cartitem.length - 1]?.quantity;
     };
-
+    console.log(open);
     return (
         item && (
             <section className="z-10 flex h-fit w-full flex-row items-center overflow-hidden bg-itembackground px-4 py-4">

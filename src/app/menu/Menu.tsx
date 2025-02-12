@@ -192,6 +192,20 @@ export default function Menu() {
 
         // setExistCategory(updatedCategories);
     }, [organizedMenu]);
+    // useEffect(() => {
+
+    // }, [activeCategory])
+
+    const setlocalstorage = (categoryId: string) => {
+        localStorage.setItem("scrollCategory", categoryId)
+    }
+
+    useEffect(() => {
+        if (localStorage.getItem('scrollCategory')) {
+            scrollToCategory(localStorage.getItem('scrollCategory') as string)
+            setActiveCategory(localStorage.getItem('scrollCategory') as string)
+        }
+    }, [])
 
     return (
         <section className="bg-menubg flex w-full max-w-[1300px] flex-row">
@@ -219,6 +233,9 @@ export default function Menu() {
                     <div ref={categoryNavRef} className="hidden-scrollbar flex overflow-x-auto py-2">
                         <div className="flex gap-4">
                             {organizedMenu.map((category) => {
+                                if (activeCategory === category._id) {
+                                    setlocalstorage(category._id)
+                                }
                                 return category.items.length > 0 ? (
                                     <Button
                                         key={category._id}
@@ -297,7 +314,7 @@ export default function Menu() {
                                 <Button
                                     className={cn(
                                         "w-full rounded-none border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary",
-                                        orderType === 3 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover" : ""
+                                        orderType === 3 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-menuprimary hover:text-menuforeground" : ""
                                     )}
                                     onClick={() => setOrderType(3)}
                                 >
@@ -307,7 +324,7 @@ export default function Menu() {
                                     <Button
                                         className={cn(
                                             "w-full rounded-none border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary",
-                                            orderType === 2 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-buttonhover" : ""
+                                            orderType === 2 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-menuprimary hover:text-menuforeground" : ""
                                         )}
                                     // onClick={() => setOrderType(2)}
                                     >

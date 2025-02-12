@@ -161,7 +161,7 @@ const Checkout = () => {
           >
             <Button
               className="w-fit p-0 text-menusecondary text-lg font-[500] tracking-[1px] hidden md:flex gap-2"
-              onClick={() => router.back()}
+              onClick={() => router.push('/menu')}
               variant="link"
             >
               <MoveLeft /> <span>Back to Menu</span>

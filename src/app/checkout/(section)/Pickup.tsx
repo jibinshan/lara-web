@@ -114,7 +114,9 @@ const Pickup = () => {
             toast.error(error?.response?.data?.msg);
         },
     });
-
+    // useEffect(() => {
+    //     localStorage.setItem()
+    // }, [])
     const onSubmit = (data: FormData) => {
         return mutate(data);
     };
