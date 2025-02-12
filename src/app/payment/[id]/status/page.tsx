@@ -36,8 +36,8 @@ const PaymentStatusPage = (props: {
         );
     }
     return (
-        <main className="flex h-full min-h-screen w-full flex-col items-center justify-center gap-2">
-            {data.onlinePayemtInfo[0]?.status === "FAILED" ? <Failed data={data} /> : <Success data={data} id={params.id} />}
+        <main className="flex h-full min-h-screen w-full flex-col items-center justify-center gap-2 bg-menubackground">
+            {data.onlinePayemtInfo[0]?.status === "FAILED" ? <Failed /> : <Success data={data} id={params.id} />}
         </main>
     );
 };

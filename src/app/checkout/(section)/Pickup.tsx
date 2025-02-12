@@ -65,7 +65,7 @@ const Pickup = () => {
     const router = useRouter();
     const { cartItems } = useCart();
     const parsedPickup = JSON.parse(localStorage.getItem('pickup') as string) as PickupData
-    const [pickup, setPickUp] = useState<string>(parsedPickup.pickup ? parsedPickup.pickup : "Standard");
+    const [pickup, setPickUp] = useState<string>(parsedPickup?.pickup ? parsedPickup.pickup : "Standard");
     const [scheduleTime, setScheduleTime] = useState<ScheduleTime>({
         time: "",
         date: "",
