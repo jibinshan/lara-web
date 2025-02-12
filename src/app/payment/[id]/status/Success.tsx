@@ -4,35 +4,20 @@ import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { cn } from "@/lib/utils";
 import type { RefreshPayment } from "@/types/refresh-payment.type";
-import { useQuery } from "@tanstack/react-query";
-import axios, { type AxiosResponse } from "axios";
 import { ChevronDown, MoveLeft, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState, type FC } from "react";
 
 interface SuccessProps {
+    data: RefreshPayment;
     id: string;
 }
 
-const Success: FC<SuccessProps> = ({ id }) => {
-    const apiUrl = process.env.NEXT_PUBLIC_API_URL;
+const Success: FC<SuccessProps> = ({ data, id }) => {
     const { restaurant } = useRestaurant();
     const { clearCart } = useCart();
     const [close, setClose] = useState(false);
-    const { data } = useQuery({
-        queryKey: ["stripe", id, "refresh-payment"],
-        queryFn: async () => {
-            return await axios.get(`${apiUrl}/stripe/${id}/refresh-payment`).then(
-                (
-                    res: AxiosResponse<{
-                        data: RefreshPayment;
-                    }>
-                ) => res.data.data
-            );
-        },
-        enabled: !!id,
-    });
 
     useEffect(() => {
         if (data?._id) {
@@ -152,52 +137,36 @@ const Success: FC<SuccessProps> = ({ id }) => {
                             <h5 className="font-manrope text-lg font-[700] leading-[150%] text-menusecondary md:text-xl">View order details</h5>
                             <ChevronDown className={cn("h-6 w-6 rotate-180 transition-all duration-500 ease-in", !close && "rotate-0")} />
                         </div>
-                        <div
-                            className={cn(
-                                "flex w-full flex-col gap-3 overflow-hidden",
-                            )}
-                        >
-                            {close && data.cart.map((item, index) => (
-                                <div className={cn("flex flex-row justify-between border-b border-menuprimary pb-2 transition-all duration-500 ease-in max-h-[1000px] ")} key={index}>
-                                    <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
-                                        {item.quantity} x {item?.menuItemName}
-                                        <br />
-
-                                        {item?.notes && (
-                                            <span className="border-b-[1px] border-b-menusecondary">Instructions</span>
-
-                                        )
-                                        }
-                                        {item?.notes &&
-                                            (
-                                                < br />
-                                            )
-                                        }
-                                        {item.notes}
-                                    </h5>
-                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
-                                        £{formattedItemPrice(item?.price.value * item.quantity)}
-                                    </span>
-                                </div>
-                            ))}
+                        <div className={cn("flex w-full flex-col gap-3 overflow-hidden")}>
                             {close &&
-                                <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
-                                    <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>
-                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
-                                </div>
-                            }
-                            {close &&
-                                <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
-                                    <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Service Charge</h5>
-                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£
-                                        {calculateServiceCharge(
-                                            data?.totalCartAmount,
-                                            restaurant?.serviceCharge ?? 0,
-                                        ).toFixed(2)}
-                                    </span>
-                                </div>
-                            }
-                            <div className="flex flex-row justify-between border-b-[0.1px] border-menuprimary pb-2">
+                                data.cart.map((item, index) => (
+                                    <div
+                                        className={cn("flex max-h-[1000px] flex-row justify-between border-b border-menuprimary pb-2 transition-all duration-500 ease-in")}
+                                        key={index}
+                                    >
+                                        <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
+                                            {item.quantity} x {item?.menuItemName}
+                                            <br />
+                                            {item?.notes && <span className="border-b-[1px] border-b-menusecondary">Instructions</span>}
+                                            {item?.notes && <br />}
+                                            {item.notes}
+                                        </h5>
+                                        <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                            £{formattedItemPrice(item?.price.value * item.quantity)}
+                                        </span>
+                                    </div>
+                                ))}
+                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>
+                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
+                            </div>
+                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Service Charge</h5>
+                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                    £{calculateServiceCharge(data?.totalCartAmount, restaurant?.serviceCharge ?? 0).toFixed(2)}
+                                </span>
+                            </div>
+                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
                             </div>
@@ -206,16 +175,14 @@ const Success: FC<SuccessProps> = ({ id }) => {
                 </div>
 
                 {/*last section */}
-                <div className="flex w-full flex-col bg-menubackground md:w-2/4 gap-4">
+                <div className="flex w-full flex-col gap-4 bg-menubackground md:w-2/4">
                     {data?.notes && (
                         <div className="flex w-full flex-col items-center justify-center gap-2 bg-menubackground px-2 py-4">
-                            <p className="w-full text-start font-manrope text-xs font-[500] capitalize leading-[20px] tracking-[0.74px] text-menusecondary md:text-lg">
+                            <p className="font-manrope w-full text-start text-xs font-[500] capitalize leading-[20px] tracking-[0.74px] text-menusecondary md:text-lg">
                                 Packaging Instructions Given
                             </p>
                             {/* <Image src={"/images/home/checkout/heart.png"} width={55} height={42} alt="heart" /> */}
-                            <p className="w-full text-start font-manrope text-xs font-[400] capitalize text-menusecondary md:text-base">
-                                {data?.notes}
-                            </p>
+                            <p className="font-manrope w-full text-start text-xs font-[400] capitalize text-menusecondary md:text-base">{data?.notes}</p>
                         </div>
                     )}
                     <div className="flex w-full flex-row items-center justify-center gap-2 bg-menuprimary px-2 py-4">
@@ -238,13 +205,13 @@ const Success: FC<SuccessProps> = ({ id }) => {
                         </div>
                     )}
                 </div>
-            </div >
+            </div>
             <div className="flex w-full justify-end bg-menubackground px-7 py-6">
                 <Link href="https://foodo.ai" className="text-primary hover:underline" target="_blank">
                     Powered By Foodo
                 </Link>
             </div>
-        </section >
+        </section>
     );
 };
 
