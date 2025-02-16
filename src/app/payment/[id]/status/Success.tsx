@@ -142,23 +142,26 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                         </div>
                         <div className={cn("flex w-full flex-col gap-3 overflow-hidden")}>
                             {close &&
-                                data.cart.map((item, index) => (
-                                    <div
-                                        className={cn("flex max-h-[1000px] flex-row justify-between border-b border-menuprimary pb-2 transition-all duration-500 ease-in")}
-                                        key={index}
-                                    >
-                                        <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
-                                            {item.quantity} x {item?.menuItemName}
-                                            <br />
-                                            {item?.notes && <span className="border-b-[1px] border-b-menusecondary">Instructions</span>}
-                                            {item?.notes && <br />}
-                                            {item.notes}
-                                        </h5>
-                                        <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
-                                            £{formattedItemPrice(item?.price.value * item.quantity)}
-                                        </span>
-                                    </div>
-                                ))}
+                                data.cart.map((item, index) => {
+                                    return (
+                                        <div
+                                            className={cn("flex max-h-[1000px] flex-row justify-between border-b border-menuprimary pb-2 transition-all duration-500 ease-in")}
+                                            key={index}
+                                        >
+                                            <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
+                                                {item.quantity} x {item?.menuItemName}
+                                                <br />
+                                                {item?.notes && <span className="border-b-[1px] border-b-menusecondary">Instructions</span>}
+                                                {item?.notes && <br />}
+                                                {item.notes}
+                                            </h5>
+                                            <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                                £{formattedItemPrice(item?.price.value * item.quantity)}
+                                            </span>
+                                        </div>
+                                    )
+                                }
+                                )}
                             {close && (
                                 <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>

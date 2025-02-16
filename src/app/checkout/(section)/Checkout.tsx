@@ -26,7 +26,7 @@ const Checkout = () => {
   const [couponApply, setCouponApply] = useState(false)
   const [isDeliveryNow, setIsDeliveryNow] = useState(true);
   const { restaurant, items } = useRestaurant();
-
+  const [totalCharges, setTotalCharges] = useState(0);
   useEffect(() => {
     const savedOrderType = localStorage.getItem("orderType");
     if (savedOrderType?.toString() === "2") {
@@ -150,7 +150,20 @@ const Checkout = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [restaurant?.takeAwayWindow]);
-
+  useEffect(() => {
+    let totalcharge = 0;
+    restaurant?.charges.map((charge) => {
+      if (charge.isActive) {
+        if (charge.isPercentage) {
+          return totalcharge += (cartValue() * charge?.value) / 100;
+        }
+        else {
+          return totalcharge += charge?.value;
+        }
+      }
+    })
+    setTotalCharges(totalcharge)
+  }, [restaurant?.charges, cartValue])
   return (
     <section className="flex h-full w-full items-center justify-center bg-menubackground">
       <div className="flex h-full w-full max-w-[1300px] flex-col gap-[2.5rem] px-3 pt-3 md:pt-[2.5rem] pb-[2.5rem]">
@@ -352,6 +365,35 @@ const Checkout = () => {
                       ).toFixed(2)}
                     </p>
                   </div>
+                  {restaurant?.charges.map((charge) => {
+                    if (charge?.isActive) {
+                      if (charge.isPercentage) {
+                        return (
+                          <div className="flex justify-between" key={charge._id}>
+                            <p className="text-sm font-semibold text-menusecondary">{charge.name}</p>
+                            <p className="text-lg font-semibold text-menusecondary">
+                              {getCurrencySymbol("GBP")}{" "}
+                              {(
+                                (cartValue() * charge?.value) / 100
+                              ).toFixed(2)}
+                            </p>
+                          </div>
+                        )
+                      } else {
+                        return (
+                          <div className="flex justify-between" key={charge._id}>
+                            <p className="text-sm font-semibold text-menusecondary">{charge.name}</p>
+                            <p className="text-lg font-semibold text-menusecondary">
+                              {getCurrencySymbol("GBP")}{" "}
+                              {(
+                                charge?.value
+                              ).toFixed(2)}
+                            </p>
+                          </div>
+                        )
+                      }
+                    }
+                  })}
                   <div className="flex justify-between">
                     <p className="text-lg font-semibold text-menusecondary">Total Amount</p>
                     <p className="text-lg font-semibold text-menusecondary">
@@ -361,7 +403,8 @@ const Checkout = () => {
                         calculateServiceCharge(
                           cartValue(),
                           restaurant?.serviceCharge ?? 0,
-                        )
+                        ) + totalCharges
+                        // { restaurant?.charges.map((charge) => charge?.isActive ? charge.isPercentage ? (cartValue() * charge?.value) / 100 : charge?.value : 0 }.reduce((a, b) => a + b, 0)}
                       ).toFixed(2)}
                     </p>
                   </div>
