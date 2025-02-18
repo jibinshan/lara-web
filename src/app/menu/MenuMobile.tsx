@@ -286,15 +286,17 @@ export default function MenuMobile() {
             </div>
             {restaurant?.onlineOrder &&
                 (restaurant?.isDeliveryEnabled || restaurant.isTakeAwayEnabled) &&
-                (cartItems.length > 0 ? (
+                (cartItems.length > 0 && (
                     <Link className={cn("fixed bottom-0 left-0 z-30 flex h-14 w-full items-center justify-between bg-menuprimary px-3 md:hidden")} href="/cart">
                         <p className="w-full text-center text-lg font-semibold uppercase text-menuforeground">View Basket ({cartItems.length})</p>
                     </Link>
-                ) : (
-                    <div className={cn("fixed bottom-0 left-0 z-30 flex h-14 w-full items-center justify-between bg-menuprimary px-3 md:hidden")}>
-                        <p className="w-full text-center text-lg font-bold uppercase text-menuforeground">Add Items To Order</p>
-                    </div>
-                ))}
+                )
+                    // : (
+                    //     <div className={cn("fixed bottom-0 left-0 z-30 flex h-14 w-full items-center justify-between bg-menuprimary px-3 md:hidden")}>
+                    //         <p className="w-full text-center text-lg font-bold uppercase text-menuforeground">Add Items To Order</p>
+                    //     </div>
+                    // )
+                )}
         </section>
     );
 }
