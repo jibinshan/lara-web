@@ -43,6 +43,19 @@ export interface RefreshPayment {
   };
   cart: {
     menuItemName: string;
+    modifiers: {
+      _idMenuItem: string;
+      _idModifiers: string;
+      menuItem: {
+        description: string;
+        name: string;
+      };
+      price: {
+        currency: string;
+        value: number;
+        _id: string;
+      };
+    }[];
     _idRestaurantCourse: string | null;
     restaurantCourseName: string;
     price: {
@@ -56,6 +69,7 @@ export interface RefreshPayment {
     _id: string;
     _idMenuItem: string;
   }[];
+  charges: charge[];
   discountType: number;
   totalpayment: number;
   paymentType: number;
@@ -68,4 +82,12 @@ export interface RefreshPayment {
   createdAt: string;
   updatedAt: string;
   __v: number;
+}
+
+interface charge {
+  isPercentage: boolean;
+  isActive: boolean;
+  _id: string;
+  name: string;
+  value: number;
 }

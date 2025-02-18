@@ -1,7 +1,7 @@
 import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
-import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
+import { getCurrencySymbol } from "@/lib/get-currency-symbol";
 import { cn } from "@/lib/utils";
 import type { RefreshPayment } from "@/types/refresh-payment.type";
 import { ChevronDown, MoveLeft, Search } from "lucide-react";
@@ -145,19 +145,21 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                 data.cart.map((item, index) => {
                                     return (
                                         <div
-                                            className={cn("flex max-h-[1000px] flex-row justify-between border-b border-menuprimary pb-2 transition-all duration-500 ease-in")}
+                                            className={cn("flex max-h-[1000px] flex-col justify-between border-b border-menuprimary pb-2 transition-all duration-500 ease-in")}
                                             key={index}
                                         >
-                                            <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
-                                                {item.quantity} x {item?.menuItemName}
-                                                <br />
-                                                {item?.notes && <span className="border-b-[1px] border-b-menusecondary">Instructions</span>}
-                                                {item?.notes && <br />}
-                                                {item.notes}
-                                            </h5>
-                                            <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
-                                                £{formattedItemPrice(item?.price.value * item.quantity)}
-                                            </span>
+                                            <div className="w-full flex justify-between">
+                                                <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
+                                                    {item.quantity} x {item?.menuItemName}
+                                                    <br />
+                                                    {item?.notes && <span className="border-b-[1px] border-b-menusecondary">Instructions</span>}
+                                                    {item?.notes && <br />}
+                                                    {item.notes}
+                                                </h5>
+                                                <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                                    £{formattedItemPrice(item?.price.value * item.quantity)}
+                                                </span>
+                                            </div>
                                         </div>
                                     )
                                 }
@@ -168,14 +170,43 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
                                 </div>
                             )}
-                            {close && (
+                            {/* {close && (
                                 <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Service Charge</h5>
                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
                                         £{calculateServiceCharge(data?.totalCartAmount, restaurant?.serviceCharge ?? 0).toFixed(2)}
                                     </span>
                                 </div>
-                            )}
+                            )} */}
+                            {close && data?.charges.map((charge) => {
+                                if (charge?.isActive) {
+                                    if (charge.isPercentage) {
+                                        return (
+                                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={charge._id}>
+                                                <p className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
+                                                <p className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                                    {getCurrencySymbol("GBP")}{" "}
+                                                    {(
+                                                        (data?.totalCartAmount * charge?.value) / 100
+                                                    ).toFixed(2)}
+                                                </p>
+                                            </div>
+                                        )
+                                    } else {
+                                        return (
+                                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={charge._id}>
+                                                <p className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
+                                                <p className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                                    {getCurrencySymbol("GBP")}{" "}
+                                                    {(
+                                                        charge?.value
+                                                    ).toFixed(2)}
+                                                </p>
+                                            </div>
+                                        )
+                                    }
+                                }
+                            })}
                             <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
@@ -221,7 +252,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                     Powered By Foodo
                 </Link>
             </div>
-        </section>
+        </section >
     );
 };
 
