@@ -145,7 +145,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                 data.cart.map((item, index) => {
                                     return (
                                         <div
-                                            className={cn("flex max-h-[1000px] flex-col justify-between pb-2 transition-all duration-500 ease-in")}
+                                            className={cn("flex max-h-[1000px] flex-col gap-2 justify-between pb-2 transition-all duration-500 ease-in")}
                                             key={index}
                                         >
                                             <div className="w-full flex justify-between">
@@ -160,6 +160,25 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                                     £{formattedItemPrice(item?.price.value * item.quantity)}
                                                 </span>
                                             </div>
+                                            {Object.entries(item?.modifiers?.reduce((acc: Record<string, { count: number, price: number }>, mod) => {
+                                                const name = mod?.menuItem?.name;
+                                                if (name) {
+                                                    if (!acc[name]) {
+                                                        acc[name] = { count: 0, price: mod?.price?.value };
+                                                    }
+                                                    acc[name].count += 1;
+                                                }
+                                                return acc;
+                                            }, {})).map(([name, { count, price }], i) => (
+                                                <div className="w-full flex justify-between pl-4" key={i}>
+                                                    <h5 className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">
+                                                        {count} x {name}
+                                                    </h5>
+                                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                                        £{formattedItemPrice(price * count)}
+                                                    </span>
+                                                </div>
+                                            ))}
                                         </div>
                                     )
                                 }
@@ -249,7 +268,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                         </div>
                     )}
                 </div>
-            </div>
+            </div >
             <div className="flex w-full justify-end bg-menubackground px-7 py-6">
                 <Link href="https://foodo.ai" className="text-primary hover:underline" target="_blank">
                     Powered By Foodo
