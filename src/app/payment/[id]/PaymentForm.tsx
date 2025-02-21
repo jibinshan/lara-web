@@ -1,6 +1,8 @@
 'use client'
 import { Button } from "@/components/ui/button";
+import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
+import { getCurrencySymbol } from "@/lib/get-currency-symbol";
 import {
   PaymentElement,
   useElements,
@@ -8,13 +10,15 @@ import {
 } from "@stripe/react-stripe-js";
 import { MoveLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, type FC } from "react";
+import { useEffect, useState, type FC } from "react";
 
 const PaymentForm: FC<{
   _id: string;
 }> = ({ _id }) => {
   const [loading, setLoading] = useState(false);
+  const [totalCharges, setTotalCharges] = useState(0);
   const { restaurant } = useRestaurant();
+  const { cartValue } = useCart()
   const stripe = useStripe();
   const elements = useElements();
   const router = useRouter()
@@ -40,6 +44,21 @@ const PaymentForm: FC<{
     setLoading(false);
   };
 
+  useEffect(() => {
+    let totalcharge = 0;
+    restaurant?.charges.map((charge) => {
+      if (charge.isActive) {
+        if (charge.isPercentage) {
+          return totalcharge += (cartValue() * charge?.value) / 100;
+        }
+        else {
+          return totalcharge += charge?.value;
+        }
+      }
+    })
+    setTotalCharges(totalcharge)
+  }, [restaurant?.charges, cartValue])
+
   return (
     <form
       onSubmit={handleSubmit}
@@ -47,6 +66,21 @@ const PaymentForm: FC<{
     >
       <div className="w-full flex">
         <MoveLeft onClick={() => router.push('/checkout')} />
+      </div>
+      <div className="w-full flex justify-between px-2 md:px-12">
+        <p className="text-lg font-semibold text-menusecondary">Total Amount</p>
+        <p className="text-lg font-semibold text-menusecondary">
+          {getCurrencySymbol("GBP")}{" "}
+          {(
+            cartValue() + totalCharges
+            // +
+            // calculateServiceCharge(
+            //   cartValue(),
+            //   restaurant?.serviceCharge ?? 0,
+            // )
+            // { restaurant?.charges.map((charge) => charge?.isActive ? charge.isPercentage ? (cartValue() * charge?.value) / 100 : charge?.value : 0 }.reduce((a, b) => a + b, 0)}
+          ).toFixed(2)}
+        </p>
       </div>
       <PaymentElement
         className="w-full max-w-[400px]"

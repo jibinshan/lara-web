@@ -154,6 +154,9 @@ const Checkout = () => {
     let totalcharge = 0;
     restaurant?.charges.map((charge) => {
       if (charge.isActive) {
+        if (charge.name === "Delivery Charges" && localStorage.getItem("orderType") === '3') {
+          return totalcharge += 0;
+        }
         if (charge.isPercentage) {
           return totalcharge += (cartValue() * charge?.value) / 100;
         }
@@ -163,7 +166,7 @@ const Checkout = () => {
       }
     })
     setTotalCharges(totalcharge)
-  }, [restaurant?.charges, cartValue])
+  }, [restaurant?.charges, cartValue, checkoutType])
   return (
     <section className="flex h-full w-full items-center justify-center bg-menubackground">
       <div className="flex h-full w-full max-w-[1300px] flex-col gap-[2.5rem] px-3 pt-3 md:pt-[2.5rem] pb-[2.5rem]">
@@ -188,7 +191,10 @@ const Checkout = () => {
                   <TabsTrigger
                     value="pickup"
                     className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-menusecondary data-[state=active]:bg-menuprimary data-[state=active]:text-menusecondary"
-                    onClick={() => setCheckoutType("pickup")}
+                    onClick={() => {
+                      setCheckoutType("pickup")
+                      localStorage.setItem('orderType', (3).toString())
+                    }}
                   >
                     Pickup
                   </TabsTrigger>
@@ -197,7 +203,11 @@ const Checkout = () => {
                   <TabsTrigger
                     value="delivery"
                     className="rounded-full bg-transparent px-4 py-3 text-sm font-semibold text-menusecondary data-[state=active]:bg-menuprimary data-[state=active]:text-menusecondary"
-                    onClick={() => setCheckoutType("delivery")}
+                    onClick={() => {
+                      setCheckoutType("delivery")
+                      localStorage.setItem('orderType', (2).toString())
+                    }
+                    }
                   >
                     Delivery
                   </TabsTrigger>
@@ -367,6 +377,9 @@ const Checkout = () => {
                   </div> */}
                   {restaurant?.charges.map((charge) => {
                     if (charge?.isActive) {
+                      if (charge.name === "Delivery Charges" && localStorage.getItem('orderType') === '3') {
+                        return null;
+                      }
                       if (charge.isPercentage) {
                         return (
                           <div className="flex justify-between" key={charge._id}>

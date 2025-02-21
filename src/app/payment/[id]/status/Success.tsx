@@ -145,7 +145,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                 data.cart.map((item, index) => {
                                     return (
                                         <div
-                                            className={cn("flex max-h-[1000px] flex-col justify-between border-b border-menuprimary pb-2 transition-all duration-500 ease-in")}
+                                            className={cn("flex max-h-[1000px] flex-col justify-between pb-2 transition-all duration-500 ease-in")}
                                             key={index}
                                         >
                                             <div className="w-full flex justify-between">
@@ -165,7 +165,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                 }
                                 )}
                             {close && (
-                                <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                                <div className="flex flex-row justify-between pb-2">
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>
                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
                                 </div>
@@ -182,8 +182,8 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                 if (charge?.isActive) {
                                     if (charge.isPercentage) {
                                         return (
-                                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={charge._id}>
-                                                <p className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
+                                            <div className="flex flex-row justify-between pb-2" key={charge._id}>
+                                                <p className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
                                                 <p className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
                                                     {getCurrencySymbol("GBP")}{" "}
                                                     {(
@@ -194,8 +194,8 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                         )
                                     } else {
                                         return (
-                                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2" key={charge._id}>
-                                                <p className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
+                                            <div className="flex flex-row justify-between pb-2" key={charge._id}>
+                                                <p className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
                                                 <p className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
                                                     {getCurrencySymbol("GBP")}{" "}
                                                     {(
@@ -207,7 +207,10 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                     }
                                 }
                             })}
-                            <div className="flex flex-row justify-between border-b border-menuprimary pb-2">
+                            {close && (
+                                <div className="w-full h-[0.2px] bg-menuprimary" />
+                            )}
+                            <div className="flex flex-row justify-between pb-2">
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
                             </div>
