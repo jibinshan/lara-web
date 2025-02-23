@@ -22,9 +22,9 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
     useEffect(() => {
         if (data?._id) {
             clearCart();
-            localStorage.removeItem('pickup')
-            localStorage.removeItem('delivery')
-            localStorage.removeItem('scrollCategory')
+            localStorage.removeItem("pickup");
+            localStorage.removeItem("delivery");
+            localStorage.removeItem("scrollCategory");
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
@@ -144,11 +144,8 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                             {close &&
                                 data.cart.map((item, index) => {
                                     return (
-                                        <div
-                                            className={cn("flex max-h-[1000px] flex-col gap-2 justify-between pb-2 transition-all duration-500 ease-in")}
-                                            key={index}
-                                        >
-                                            <div className="w-full flex justify-between">
+                                        <div className={cn("flex max-h-[1000px] flex-col justify-between gap-2 pb-2 transition-all duration-500 ease-in")} key={index}>
+                                            <div className="flex w-full justify-between">
                                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">
                                                     {item.quantity} x {item?.menuItemName}
                                                     <br />
@@ -160,17 +157,19 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                                     £{formattedItemPrice(item?.price.value * item.quantity)}
                                                 </span>
                                             </div>
-                                            {Object.entries(item?.modifiers?.reduce((acc: Record<string, { count: number, price: number }>, mod) => {
-                                                const name = mod?.menuItem?.name;
-                                                if (name) {
-                                                    if (!acc[name]) {
-                                                        acc[name] = { count: 0, price: mod?.price?.value };
+                                            {Object.entries(
+                                                item?.modifiers?.reduce((acc: Record<string, { count: number; price: number }>, mod) => {
+                                                    const name = mod?.menuItem?.name;
+                                                    if (name) {
+                                                        if (!acc[name]) {
+                                                            acc[name] = { count: 0, price: mod?.price?.value };
+                                                        }
+                                                        acc[name].count += 1;
                                                     }
-                                                    acc[name].count += 1;
-                                                }
-                                                return acc;
-                                            }, {})).map(([name, { count, price }], i) => (
-                                                <div className="w-full flex justify-between pl-4" key={i}>
+                                                    return acc;
+                                                }, {})
+                                            ).map(([name, { count, price }], i) => (
+                                                <div className="flex w-full justify-between pl-4" key={i}>
                                                     <h5 className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">
                                                         {count} x {name}
                                                     </h5>
@@ -180,13 +179,14 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                                 </div>
                                             ))}
                                         </div>
-                                    )
-                                }
-                                )}
+                                    );
+                                })}
                             {close && (
                                 <div className="flex flex-row justify-between pb-2">
                                     <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Sub-Total</h5>
-                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalCartAmount)}</span>
+                                    <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                        £{formattedItemPrice(data?.totalCartAmount)}
+                                    </span>
                                 </div>
                             )}
                             {/* {close && (
@@ -197,38 +197,31 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                     </span>
                                 </div>
                             )} */}
-                            {close && data?.charges.map((charge) => {
-                                if (charge?.isActive) {
-                                    if (charge.isPercentage) {
-                                        return (
-                                            <div className="flex flex-row justify-between pb-2" key={charge._id}>
-                                                <p className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
-                                                <p className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
-                                                    {getCurrencySymbol("GBP")}{" "}
-                                                    {(
-                                                        (data?.totalCartAmount * charge?.value) / 100
-                                                    ).toFixed(2)}
-                                                </p>
-                                            </div>
-                                        )
-                                    } else {
-                                        return (
-                                            <div className="flex flex-row justify-between pb-2" key={charge._id}>
-                                                <p className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
-                                                <p className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
-                                                    {getCurrencySymbol("GBP")}{" "}
-                                                    {(
-                                                        charge?.value
-                                                    ).toFixed(2)}
-                                                </p>
-                                            </div>
-                                        )
+                            {close &&
+                                data?.charges.map((charge) => {
+                                    if (charge?.isActive) {
+                                        if (charge.isPercentage) {
+                                            return (
+                                                <div className="flex flex-row justify-between pb-2" key={charge._id}>
+                                                    <p className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
+                                                    <p className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                                        {getCurrencySymbol("GBP")} {((data?.totalCartAmount * charge?.value) / 100).toFixed(2)}
+                                                    </p>
+                                                </div>
+                                            );
+                                        } else {
+                                            return (
+                                                <div className="flex flex-row justify-between pb-2" key={charge._id}>
+                                                    <p className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">{charge.name}</p>
+                                                    <p className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                                        {getCurrencySymbol("GBP")} {(charge?.value).toFixed(2)}
+                                                    </p>
+                                                </div>
+                                            );
+                                        }
                                     }
-                                }
-                            })}
-                            {close && (
-                                <div className="w-full h-[0.2px] bg-menuprimary" />
-                            )}
+                                })}
+                            {close && <div className="h-[0.2px] w-full bg-menuprimary" />}
                             <div className="flex flex-row justify-between pb-2">
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">£{formattedItemPrice(data?.totalAmount)}</span>
@@ -268,13 +261,13 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                         </div>
                     )}
                 </div>
-            </div >
+            </div>
             <div className="flex w-full justify-end bg-menubackground px-7 py-6">
                 <Link href="https://foodo.ai" className="text-primary hover:underline" target="_blank">
                     Powered By Foodo
                 </Link>
             </div>
-        </section >
+        </section>
     );
 };
 

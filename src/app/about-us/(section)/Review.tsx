@@ -1,16 +1,10 @@
 "use client";
 import { Icons } from "@/components/Icon";
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
 import { useRestaurant } from "@/context/RestaurantContext";
 import Image from "next/image";
 
-const Reviews = ({ }) => {
+const Reviews = ({}) => {
     const { reviews } = useRestaurant();
     return (
         <section className="relative flex h-full w-full justify-center bg-transparent">
@@ -32,19 +26,14 @@ const Reviews = ({ }) => {
                                     >
                                         <div className="flex w-full items-center gap-2">
                                             <Image
-                                                src={
-                                                    review.profile_photo_url ||
-                                                    "/images/home/reviews/pictures/anna-mathew.svg"
-                                                }
+                                                src={review.profile_photo_url || "/images/home/reviews/pictures/anna-mathew.svg"}
                                                 width={64}
                                                 height={64}
                                                 alt={review.author_name}
                                             />
                                             <div className="flex flex-col gap-2">
                                                 <p className="text-[#FBEAD2]">{review.author_name}</p>
-                                                <span className="text-[#9C9995]">
-                                                    {review.relative_time_description}
-                                                </span>
+                                                <span className="text-[#9C9995]">{review.relative_time_description}</span>
                                             </div>
                                         </div>
                                         <div className="flex w-full">

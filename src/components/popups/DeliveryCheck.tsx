@@ -1,18 +1,18 @@
-import { useEffect, useState, type FC } from 'react'
-import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from '../ui/dialog';
-import { Button } from '../ui/button';
-import { z } from 'zod';
-import { useForm } from 'react-hook-form';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useRestaurant } from '@/context/RestaurantContext';
-import { useMutation } from '@tanstack/react-query';
-import axios, { type AxiosResponse } from 'axios';
-import { Form, FormControl, FormField, FormItem, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
-import toast from 'react-hot-toast';
+import { useEffect, useState, type FC } from "react";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog";
+import { Button } from "../ui/button";
+import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRestaurant } from "@/context/RestaurantContext";
+import { useMutation } from "@tanstack/react-query";
+import axios, { type AxiosResponse } from "axios";
+import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
+import toast from "react-hot-toast";
 
 interface DeliveryCheckProps {
-    setOrderType: (orderType: 2 | 3) => void
+    setOrderType: (orderType: 2 | 3) => void;
     children?: React.ReactNode;
 }
 
@@ -20,12 +20,11 @@ const FormValidation = z.object({
     pinCode: z.string().min(2, "please enter pincode"),
 });
 
-
 type FormData = z.infer<typeof FormValidation>;
 
 const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
     const [open, setOpen] = useState(false);
-    const { restaurant } = useRestaurant()
+    const { restaurant } = useRestaurant();
     // const [success, setSuccess] = useState(false);
     // const [error, setError] = useState(false);
     const { apiUrl, restaurantID } = useRestaurant();
@@ -33,13 +32,13 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
         resolver: zodResolver(FormValidation),
         defaultValues: {
             pinCode: "",
-        }
+        },
     });
     useEffect(() => {
         if (!restaurant?.isTakeAwayEnabled && restaurant?.isDeliveryEnabled) {
-            setOpen(true)
+            setOpen(true);
         }
-    }, [])
+    }, []);
     const { mutate, isPending } = useMutation({
         mutationFn: async (data: FormData) => {
             const res: AxiosResponse<{
@@ -57,7 +56,7 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
             // setSuccess(true);
             // setError(false);
             setOrderType(2);
-            setOpen(false)
+            setOpen(false);
         },
         onError: () => {
             toast.error("Oops! Delivery isn’t available here. But you can still place an order for pickup!");
@@ -71,7 +70,7 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
             // setSuccess(false);
             // setError(false);
         }
-    }, [open])
+    }, [open]);
 
     const onSubmit = (data: FormData) => {
         mutate(data);
@@ -79,21 +78,16 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
-            {(restaurant?.isDeliveryEnabled && restaurant.isTakeAwayEnabled) && (
-                <DialogTrigger asChild>{children}</DialogTrigger>
-            )}
-            <DialogContent className="flex flex-col gap-3 w-[90%] md:w-full border-none rounded-none bg-menubackground lg:max-w-[465px] lg:h-[305px] p-0">
-                <DialogHeader className='py-5 px-5'>
-                    <DialogTitle>
-                    </DialogTitle>
+            {restaurant?.isDeliveryEnabled && restaurant.isTakeAwayEnabled && <DialogTrigger asChild>{children}</DialogTrigger>}
+            <DialogContent className="flex w-[90%] flex-col gap-3 rounded-none border-none bg-menubackground p-0 md:w-full lg:h-[305px] lg:max-w-[465px]">
+                <DialogHeader className="px-5 py-5">
+                    <DialogTitle></DialogTitle>
                 </DialogHeader>
-                <div className='w-full flex flex-col justify-center items-center gap-4'>
-                    <p className='w-full text-menusecondary text-center font-[300] text-2xl'>Check Delivery </p>
-                    <p className='font-manrope text-sm flex text-center max-w-[60%] font-[300]'>
-                        Enter your postcode below to check if delivery is available in your area.
-                    </p>
+                <div className="flex w-full flex-col items-center justify-center gap-4">
+                    <p className="w-full text-center text-2xl font-[300] text-menusecondary">Check Delivery </p>
+                    <p className="font-manrope flex max-w-[60%] text-center text-sm font-[300]">Enter your postcode below to check if delivery is available in your area.</p>
                     <Form {...form}>
-                        <form onSubmit={form.handleSubmit(onSubmit)} className="w-full justify-center items-start flex">
+                        <form onSubmit={form.handleSubmit(onSubmit)} className="flex w-full items-start justify-center">
                             <FormField
                                 control={form.control}
                                 name="pinCode"
@@ -110,7 +104,9 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
                                     </FormItem>
                                 )}
                             />
-                            <Button disabled={isPending} className='h-12 rounded-none'>CHECK</Button>
+                            <Button disabled={isPending} className="h-12 rounded-none">
+                                CHECK
+                            </Button>
                         </form>
                     </Form>
                     {/* {success && (
@@ -134,8 +130,8 @@ const DeliveryCheck: FC<DeliveryCheckProps> = ({ setOrderType, children }) => {
                     </div> */}
                 </DialogFooter>
             </DialogContent>
-        </Dialog >
-    )
-}
+        </Dialog>
+    );
+};
 
-export default DeliveryCheck
+export default DeliveryCheck;

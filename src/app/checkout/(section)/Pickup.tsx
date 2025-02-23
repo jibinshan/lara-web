@@ -28,7 +28,11 @@ const FormValidation = z.object({
     // date: z.string().min(2, "please select date"),
     // time: z.string().min(2, "please select time"),
     name: z.string().min(2, "Oops! We need your name to personalise your delicious order. Please enter it to continue."),
-    phone: z.string().min(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order.").max(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order.").regex(/^\d+$/),
+    phone: z
+        .string()
+        .min(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order.")
+        .max(11, "Oops! That phone number doesn’t seem right. We need it to keep you updated on your order.")
+        .regex(/^\d+$/),
     email: z.string().min(2, "Oops! That email doesn’t look right. We need it to send you your delicious meal details.").email(),
     notes: z.string().optional(),
 });
@@ -40,11 +44,11 @@ interface ScheduleTime {
 interface errordata {
     response: {
         data: {
-            success: boolean,
-            code: number,
-            msg: string,
-        }
-    }
+            success: boolean;
+            code: number;
+            msg: string;
+        };
+    };
 }
 
 type PickupData = {
@@ -64,7 +68,7 @@ const Pickup = () => {
     const { apiUrl, restaurantID, restaurant } = useRestaurant();
     const router = useRouter();
     const { cartItems } = useCart();
-    const parsedPickup = JSON.parse(localStorage.getItem('pickup') as string) as PickupData
+    const parsedPickup = JSON.parse(localStorage.getItem("pickup") as string) as PickupData;
     const [pickup, setPickUp] = useState<string>(parsedPickup?.pickup ? parsedPickup.pickup : "Standard");
     const [scheduleTime, setScheduleTime] = useState<ScheduleTime>({
         time: "",
@@ -130,52 +134,55 @@ const Pickup = () => {
     });
 
     useEffect(() => {
-        const localpickup = localStorage.getItem('pickup')
+        const localpickup = localStorage.getItem("pickup");
         if (localpickup) {
             // form.setValue('name')
-            const parsedPickup = JSON.parse(localpickup) as PickupData
-            form.setValue('name', parsedPickup.name as string)
-            form.setValue('phone', parsedPickup.phone as string)
-            form.setValue('email', parsedPickup.email as string)
-            form.setValue('notes', parsedPickup.notes as string)
+            const parsedPickup = JSON.parse(localpickup) as PickupData;
+            form.setValue("name", parsedPickup.name as string);
+            form.setValue("phone", parsedPickup.phone as string);
+            form.setValue("email", parsedPickup.email as string);
+            form.setValue("notes", parsedPickup.notes as string);
             if (parsedPickup.pickup) {
-                setPickUp(parsedPickup.pickup)
+                setPickUp(parsedPickup.pickup);
                 console.log(parsedPickup.pickup, "====parsedPickup");
                 if (parsedPickup.pickup === "Standard") {
                     setScheduleTime({
-                        date: '',
-                        time: ''
-                    } as ScheduleTime)
+                        date: "",
+                        time: "",
+                    } as ScheduleTime);
                 }
             }
-            if (parsedPickup?.scheduleTime as ScheduleTime &&
+            if (
+                (parsedPickup?.scheduleTime as ScheduleTime) &&
                 parsedPickup?.scheduleTime?.date &&
                 parsedPickup.scheduleTime.time &&
                 parsedPickup.scheduleTime.date.length > 0 &&
-                parsedPickup.scheduleTime.time.length > 0) {
+                parsedPickup.scheduleTime.time.length > 0
+            ) {
                 setScheduleTime({
                     date: parsedPickup.scheduleTime.date,
-                    time: parsedPickup.scheduleTime.time
-                } as ScheduleTime)
+                    time: parsedPickup.scheduleTime.time,
+                } as ScheduleTime);
             }
         }
-    }, [])
+    }, []);
 
     useEffect(() => {
-        localStorage.setItem("pickup", JSON.stringify({
-            name: form.watch("name"),
-            phone: form.watch("phone"),
-            email: form.watch("email"),
-            notes: form.watch("notes"),
-            scheduleTime: {
-                time: scheduleTime.time,
-                date: scheduleTime.date,
-            },
-            pickup: pickup
-        }))
-    }, [form.watch("name"), scheduleTime, form.watch("phone"), form.watch("email"), form.watch("notes"), form, pickup])
-
-
+        localStorage.setItem(
+            "pickup",
+            JSON.stringify({
+                name: form.watch("name"),
+                phone: form.watch("phone"),
+                email: form.watch("email"),
+                notes: form.watch("notes"),
+                scheduleTime: {
+                    time: scheduleTime.time,
+                    date: scheduleTime.date,
+                },
+                pickup: pickup,
+            })
+        );
+    }, [form.watch("name"), scheduleTime, form.watch("phone"), form.watch("email"), form.watch("notes"), form, pickup]);
 
     const onSubmit = (data: FormData) => {
         return mutate(data);
@@ -192,7 +199,7 @@ const Pickup = () => {
                         <div>
                             <p className="text-md font-semibold text-menusecondary">{restaurant?.name}</p>
                             <Link
-                                className="text-sm text-menusecondary-menuprimary-foreground"
+                                className="text-menusecondary-menuprimary-foreground text-sm"
                                 href={`https://www.google.com/maps/place/${restaurant?.address?.coords[0]},${restaurant?.address?.coords[1]}`}
                                 target="_blank"
                             >
@@ -223,7 +230,7 @@ const Pickup = () => {
                                             <Input
                                                 placeholder="Name"
                                                 {...field}
-                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] placeholder:text-placeholder focus-visible:border-b-menuprimary focus-visible:ring-0"
+                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none placeholder:text-placeholder focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -239,7 +246,7 @@ const Pickup = () => {
                                             <Input
                                                 placeholder="Phone Number"
                                                 {...field}
-                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] placeholder:text-placeholder focus-visible:border-b-menuprimary focus-visible:ring-0"
+                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none placeholder:text-placeholder focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -255,7 +262,7 @@ const Pickup = () => {
                                             <Input
                                                 placeholder="Email ID"
                                                 {...field}
-                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none focus-visible:border-b-[2px] placeholder:text-placeholder focus-visible:border-b-menuprimary focus-visible:ring-0"
+                                                className="h-12 rounded-none border-b-[3px] border-l-0 border-r-0 border-t-0 border-b-borderinput bg-inputbg outline-none placeholder:text-placeholder focus-visible:border-b-[2px] focus-visible:border-b-menuprimary focus-visible:ring-0"
                                             />
                                         </FormControl>
                                         <FormMessage />
@@ -275,7 +282,9 @@ const Pickup = () => {
                                 <Calendar />
                                 <div className="flex flex-col">
                                     <p className="text-lg font-semibold text-menusecondary">Standard</p>
-                                    <p className="text-menuprimary-foreground">{restaurant?.busyMode ? restaurant?.deliveryETA + restaurant.busyModeTime : restaurant?.deliveryETA} min</p>
+                                    <p className="text-menuprimary-foreground">
+                                        {restaurant?.busyMode ? restaurant?.deliveryETA + restaurant.busyModeTime : restaurant?.deliveryETA} min
+                                    </p>
                                 </div>
                             </div>
                             <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="Collection">
@@ -286,7 +295,9 @@ const Pickup = () => {
                                     <CalendarClock />
                                     <div className="flex flex-col">
                                         <p className="text-lg font-semibold text-menusecondary">Schedule</p>
-                                        <p className="text-menuprimary-foreground">{scheduleTime.date || scheduleTime.time ? `${format(scheduleTime?.date, "dd-MM-yyyy")},\u00A0${scheduleTime.time} ` : "Choose a time"}</p>
+                                        <p className="text-menuprimary-foreground">
+                                            {scheduleTime.date || scheduleTime.time ? `${format(scheduleTime?.date, "dd-MM-yyyy")},\u00A0${scheduleTime.time} ` : "Choose a time"}
+                                        </p>
                                     </div>
                                 </div>
                             </ScheduleTImePopup>
@@ -311,7 +322,7 @@ const Pickup = () => {
                                 name="notes"
                                 render={({ field }) => (
                                     <FormItem className="flex w-full flex-col gap-2">
-                                        <FormLabel className="flex cursor-pointer items-center gap-2 text-menusecondary pt-10">
+                                        <FormLabel className="flex cursor-pointer items-center gap-2 pt-10 text-menusecondary">
                                             <Icons.pencil />
                                             Packing/Pickup Instructions
                                         </FormLabel>
@@ -326,13 +337,15 @@ const Pickup = () => {
                     </div>
 
                     <div className="flex w-full flex-col pt-7 lg:w-4/5 lg:flex-row">
-                        <div className="w-full bg-background border-t-[1px] border-t-borderinput fixed bottom-0 left-0 md:static flex flex-col gap-2 md:px-0 md:py-0">
-                            <Button className="h-16 w-full bg-menuprimary text-menuforeground hover:bg-buttonhover text-lg font-bold uppercase tracking-[1px] rounded-none" disabled={isPending}>
+                        <div className="fixed bottom-0 left-0 flex w-full flex-col gap-2 border-t-[1px] border-t-borderinput bg-background md:static md:px-0 md:py-0">
+                            <Button
+                                className="h-16 w-full rounded-none bg-menuprimary text-lg font-bold uppercase tracking-[1px] text-menuforeground hover:bg-buttonhover"
+                                disabled={isPending}
+                            >
                                 Place Pickup Order
                             </Button>
                         </div>
                     </div>
-
                 </form>
             </Form>
         </div>

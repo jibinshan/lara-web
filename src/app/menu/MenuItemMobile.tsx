@@ -28,7 +28,6 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
     const [open, setOpen] = useState(false);
     const isOpen = isRestaurantOpen(restaurant);
 
-
     const getcartitem = (item: MenuItem) => {
         const cartitem = cartItems.filter((cartItem) => cartItem._idMenuItem === item._id);
         return cartitem[cartitem.length - 1]?.quantity;
@@ -84,7 +83,8 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                                     )}
                                 </p>
                             </MenuItemDrawer>
-                            {isOpen && item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) &&
+                            {isOpen &&
+                                item.extras?.availability?.days.includes(format(Date.now(), "EEEE").toLowerCase()) &&
                                 item.extras?.menuItemOrderType === "both" &&
                                 restaurant?.onlineOrder &&
                                 (restaurant?.isDeliveryEnabled || restaurant.isTakeAwayEnabled) && (
@@ -105,24 +105,24 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                                                 <MenuItemMinus item={item}>
                                                     <Button
                                                         className={cn("h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent", !BetaMenuActive && "hidden")}
-                                                    // onClick={() => {
-                                                    //   if (
-                                                    //     cartItems.find(
-                                                    //       (cartItem) => cartItem._idMenuItem === item._id,
-                                                    //     )!.quantity <= 1
-                                                    //   ) {
-                                                    //     return removeItem(item._id);
-                                                    //   }
-                                                    //   if (cartitem?.quantity) {
-                                                    //     updateItem(
-                                                    //       {
-                                                    //         ...cartitem,
-                                                    //         quantity: cartitem?.quantity - 1,
-                                                    //       },
-                                                    //       0,
-                                                    //     );
-                                                    //   }
-                                                    // }}
+                                                        // onClick={() => {
+                                                        //   if (
+                                                        //     cartItems.find(
+                                                        //       (cartItem) => cartItem._idMenuItem === item._id,
+                                                        //     )!.quantity <= 1
+                                                        //   ) {
+                                                        //     return removeItem(item._id);
+                                                        //   }
+                                                        //   if (cartitem?.quantity) {
+                                                        //     updateItem(
+                                                        //       {
+                                                        //         ...cartitem,
+                                                        //         quantity: cartitem?.quantity - 1,
+                                                        //       },
+                                                        //       0,
+                                                        //     );
+                                                        //   }
+                                                        // }}
                                                     >
                                                         <Minus className="text-menuforeground" />
                                                     </Button>
@@ -131,17 +131,17 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                                                 <MenuChoosing item={item}>
                                                     <Button
                                                         className="h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent"
-                                                    // onClick={() => {
-                                                    //   if (cartitem?.quantity) {
-                                                    //     updateItem(
-                                                    //       {
-                                                    //         ...cartitem,
-                                                    //         quantity: cartitem?.quantity + 1,
-                                                    //       },
-                                                    //       0,
-                                                    //     );
-                                                    //   }
-                                                    // }}
+                                                        // onClick={() => {
+                                                        //   if (cartitem?.quantity) {
+                                                        //     updateItem(
+                                                        //       {
+                                                        //         ...cartitem,
+                                                        //         quantity: cartitem?.quantity + 1,
+                                                        //       },
+                                                        //       0,
+                                                        //     );
+                                                        //   }
+                                                        // }}
                                                     >
                                                         <Plus className="text-menuforeground" />
                                                     </Button>
@@ -185,24 +185,24 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                                         <MenuItemMinus item={item}>
                                             <Button
                                                 className={cn("h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent", !BetaMenuActive && "hidden")}
-                                            // onClick={() => {
-                                            //   if (
-                                            //     cartItems.find(
-                                            //       (cartItem) => cartItem._idMenuItem === item._id,
-                                            //     )!.quantity <= 1
-                                            //   ) {
-                                            //     return removeItem(item._id);
-                                            //   }
-                                            //   if (cartitem?.quantity) {
-                                            //     updateItem(
-                                            //       {
-                                            //         ...cartitem,
-                                            //         quantity: cartitem?.quantity - 1,
-                                            //       },
-                                            //       0,
-                                            //     );
-                                            //   }
-                                            // }}
+                                                // onClick={() => {
+                                                //   if (
+                                                //     cartItems.find(
+                                                //       (cartItem) => cartItem._idMenuItem === item._id,
+                                                //     )!.quantity <= 1
+                                                //   ) {
+                                                //     return removeItem(item._id);
+                                                //   }
+                                                //   if (cartitem?.quantity) {
+                                                //     updateItem(
+                                                //       {
+                                                //         ...cartitem,
+                                                //         quantity: cartitem?.quantity - 1,
+                                                //       },
+                                                //       0,
+                                                //     );
+                                                //   }
+                                                // }}
                                             >
                                                 <Minus className="text-menuforeground" />
                                             </Button>
@@ -211,17 +211,17 @@ const MenuItemMobile: FC<MenuItemProps> = ({ id }) => {
                                         <MenuChoosing item={item}>
                                             <Button
                                                 className="h-fit w-fit rounded-full bg-transparent p-0 hover:bg-transparent"
-                                            // onClick={() => {
-                                            //   if (cartitem?.quantity) {
-                                            //     updateItem(
-                                            //       {
-                                            //         ...cartitem,
-                                            //         quantity: cartitem?.quantity + 1,
-                                            //       },
-                                            //       0,
-                                            //     );
-                                            //   }
-                                            // }}
+                                                // onClick={() => {
+                                                //   if (cartitem?.quantity) {
+                                                //     updateItem(
+                                                //       {
+                                                //         ...cartitem,
+                                                //         quantity: cartitem?.quantity + 1,
+                                                //       },
+                                                //       0,
+                                                //     );
+                                                //   }
+                                                // }}
                                             >
                                                 <Plus className="text-menuforeground" />
                                             </Button>

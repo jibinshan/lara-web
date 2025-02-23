@@ -117,7 +117,9 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
                                         >
                                             {timeslot?.map((time) => (
                                                 <FormItem className="flex items-center justify-between space-y-0" key={time}>
-                                                    <Label className="w-11/12 text-base font-semibold text-menusecondary" htmlFor={time}>{time}</Label>
+                                                    <Label className="w-11/12 text-base font-semibold text-menusecondary" htmlFor={time}>
+                                                        {time}
+                                                    </Label>
                                                     <FormControl>
                                                         <RadioGroupItem value={time} className="border-menuprimary" id={time} />
                                                     </FormControl>
@@ -133,7 +135,7 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
                         <div className="flex w-full flex-col justify-end gap-2">
                             <Button
                                 type="button"
-                                className="text-base font-medium leading-[80%] bg-menuprimary text-menuforeground hover:bg-buttonhover"
+                                className="bg-menuprimary text-base font-medium leading-[80%] text-menuforeground hover:bg-buttonhover"
                                 onClick={() => {
                                     setScheduleTime({
                                         time: form.watch("time"),
@@ -144,14 +146,19 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
                             >
                                 Schedule
                             </Button>
-                            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="border-menuprimary text-menuprimary hover:bg-menuprimary hover:text-menuforeground">
+                            <Button
+                                type="button"
+                                variant="outline"
+                                onClick={() => setOpen(false)}
+                                className="border-menuprimary text-menuprimary hover:bg-menuprimary hover:text-menuforeground"
+                            >
                                 Cancel
                             </Button>
                         </div>
                     </form>
                 </Form>
             </DialogContent>
-        </Dialog >
+        </Dialog>
     );
 };
 

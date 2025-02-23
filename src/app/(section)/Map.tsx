@@ -1,11 +1,11 @@
 import { Mail, MapPin, Phone } from "lucide-react";
 import Link from "next/link";
 
-const Map = ({ }) => {
+const Map = ({}) => {
     return (
-        <section id="welcome" className="flex w-full items-center justify-center bg-[#0b0b0b] overflow-hidden">
-            <div className="relative flex flex-col gap-4 h-fit lg:min-h-[60vh]  w-full items-center justify-center px-4 lg:px-0 py-12 lg:py-24">
-                <div className="w-full  flex">
+        <section id="welcome" className="flex w-full items-center justify-center overflow-hidden bg-[#0b0b0b]">
+            <div className="relative flex h-fit w-full flex-col items-center justify-center gap-4 px-4 py-12 lg:min-h-[60vh] lg:px-0 lg:py-24">
+                <div className="flex w-full">
                     {/* <Image
                         src="/images/home/map/map.png"
                         width={1462}
@@ -19,10 +19,10 @@ const Map = ({ }) => {
                         allowFullScreen
                         loading="lazy"
                         referrerPolicy="no-referrer-when-downgrade"
-                        className="w-full h-[500px] invert grayscale"
+                        className="h-[500px] w-full grayscale invert"
                     ></iframe>
                 </div>
-                <div className="flex w-full max-w-[1300px] flex-col items-start lg:flex-row lg:justify-between gap-6 px-3 lg:px-0">
+                <div className="flex w-full max-w-[1300px] flex-col items-start gap-6 px-3 lg:flex-row lg:justify-between lg:px-0">
                     <div className="flex gap-6">
                         <div>
                             <div className="h-fit w-fit rounded-full bg-[#0f0f0f] p-2">
@@ -30,8 +30,9 @@ const Map = ({ }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-4">
-                            <Link href='https://maps.app.goo.gl/SyNArqgCGdxneXaL8'>
-                                3 Bradgate Rd, Anstey, Leicester<br /> LE7 7AB, United Kingdom
+                            <Link href="https://maps.app.goo.gl/SyNArqgCGdxneXaL8">
+                                3 Bradgate Rd, Anstey, Leicester
+                                <br /> LE7 7AB, United Kingdom
                             </Link>
                         </div>
                     </div>
@@ -42,7 +43,7 @@ const Map = ({ }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-4">
-                            <Link href='tel: 0116 235 2888'>
+                            <Link href="tel: 0116 235 2888">
                                 <p> 0116 235 2888</p>
                             </Link>
                         </div>
@@ -54,14 +55,14 @@ const Map = ({ }) => {
                             </div>
                         </div>
                         <div className="flex flex-col gap-4">
-                            <Link href='mailto:lararestaurant2024@outlook.com'>
+                            <Link href="mailto:lararestaurant2024@outlook.com">
                                 <p>lararestaurant2024@outlook.com</p>
                             </Link>
                         </div>
                     </div>
                 </div>
             </div>
-        </section >
+        </section>
     );
 };
 

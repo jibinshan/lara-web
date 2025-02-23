@@ -12,7 +12,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const Cart = ({ }) => {
+const Cart = ({}) => {
     const { cartItems, updateItem, removeItem } = useCart();
     const { restaurant } = useRestaurant();
     const [totalAmount, setTotalAmount] = useState(0);
@@ -95,10 +95,10 @@ const Cart = ({ }) => {
                                                     ))}
                                                 </div>
                                                 <p className="text-sm font-[400] tracking-[1.8px] text-menusecondary">
-                                                    {item.notes && (
-                                                        <span className="border-b-[1px] border-b-menusecondary">Instructions</span>
-                                                    )}
-                                                    <br />{item?.notes}</p>
+                                                    {item.notes && <span className="border-b-[1px] border-b-menusecondary">Instructions</span>}
+                                                    <br />
+                                                    {item?.notes}
+                                                </p>
                                                 <div className={cn("flex w-full items-center justify-between pt-0", item.modifiers.length > 0 && "pt-3")}>
                                                     <EditMenuItemDrawer item={item} index={index}>
                                                         <p className="font-[400] capitalize text-menuprimary underline">Edit Item</p>

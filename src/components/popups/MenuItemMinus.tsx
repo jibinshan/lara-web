@@ -13,7 +13,6 @@ interface MenuChoosingProps {
 }
 
 const MenuItemMinus: FC<MenuChoosingProps> = ({ children, item }) => {
-
     const [open, setOpen] = useState(false);
     const { cartItems } = useCart();
     const { items } = useRestaurant();
@@ -23,7 +22,7 @@ const MenuItemMinus: FC<MenuChoosingProps> = ({ children, item }) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>{children}</DialogTrigger>
-            <DialogContent className="max-h-[625px] w-[90%] flex flex-col gap-3 bg-menubackground p-0 md:w-[625px]">
+            <DialogContent className="flex max-h-[625px] w-[90%] flex-col gap-3 bg-menubackground p-0 md:w-[625px]">
                 <DialogHeader className="px-5 py-5">
                     <DialogTitle>
                         <p className="text-menusecondary">{item.name}</p>
@@ -32,7 +31,7 @@ const MenuItemMinus: FC<MenuChoosingProps> = ({ children, item }) => {
                 </DialogHeader>
                 <div className="px-5">
                     <div className="rounded-xl bg-menuforeground px-5 py-6">
-                        <p className="flex items-center justify-start gap-1 font-manrope text-menusecondary text-sm">
+                        <p className="font-manrope flex items-center justify-start gap-1 text-sm text-menusecondary">
                             {item.name}:&nbsp;
                             {modifiers?.map((mod) => {
                                 const modifier = items.find((item) => item._id === mod._idMenuItem)?.name;
@@ -43,11 +42,15 @@ const MenuItemMinus: FC<MenuChoosingProps> = ({ children, item }) => {
                 </div>
                 <DialogFooter>
                     <div className="flex w-full items-center justify-center gap-4 px-5 py-5">
-                        <Button variant="outline" onClick={() => setOpen(false)} className="w-1/2 border-[1px] border-menusecondary text-menusecondary  hover:bg-menusecondary hover:text-menubackground md:hidden">
+                        <Button
+                            variant="outline"
+                            onClick={() => setOpen(false)}
+                            className="w-1/2 border-[1px] border-menusecondary text-menusecondary hover:bg-menusecondary hover:text-menubackground md:hidden"
+                        >
                             Cancel
                         </Button>
 
-                        <Link href='/cart' className="w-1/2">
+                        <Link href="/cart" className="w-1/2">
                             <Button
                                 onClick={() => {
                                     setOpen(false);
@@ -60,8 +63,8 @@ const MenuItemMinus: FC<MenuChoosingProps> = ({ children, item }) => {
                     </div>
                 </DialogFooter>
             </DialogContent>
-        </Dialog >
-    )
-}
+        </Dialog>
+    );
+};
 
-export default MenuItemMinus
+export default MenuItemMinus;

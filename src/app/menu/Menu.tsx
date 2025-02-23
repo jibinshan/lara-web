@@ -39,11 +39,11 @@ export default function Menu() {
 
     useEffect(() => {
         if (restaurant?.isDeliveryEnabled && !restaurant?.isTakeAwayEnabled) {
-            setOrderType(2)
+            setOrderType(2);
         } else if (!restaurant?.isDeliveryEnabled && restaurant?.isTakeAwayEnabled) {
-            setOrderType(3)
+            setOrderType(3);
         }
-    }, [restaurant])
+    }, [restaurant]);
 
     useEffect(() => {
         localStorage.setItem("orderType", orderType.toString());
@@ -197,15 +197,15 @@ export default function Menu() {
     // }, [activeCategory])
 
     const setlocalstorage = (categoryId: string) => {
-        localStorage.setItem("scrollCategory", categoryId)
-    }
+        localStorage.setItem("scrollCategory", categoryId);
+    };
 
     useEffect(() => {
-        if (localStorage.getItem('scrollCategory')) {
-            scrollToCategory(localStorage.getItem('scrollCategory') as string)
-            setActiveCategory(localStorage.getItem('scrollCategory') as string)
+        if (localStorage.getItem("scrollCategory")) {
+            scrollToCategory(localStorage.getItem("scrollCategory") as string);
+            setActiveCategory(localStorage.getItem("scrollCategory") as string);
         }
-    }, [])
+    }, []);
 
     return (
         <section className="bg-menubg flex w-full max-w-[1300px] flex-row">
@@ -234,7 +234,7 @@ export default function Menu() {
                         <div className="flex gap-4">
                             {organizedMenu.map((category) => {
                                 if (activeCategory === category._id) {
-                                    setlocalstorage(category._id)
+                                    setlocalstorage(category._id);
                                 }
                                 return category.items.length > 0 ? (
                                     <Button
@@ -306,14 +306,16 @@ export default function Menu() {
                 <div className="sticky top-0 z-10 h-fit overflow-y-visible bg-itembackground px-4 py-2">
                     <div className="scrollbar-none relative flex h-[85vh] flex-col gap-6 overflow-x-auto pb-2">
                         <p className="flex items-center justify-center gap-1 pt-6 text-base font-normal tracking-[1.8px] text-menusecondary">
-                            <ShoppingBag fill="#ccad64" className="text-itembackground" /> <span>{orderType === 2 ? "Delivery" : "Collection"} from {restaurant?.name}</span>
+                            <ShoppingBag fill="#ccad64" className="text-itembackground" />{" "}
+                            <span>
+                                {orderType === 2 ? "Delivery" : "Collection"} from {restaurant?.name}
+                            </span>
                         </p>
-                        {(restaurant?.isDeliveryEnabled && restaurant.isTakeAwayEnabled) && (
-                            restaurant?.onlineOrder &&
+                        {restaurant?.isDeliveryEnabled && restaurant.isTakeAwayEnabled && restaurant?.onlineOrder && (
                             <div className="flex w-full gap-4">
                                 <Button
                                     className={cn(
-                                        "w-full rounded-none border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary",
+                                        "w-full rounded-none border border-menuprimary bg-menubackground text-menuprimary hover:border-menuprimary hover:bg-menubackground hover:text-menuprimary",
                                         orderType === 3 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-menuprimary hover:text-menuforeground" : ""
                                     )}
                                     onClick={() => setOrderType(3)}
@@ -323,10 +325,12 @@ export default function Menu() {
                                 <DeliveryCheck setOrderType={setOrderType}>
                                     <Button
                                         className={cn(
-                                            "w-full rounded-none border border-menuprimary bg-menubackground text-menuprimary hover:bg-menubackground hover:text-menuprimary hover:border-menuprimary",
-                                            orderType === 2 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-menuprimary hover:text-menuforeground" : ""
+                                            "w-full rounded-none border border-menuprimary bg-menubackground text-menuprimary hover:border-menuprimary hover:bg-menubackground hover:text-menuprimary",
+                                            orderType === 2
+                                                ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-menuprimary hover:text-menuforeground"
+                                                : ""
                                         )}
-                                    // onClick={() => setOrderType(2)}
+                                        // onClick={() => setOrderType(2)}
                                     >
                                         Delivery
                                     </Button>
@@ -351,7 +355,7 @@ export default function Menu() {
                         {/* Separator */}
                         <div className="h-[1px] w-full rounded-full bg-menuprimary"></div>
 
-                        <div className="hidden-scrollbar flex max-h-[360px] w-full flex-col gap-4 overflow-y-scroll mb-6">
+                        <div className="hidden-scrollbar mb-6 flex max-h-[360px] w-full flex-col gap-4 overflow-y-scroll">
                             {cartItems.length !== 0 ? (
                                 <div className="flex w-full flex-col">
                                     {reversedCartItems.map((item, index) => {
@@ -366,10 +370,10 @@ export default function Menu() {
                                                     </div>
                                                     {menuitem?.price.value
                                                         ? menuitem?.price.value > 0 && (
-                                                            <p className="font-[700] text-menuprimary">
-                                                                {menuitem && getCurrencySymbol(menuitem.price.currency)} {menuitem && formattedItemPrice(menuitem.price.value)}
-                                                            </p>
-                                                        )
+                                                              <p className="font-[700] text-menuprimary">
+                                                                  {menuitem && getCurrencySymbol(menuitem.price.currency)} {menuitem && formattedItemPrice(menuitem.price.value)}
+                                                              </p>
+                                                          )
                                                         : ""}
                                                 </div>
 
@@ -404,10 +408,10 @@ export default function Menu() {
                                                     ))}
                                                 </div>
                                                 <p className="w-full text-sm font-[300] tracking-[1.4px] text-menusecondary">
-                                                    {item.notes && (
-                                                        <span className="border-b-[1px] border-b-menusecondary">Instructions</span>
-                                                    )}
-                                                    <br />{item.notes}</p>
+                                                    {item.notes && <span className="border-b-[1px] border-b-menusecondary">Instructions</span>}
+                                                    <br />
+                                                    {item.notes}
+                                                </p>
                                                 <div className="flex w-full items-center justify-between pt-6">
                                                     <Link href={`/cart/${index}`} className="font-[400] capitalize text-menuprimary underline">
                                                         Edit Item
@@ -479,6 +483,6 @@ export default function Menu() {
                     </div>
                 </div>
             </div>
-        </section >
+        </section>
     );
 }

@@ -5,22 +5,22 @@
 
 /** @type {import("next").NextConfig} */
 const config = {
-  images: {
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "assets.thefoodo.com",
-      },
-      {
-        protocol: "https",
-        hostname: "s3.eu-west-3.amazonaws.com",
-      },
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-      },
-    ],
-  },
+    images: {
+        remotePatterns: [
+            {
+                protocol: "https",
+                hostname: "assets.thefoodo.com",
+            },
+            {
+                protocol: "https",
+                hostname: "s3.eu-west-3.amazonaws.com",
+            },
+            {
+                protocol: "https",
+                hostname: "lh3.googleusercontent.com",
+            },
+        ],
+    },
 };
 
 export default config;

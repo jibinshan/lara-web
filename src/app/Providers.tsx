@@ -6,21 +6,21 @@ import type { FC } from "react";
 import { Toaster } from "react-hot-toast";
 
 interface ProvidersProps {
-  children: React.ReactNode;
+    children: React.ReactNode;
 }
 
 const Providers: FC<ProvidersProps> = ({ children }) => {
-  const queryClient = new QueryClient();
-  return (
-    <QueryClientProvider client={queryClient}>
-      <RestaurantProvider>
-        <CartProvider>
-          {children}
-          <Toaster />
-        </CartProvider>
-      </RestaurantProvider>
-    </QueryClientProvider>
-  );
+    const queryClient = new QueryClient();
+    return (
+        <QueryClientProvider client={queryClient}>
+            <RestaurantProvider>
+                <CartProvider>
+                    {children}
+                    <Toaster />
+                </CartProvider>
+            </RestaurantProvider>
+        </QueryClientProvider>
+    );
 };
 
 export default Providers;

@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
@@ -10,7 +10,6 @@ import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
 
-
 const FormValidation = z.object({
     name: z.string().min(1, "please enter your name"),
     phone: z.string().min(11, "please enter atleast 11 digits").max(11, "please enter maximum 11 digits"),
@@ -21,7 +20,7 @@ const FormValidation = z.object({
 
 type FormData = z.infer<typeof FormValidation>;
 
-const Contact = ({ }) => {
+const Contact = ({}) => {
     const form = useForm<FormData>({
         resolver: zodResolver(FormValidation),
         defaultValues: {
@@ -44,14 +43,14 @@ const Contact = ({ }) => {
         onSuccess: () => {
             toast(
                 (t) => (
-                    <div className="flex flex-col gap-2 items-center justify-center">
+                    <div className="flex flex-col items-center justify-center gap-2">
                         <p className="text-center">Your reservation request has been successfully submitted to the restaurant!</p>
                         <button
                             onClick={() => {
                                 toast.dismiss(t.id);
                                 form.reset();
                             }}
-                            className="bg-primary text-white px-4 py-2 rounded"
+                            className="rounded bg-primary px-4 py-2 text-white"
                         >
                             OK
                         </button>
@@ -61,28 +60,26 @@ const Contact = ({ }) => {
             );
         },
         onError: () => {
-            toast.error(
-                "There was an error submitting your message. Please try again later",
-            );
+            toast.error("There was an error submitting your message. Please try again later");
         },
     });
     return (
-        <section id="welcome" className="flex w-full items-center justify-center bg-[#0b0b0b] overflow-hidden">
-            <div className="relative flex flex-col gap-9 h-fit lg:min-h-[60vh] max-w-[1300px] w-full items-center justify-center px-4 lg:px-0 py-12 lg:py-24">
-                <div className="w-full flex flex-col items-center justify-center">
-                    <p className="text-5xl font-gotu text-center text-[#C1C1C1]">Contact us</p>
+        <section id="welcome" className="flex w-full items-center justify-center overflow-hidden bg-[#0b0b0b]">
+            <div className="relative flex h-fit w-full max-w-[1300px] flex-col items-center justify-center gap-9 px-4 py-12 lg:min-h-[60vh] lg:px-0 lg:py-24">
+                <div className="flex w-full flex-col items-center justify-center">
+                    <p className="text-center font-gotu text-5xl text-[#C1C1C1]">Contact us</p>
                     <Image src="/images/underline.png" width={840} height={85} alt="underline" className="w-52" />
                 </div>
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="h-full w-full">
                         <div className="flex gap-4 pt-7">
-                            <div className="w-full grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-x-16">
+                            <div className="grid w-full grid-cols-1 gap-6 lg:grid-cols-2 lg:gap-x-16">
                                 <FormField
                                     control={form.control}
                                     name="name"
                                     render={({ field }) => (
                                         <FormItem className="w-full">
-                                            <FormLabel className="text-sm text-[#787571] ">First Name</FormLabel>
+                                            <FormLabel className="text-sm text-[#787571]">First Name</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
@@ -98,7 +95,7 @@ const Contact = ({ }) => {
                                     name="phone"
                                     render={({ field }) => (
                                         <FormItem className="w-full">
-                                            <FormLabel className="text-sm text-[#787571] ">Phone</FormLabel>
+                                            <FormLabel className="text-sm text-[#787571]">Phone</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
@@ -114,7 +111,7 @@ const Contact = ({ }) => {
                                     name="email"
                                     render={({ field }) => (
                                         <FormItem className="w-full">
-                                            <FormLabel className="text-sm text-[#787571] ">Email</FormLabel>
+                                            <FormLabel className="text-sm text-[#787571]">Email</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
@@ -131,7 +128,7 @@ const Contact = ({ }) => {
                                     name="message"
                                     render={({ field }) => (
                                         <FormItem className="w-full">
-                                            <FormLabel className="text-sm text-[#787571] ">Message</FormLabel>
+                                            <FormLabel className="text-sm text-[#787571]">Message</FormLabel>
                                             <FormControl>
                                                 <Input
                                                     {...field}
@@ -145,9 +142,10 @@ const Contact = ({ }) => {
                             </div>
                         </div>
                         <div className="flex w-full flex-col items-center justify-center pt-7 lg:flex-row">
-                            <Button className="w-fit h-12 px-10"
-                                disabled={bookTableMutation.isPending}
-                            > Submit</Button>
+                            <Button className="h-12 w-fit px-10" disabled={bookTableMutation.isPending}>
+                                {" "}
+                                Submit
+                            </Button>
                         </div>
                     </form>
                 </Form>

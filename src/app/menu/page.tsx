@@ -4,14 +4,14 @@ import Navbar from "@/components/Navbar";
 
 export default function MenuPage() {
     return (
-        <section className="w-full flex flex-col justify-start items-center bg-menubackground">
-            <div className="hidden md:flex w-full justify-center">
+        <section className="flex w-full flex-col items-center justify-start bg-menubackground">
+            <div className="hidden w-full justify-center md:flex">
                 <Navbar position="static" />
             </div>
-            <div className="hidden w-full justify-center items-center md:flex">
+            <div className="hidden w-full items-center justify-center md:flex">
                 <Menu />
             </div>
-            <div className="flex w-full justify-center items-center md:hidden">
+            <div className="flex w-full items-center justify-center md:hidden">
                 <MenuMobile />
             </div>
         </section>
