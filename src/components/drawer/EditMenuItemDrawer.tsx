@@ -467,8 +467,8 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                     }
 
                                     // Convert selected modifiers to CartItemModifier format
-                                    const modifiers: CartItemModifier[] = selectedModifiers.map((mod) => ({
-                                        _idModifiers: menuitem?.modifiers[0]?._id ?? "",
+                                    const modifiers: CartItemModifier[] = selectedModifiers.map((mod, index) => ({
+                                        _idModifiers: menuitem?.modifiers[index]?._id ?? "",
                                         _idMenuItem: mod._id,
                                         price: mod.price,
                                     }));

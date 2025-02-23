@@ -448,8 +448,8 @@ const MenuItems: FC<MenuItemProps> = ({ itemId }) => {
                         }
 
                         // Convert selected modifiers to CartItemModifier format
-                        const modifiers: CartItemModifier[] = selectedModifiers.map((mod) => ({
-                            _idModifiers: item.modifiers[0]?._id ?? "",
+                        const modifiers: CartItemModifier[] = selectedModifiers.map((mod, index) => ({
+                            _idModifiers: item.modifiers[index]?._id ?? "",
                             _idMenuItem: mod._id,
                             price: mod.price,
                         }));
@@ -480,7 +480,7 @@ const MenuItems: FC<MenuItemProps> = ({ itemId }) => {
                     </span>
                 </Button>
             </div>
-        </section>
+        </section >
     );
 };
 

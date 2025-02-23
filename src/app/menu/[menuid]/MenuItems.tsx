@@ -367,8 +367,9 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                 onClick={() => {
                                     const modifiers: CartItemModifier[] = [];
                                     for (const selectedModifier of selectedModifiers) {
+                                        const index = selectedModifiers.indexOf(selectedModifier);
                                         modifiers.push({
-                                            _idModifiers: item?.modifiers[0]?._id ? item?.modifiers[0]?._id : "",
+                                            _idModifiers: item?.modifiers[index]?._id ? item?.modifiers[index]?._id : "",
                                             price: selectedModifier.price,
                                             _idMenuItem: selectedModifier._id,
                                         });
