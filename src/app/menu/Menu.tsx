@@ -8,6 +8,7 @@ import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { getCurrencySymbol } from "@/lib/get-currency-symbol";
+import { GetModifiersFromItemId } from "@/lib/get-modifiers-from-item-id";
 import { isRestaurantOpen } from "@/lib/is-restaurant-open";
 import { cn } from "@/lib/utils";
 import type { MenuItem as MenuItemType } from "@/types/menu";
@@ -330,7 +331,7 @@ export default function Menu() {
                                                 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-menuprimary hover:text-menuforeground"
                                                 : ""
                                         )}
-                                        // onClick={() => setOrderType(2)}
+                                    // onClick={() => setOrderType(2)}
                                     >
                                         Delivery
                                     </Button>
@@ -370,10 +371,36 @@ export default function Menu() {
                                                     </div>
                                                     {menuitem?.price.value
                                                         ? menuitem?.price.value > 0 && (
-                                                              <p className="font-[700] text-menuprimary">
-                                                                  {menuitem && getCurrencySymbol(menuitem.price.currency)} {menuitem && formattedItemPrice(menuitem.price.value)}
-                                                              </p>
-                                                          )
+                                                            <p className="font-[700] text-menuprimary">
+                                                                {menuitem && menuitem.takeawayPrice.value > 0 ? (
+                                                                    <>
+                                                                        {getCurrencySymbol(menuitem.takeawayPrice.currency)} {formattedItemPrice(menuitem.takeawayPrice.value)}
+                                                                    </>
+                                                                ) : (
+                                                                    <>
+                                                                        {menuitem && menuitem.price.value > 0 ? (
+                                                                            <>
+                                                                                {getCurrencySymbol(menuitem.price.currency)} {formattedItemPrice(menuitem.price.value)}
+                                                                            </>
+                                                                        ) : (
+                                                                            <>
+                                                                                {menuitem && menuitem.modifiers.length === 0 ? (
+                                                                                    <>Free</>
+                                                                                ) : (
+                                                                                    menuitem?.modifiers.map((mod, index) =>
+                                                                                        GetModifiersFromItemId(menuitem, items, index).map((modifier) => {
+                                                                                            if (modifier._id === item.modifiers.find((modifier) => modifier.defaultSelection)?.defaultSelection) {
+                                                                                                return `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`;
+                                                                                            }
+                                                                                        })
+                                                                                    )
+                                                                                )}
+                                                                            </>
+                                                                        )}
+                                                                    </>
+                                                                )}
+                                                            </p>
+                                                        )
                                                         : ""}
                                                 </div>
 

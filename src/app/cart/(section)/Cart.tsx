@@ -6,13 +6,14 @@ import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { formattedItemPrice } from "@/lib/formatted-item-price";
 import { getCurrencySymbol } from "@/lib/get-currency-symbol";
+import { GetModifiersFromItemId } from "@/lib/get-modifiers-from-item-id";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, CircleMinus, CirclePlus, Trash2 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-const Cart = ({}) => {
+const Cart = ({ }) => {
     const { cartItems, updateItem, removeItem } = useCart();
     const { restaurant } = useRestaurant();
     const [totalAmount, setTotalAmount] = useState(0);
@@ -58,7 +59,33 @@ const Cart = ({}) => {
                                                     </div>
                                                     {menuitem && menuitem.price.value > 0 ? (
                                                         <p className="font-[700] text-menuprimary">
-                                                            {menuitem && getCurrencySymbol(menuitem.price.currency)} {menuitem && formattedItemPrice(menuitem.price.value)}
+                                                            {menuitem && menuitem.takeawayPrice.value > 0 ? (
+                                                                <>
+                                                                    {getCurrencySymbol(menuitem.takeawayPrice.currency)} {formattedItemPrice(menuitem.takeawayPrice.value)}
+                                                                </>
+                                                            ) : (
+                                                                <>
+                                                                    {menuitem && menuitem.price.value > 0 ? (
+                                                                        <>
+                                                                            {getCurrencySymbol(menuitem.price.currency)} {formattedItemPrice(menuitem.price.value)}
+                                                                        </>
+                                                                    ) : (
+                                                                        <>
+                                                                            {menuitem && menuitem.modifiers.length === 0 ? (
+                                                                                <>Free</>
+                                                                            ) : (
+                                                                                menuitem?.modifiers.map((mod, index) =>
+                                                                                    GetModifiersFromItemId(menuitem, items, index).map((modifier) => {
+                                                                                        if (modifier._id === item.modifiers.find((modifier) => modifier.defaultSelection)?.defaultSelection) {
+                                                                                            return `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`;
+                                                                                        }
+                                                                                    })
+                                                                                )
+                                                                            )}
+                                                                        </>
+                                                                    )}
+                                                                </>
+                                                            )}
                                                         </p>
                                                     ) : (
                                                         ""
