@@ -207,7 +207,7 @@ const Cart = ({ }) => {
                         disabled={cartItems.length === 0 || !restaurant?.onlineOrder || (!restaurant?.isDeliveryEnabled && !restaurant.isTakeAwayEnabled)}
                         className="flex w-full items-center justify-center rounded-none bg-menuprimary py-8 text-lg font-[700] uppercase tracking-[1px] text-menuforeground hover:bg-buttonhover disabled:bg-buttondisabled"
                     >
-                        checkout.{"£"} {formattedItemPrice(totalAmount)}
+                        checkout{' '}{"£"} {formattedItemPrice(totalAmount)}
                     </Button>
                 </Link>
             </div>
