@@ -120,7 +120,10 @@ const Checkout = () => {
         let totalcharge = 0;
         restaurant?.charges.map((charge) => {
             if (charge.isActive) {
-                if (charge.name === "Delivery Charges" && localStorage.getItem("orderType") === "3") {
+                if (charge?.orderType === "2" && checkoutType !== "delivery") {
+                    return (totalcharge += 0);
+                }
+                if (charge?.orderType === "3" && checkoutType !== "pickup") {
                     return (totalcharge += 0);
                 }
                 if (charge.isPercentage) {
