@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import type { contacttype } from "@/types/about-contact.type";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
@@ -23,7 +24,7 @@ const FormValidation = z.object({
 
 type FormData = z.infer<typeof FormValidation>;
 
-const Contact = ({}) => {
+const Contact = ({ contactdata }: { contactdata: contacttype }) => {
     const form = useForm<FormData>({
         resolver: zodResolver(FormValidation),
         defaultValues: {
@@ -70,7 +71,7 @@ const Contact = ({}) => {
         <section className="flex h-full w-full items-center justify-center bg-[#000000]">
             <div className="flex h-full w-full flex-col gap-[2.5rem] px-0 pl-0 md:px-2">
                 <div className="flex w-full flex-col lg:flex-row">
-                    <div style={{ backgroundImage: "url(/images/contact/contact.png)" }} className="flex h-screen w-full items-center justify-center lg:ml-[-10px] lg:w-1/2">
+                    <div style={{ backgroundImage: `url(${contactdata?.bgimg})` }} className="flex h-screen w-full items-center justify-center lg:ml-[-10px] lg:w-1/2">
                         <div className="h-7/12 flex w-full flex-col gap-16 px-3 md:w-7/12 md:px-0">
                             <div className="flex w-full flex-col gap-10">
                                 <div className="flex w-full flex-col gap-2">
@@ -78,11 +79,11 @@ const Contact = ({}) => {
                                     <p className="text-sm font-light">Use the form on the right to send us a message.</p>
                                 </div>
                                 <div className="flex items-center gap-3">
-                                    <Link href="https://www.instagram.com/lararestaurant/?hl=en" target="_blank">
+                                    <Link href={contactdata?.socialmedias?.instagram} target="_blank">
                                         <Icons.instagram />
                                     </Link>
                                     <Link
-                                        href="https://in.search.yahoo.com/search;_ylt=AwrKC1mGI0Bn_AEAUka7HAx.;_ylc=X1MDMjExNDcyMzAwMwRfcgMyBGZyA21jYWZlZV9lLTI2ODYwXzNQQy12BGZyMgNzYi10b3AEZ3ByaWQDUXo0Q2NFOTJSZ1dsQjVQS0IxRTZGQQRuX3JzbHQDMARuX3N1Z2cDMwRvcmlnaW4DaW4uc2VhcmNoLnlhaG9vLmNvbQRwb3MDMARwcXN0cgMEcHFzdHJsAzAEcXN0cmwDMTgEcXVlcnkDbGFyYSUyMHJlc3RhdXJlbnQlMjB1awR0X3N0bXADMTczMjI1NjY3Mw--?p=lara+restaurent+uk&fr=mcafee_e-26860_3PC-v&type=F210IN714G91841MNhJ%2BFSIbRCCvKdyV%2F2R5GgXXfvl%2BaCFyile5iUQkkoM%3D&fr2=sb-top"
+                                        href={contactdata?.socialmedias?.google}
                                         target="_blank"
                                     >
                                         <Icons.google />
@@ -107,31 +108,31 @@ const Contact = ({}) => {
                                     <div className="flex flex-col gap-2">
                                         <p className="flex gap-7 text-[#b3b3aa]">
                                             <span>:</span>
-                                            <span>12:00 - 23:45</span>
+                                            <span>{contactdata?.openstatus?.sat}</span>
                                         </p>
                                         <p className="flex gap-7 text-[#b3b3aa]">
                                             <span>:</span>
-                                            <span>12:00 - 23:45</span>
+                                            <span>{contactdata?.openstatus?.sun}</span>
                                         </p>
                                         <p className="flex gap-7 text-[#b3b3aa]">
                                             <span>:</span>
-                                            <span>16:00 - 23:00</span>
+                                            <span>{contactdata?.openstatus?.mon}</span>
                                         </p>
                                         <p className="flex gap-7 text-[#b3b3aa]">
                                             <span>:</span>
-                                            <span>16:00 - 23:00</span>
+                                            <span>{contactdata?.openstatus?.tue}</span>
                                         </p>
                                         <p className="flex gap-7 text-[#b3b3aa]">
                                             <span>:</span>
-                                            <span>16:00 - 23:00</span>
+                                            <span>{contactdata?.openstatus?.wed}</span>
                                         </p>
                                         <p className="flex gap-7 text-[#b3b3aa]">
                                             <span>:</span>
-                                            <span>16:00 - 23:00</span>
+                                            <span>{contactdata?.openstatus?.thur}</span>
                                         </p>
                                         <p className="flex gap-7 text-[#b3b3aa]">
                                             <span>:</span>
-                                            <span>12:00 - 23:45</span>
+                                            <span>{contactdata?.openstatus?.fri}</span>
                                         </p>
                                     </div>
                                 </div>
@@ -147,12 +148,11 @@ const Contact = ({}) => {
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-4">
-                                    <p>
-                                        3 Bradgate Rd, Anstey, Leicester
-                                        <br /> LE7 7AB, United Kingdom
+                                    <p className="max-w-[300px]">
+                                        {contactdata?.location}
                                     </p>
                                     <Link
-                                        href="https://www.google.com/maps/place/Lara+Restaurant/@52.6724513,-1.1875297,50m/data=!3m2!1e3!4b1!4m6!3m5!1s0x4877607586b3901f:0x3e2cc8c299288365!8m2!3d52.6724513!4d-1.1875297!16s%2Fg%2F11gdspsyg0?entry=ttu&g_ep=EgoyMDI0MTAyOS4wIKXMDSoASAFQAw%3D%3D"
+                                        href={contactdata?.locationurl}
                                         target="_blank"
                                     >
                                         <p className="flex gap-2 text-sm text-[#b3b3aa]">
@@ -169,8 +169,8 @@ const Contact = ({}) => {
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-4">
-                                    <Link href="tel: 0116 235 2888">
-                                        <p> 0116 235 2888</p>
+                                    <Link href={`tel:${contactdata?.phone}`}>
+                                        <p>{contactdata?.phone}</p>
                                     </Link>
                                 </div>
                             </div>
@@ -181,8 +181,8 @@ const Contact = ({}) => {
                                     </div>
                                 </div>
                                 <div className="flex flex-col gap-4">
-                                    <Link href="mailto:lararestaurant2024@outlook.com">
-                                        <p>lararestaurant2024@outlook.com</p>
+                                    <Link href={`mailto:${contactdata?.email}`} >
+                                        <p>{contactdata?.email}</p>
                                     </Link>
                                 </div>
                             </div>
@@ -286,7 +286,7 @@ const Contact = ({}) => {
                     </div>
                 </div>
             </div>
-        </section>
+        </section >
     );
 };
 
