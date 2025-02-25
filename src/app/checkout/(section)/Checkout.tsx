@@ -175,7 +175,7 @@ const Checkout = () => {
                             ) : !isPickupNow ? (
                                 <p>Pickup is unavailable at the moment.</p>
                             ) : restaurant?.minimumCollectionOrderAmount &&
-                              restaurant?.minimumCollectionOrderAmount > cartValue() + calculateServiceCharge(cartValue(), restaurant?.serviceCharge ?? 0) ? (
+                                restaurant?.minimumCollectionOrderAmount > cartValue() + calculateServiceCharge(cartValue(), restaurant?.serviceCharge ?? 0) ? (
                                 <p>Your basket is just under &nbsp; £{restaurant?.minimumCollectionOrderAmount}. Why not try something new from our delicious offerings?</p>
                             ) : (
                                 <Pickup />
@@ -187,7 +187,7 @@ const Checkout = () => {
                             ) : !isDeliveryNow ? (
                                 <p>Delivery is unavailable at the moment.</p>
                             ) : restaurant?.minimumDeliveryOrderAmount &&
-                              restaurant?.minimumDeliveryOrderAmount > cartValue() + calculateServiceCharge(cartValue(), restaurant?.serviceCharge ?? 0) ? (
+                                restaurant?.minimumDeliveryOrderAmount > cartValue() + calculateServiceCharge(cartValue(), restaurant?.serviceCharge ?? 0) ? (
                                 <p>
                                     Your order must total at least &nbsp; £{restaurant?.minimumDeliveryOrderAmount}. Why not have another look and add a few more tempting treats?
                                 </p>
@@ -311,7 +311,10 @@ const Checkout = () => {
                   </div> */}
                                     {restaurant?.charges.map((charge) => {
                                         if (charge?.isActive) {
-                                            if (charge.name === "Delivery Charges" && localStorage.getItem("orderType") === "3") {
+                                            if (charge?.orderType === "2" && checkoutType !== "delivery") {
+                                                return null;
+                                            }
+                                            if (charge?.orderType === "3" && checkoutType !== "pickup") {
                                                 return null;
                                             }
                                             if (charge.isPercentage) {

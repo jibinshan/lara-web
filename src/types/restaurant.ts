@@ -157,4 +157,5 @@ interface charge {
     _id: string;
     name: string;
     value: number;
+    orderType: string;
 }
