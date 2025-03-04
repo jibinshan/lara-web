@@ -283,7 +283,7 @@ const Pickup = () => {
                                 <div className="flex flex-col">
                                     <p className="text-lg font-semibold text-menusecondary">Standard</p>
                                     <p className="text-menuprimary-foreground">
-                                        {restaurant?.busyMode ? restaurant?.deliveryETA + restaurant.busyModeTime : restaurant?.deliveryETA} min
+                                        {restaurant?.busyMode ? Number(restaurant?.diningETA) + restaurant.busyModeTime : Number(restaurant?.diningETA)} min
                                     </p>
                                 </div>
                             </div>
