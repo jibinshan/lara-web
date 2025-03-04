@@ -53,6 +53,7 @@ export interface Restaurant {
         hasTakeAway: boolean;
     };
     deliveryETA: number;
+    totalDeliveryETA: number;
     diningETA: number | null;
     noOfTables: number | null;
     currency: string;

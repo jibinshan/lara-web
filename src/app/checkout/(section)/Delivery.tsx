@@ -207,7 +207,7 @@ const Delivery = () => {
                                 <div className="flex flex-col">
                                     <p className="text-lg font-semibold text-menusecondary">Standard</p>
                                     <p className="text-menuprimary-foreground">
-                                        {restaurant?.busyMode ? Number(restaurant?.diningETA) + restaurant.busyModeTime : Number(restaurant?.diningETA)} min
+                                        {restaurant?.totalDeliveryETA} min
                                     </p>
                                 </div>
                             </div>
