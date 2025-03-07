@@ -53,7 +53,7 @@ const PaymentForm: FC<{
         });
         setTotalCharges(totalcharge);
     }, [restaurant?.charges, cartValue]);
-
+      const totalCartAmount = Number(localStorage.getItem('totalCartAmount')) 
     return (
         <form onSubmit={handleSubmit} className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4">
             <div className="flex w-full">
@@ -63,7 +63,7 @@ const PaymentForm: FC<{
                 <p className="text-lg font-semibold text-menusecondary">Total Amount</p>
                 <p className="text-lg font-semibold text-menusecondary">
                     {getCurrencySymbol("GBP")}{" "}
-                    {(cartValue() + totalCharges)
+                    {(totalCartAmount + totalCharges)
                         // +
                         // calculateServiceCharge(
                         //   cartValue(),
