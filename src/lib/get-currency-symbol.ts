@@ -6,6 +6,8 @@ export const getCurrencySymbol = (currency: string) => {
             return "€";
         case "GBP":
             return "£";
+        case "gbp":
+            return "£";
         case "INR":
             return "₹";
         default:
