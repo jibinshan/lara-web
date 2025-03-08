@@ -320,6 +320,12 @@ const Checkout = () => {
                                             if (charge?.orderType === "3" && checkoutType !== "pickup") {
                                                 return null;
                                             }
+                                            if (charge?.orderType === "1") {
+                                                return null;
+                                            }
+                                            if (charge?.orderType === "4") {
+                                                return null;
+                                            }
                                             if (charge.isPercentage) {
                                                 return (
                                                     <div className="flex justify-between" key={charge._id}>
