@@ -86,7 +86,7 @@ const Delivery = () => {
                 data: {
                     _id: string;
                     orderType:number;
-                    totalCartAmount:number;
+                    totalAmount:number;
                 };
             }> = await axios.post(`${apiUrl}/orders`, {
                 _idRestaurant: restaurantID,
@@ -128,7 +128,7 @@ const Delivery = () => {
         onSuccess: (data) => {
             toast("Order created successfully");
             if (data?.orderType === 2) {
-                localStorage.setItem('totalCartAmount',data?.totalCartAmount.toString())
+                localStorage.setItem('totalAmount',data?.totalAmount.toString())
             }
             console.log(data,"==data");
             

@@ -10,6 +10,7 @@ import { z } from "zod";
 import { Form, FormControl, FormField, FormItem, FormMessage } from "../ui/form";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { format } from "date-fns";
+import { cn } from "@/lib/utils";
 
 const FormSchema = z.object({
     time: z.string(),
@@ -116,7 +117,7 @@ const ScheduleTImePopup: FC<ScheduleTImePopupProps> = ({ children, setScheduleTi
                                             className="custom-scrollbar flex h-[300px] flex-col gap-3 space-y-1 overflow-y-scroll px-2 py-2"
                                         >
                                             {timeslot?.map((time) => (
-                                                <FormItem className="flex items-center justify-between space-y-0" key={time}>
+                                                <FormItem className={cn("flex items-center justify-between space-y-0", form.watch('time')=== time && "border-[1px] border-menuprimary -mx-1 -my-1 py-1 px-1" )} key={time}>
                                                     <Label className="w-11/12 text-base font-semibold text-menusecondary" htmlFor={time}>
                                                         {time}
                                                     </Label>
