@@ -69,7 +69,10 @@ export interface RefreshPayment {
         _id: string;
         _idMenuItem: string;
     }[];
-    charges: charge[];
+    charges: {        
+        chargeItems:chargeItem[];
+        chargeAmount:number;
+    };
     discountType: number;
     totalpayment: number;
     paymentType: number;
@@ -84,7 +87,7 @@ export interface RefreshPayment {
     __v: number;
 }
 
-interface charge {
+interface chargeItem {
     isPercentage: boolean;
     isActive: boolean;
     _id: string;

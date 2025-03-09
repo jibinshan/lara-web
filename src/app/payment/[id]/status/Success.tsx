@@ -198,7 +198,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                 </div>
                             )} */}
                             {close &&
-                                data?.charges.map((charge) => {
+                                data?.charges.chargeItems.map((charge) => {
                                     if (charge?.isActive) {
                                         if (charge.isPercentage) {
                                             return (
