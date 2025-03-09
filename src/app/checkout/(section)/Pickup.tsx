@@ -71,8 +71,8 @@ const Pickup = () => {
     const parsedPickup = JSON.parse(localStorage.getItem("pickup") as string) as PickupData;
     const [pickup, setPickUp] = useState<string>(parsedPickup?.pickup ? parsedPickup.pickup : "Standard");
     const [scheduleTime, setScheduleTime] = useState<ScheduleTime>({
-        time: parsedPickup.scheduleTime.time ? parsedPickup.scheduleTime.time : "",
-        date: parsedPickup.scheduleTime.date ? parsedPickup.scheduleTime.date : "",
+        time: parsedPickup?.scheduleTime.time ? parsedPickup?.scheduleTime.time : "",
+        date: parsedPickup?.scheduleTime.date ? parsedPickup?.scheduleTime.date : "",
     });
     // const [note, setNote] = useState("");
     const form = useForm<FormData>({
@@ -163,8 +163,8 @@ const Pickup = () => {
             ) {
                 
                 setScheduleTime({
-                    date: parsedPickup.scheduleTime.date?.toString(),
-                    time: parsedPickup.scheduleTime.time?.toString(),
+                    date: parsedPickup?.scheduleTime?.date?.toString(),
+                    time: parsedPickup?.scheduleTime?.time?.toString(),
                 });
             }
         }
