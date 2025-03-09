@@ -211,7 +211,13 @@ const Delivery = () => {
                         <div className="flex w-full flex-col gap-3 px-1 py-1">
                             <div
                                 className={cn("flex w-full items-center gap-3 border-[2px] border-borderinput px-4 py-3 lg:w-2/3", pickup === "Standard" && "border-menuprimary")}
-                                onClick={() => setPickUp("Standard")}
+                                onClick={() =>{
+                                    setPickUp("Standard")
+                                    setScheduleTime({
+                                        date:"",
+                                        time:""
+                                    }as ScheduleTime)
+                                }}
                             >
                                 <Calendar />
                                 <div className="flex flex-col">
