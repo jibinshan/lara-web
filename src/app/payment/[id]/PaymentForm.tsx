@@ -1,20 +1,19 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/context/CartContext";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { getCurrencySymbol } from "@/lib/get-currency-symbol";
 import { PaymentElement, useElements, useStripe } from "@stripe/react-stripe-js";
 import { MoveLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type FC } from "react";
+import {  useState, type FC } from "react";
 
 const PaymentForm: FC<{
     _id: string;
 }> = ({ _id }) => {
     const [loading, setLoading] = useState(false);
-    const [totalCharges, setTotalCharges] = useState(0);
+    // const [totalCharges, setTotalCharges] = useState(0);
     const { restaurant } = useRestaurant();
-    const { cartValue } = useCart();
+    // const { cartValue } = useCart();
     const stripe = useStripe();
     const elements = useElements();
     const router = useRouter();
@@ -40,19 +39,19 @@ const PaymentForm: FC<{
         setLoading(false);
     };
 
-    useEffect(() => {
-        let totalcharge = 0;
-        restaurant?.charges.map((charge) => {
-            if (charge.isActive) {
-                if (charge.isPercentage) {
-                    return (totalcharge += (cartValue() * charge?.value) / 100);
-                } else {
-                    return (totalcharge += charge?.value);
-                }
-            }
-        });
-        setTotalCharges(totalcharge);
-    }, [restaurant?.charges, cartValue]);
+    // useEffect(() => {
+    //     let totalcharge = 0;
+    //     restaurant?.charges.map((charge) => {
+    //         if (charge.isActive) {
+    //             if (charge.isPercentage) {
+    //                 return (totalcharge += (cartValue() * charge?.value) / 100);
+    //             } else {
+    //                 return (totalcharge += charge?.value);
+    //             }
+    //         }
+    //     });
+    //     setTotalCharges(totalcharge);
+    // }, [restaurant?.charges, cartValue]);
       const totalAmount = Number(localStorage.getItem('totalAmount')) 
     return (
         <form onSubmit={handleSubmit} className="flex w-full max-w-[500px] flex-col items-center justify-center gap-4">
@@ -63,14 +62,16 @@ const PaymentForm: FC<{
                 <p className="text-lg font-semibold text-menusecondary">Total Amount</p>
                 <p className="text-lg font-semibold text-menusecondary">
                     {getCurrencySymbol("GBP")}{" "}
-                    {(totalAmount + totalCharges)
+                    {
+                    // (totalAmount + totalCharges)
                         // +
                         // calculateServiceCharge(
                         //   cartValue(),
                         //   restaurant?.serviceCharge ?? 0,
                         // )
                         // { restaurant?.charges.map((charge) => charge?.isActive ? charge.isPercentage ? (cartValue() * charge?.value) / 100 : charge?.value : 0 }.reduce((a, b) => a + b, 0)}
-                        .toFixed(2)}
+                        totalAmount ? totalAmount?.toFixed(2) : "0.00" 
+                        }
                 </p>
             </div>
             <PaymentElement

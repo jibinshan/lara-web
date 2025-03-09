@@ -71,8 +71,8 @@ const Pickup = () => {
     const parsedPickup = JSON.parse(localStorage.getItem("pickup") as string) as PickupData;
     const [pickup, setPickUp] = useState<string>(parsedPickup?.pickup ? parsedPickup.pickup : "Standard");
     const [scheduleTime, setScheduleTime] = useState<ScheduleTime>({
-        time: "",
-        date: "",
+        time: parsedPickup.scheduleTime.time ? parsedPickup.scheduleTime.time : "",
+        date: parsedPickup.scheduleTime.date ? parsedPickup.scheduleTime.date : "",
     });
     // const [note, setNote] = useState("");
     const form = useForm<FormData>({
@@ -143,13 +143,13 @@ const Pickup = () => {
         if (localpickup) {
             // form.setValue('name')
             const parsedPickup = JSON.parse(localpickup) as PickupData;
+            
             form.setValue("name", parsedPickup.name as string);
             form.setValue("phone", parsedPickup.phone as string);
             form.setValue("email", parsedPickup.email as string);
             form.setValue("notes", parsedPickup.notes as string);
-            if (parsedPickup.pickup) {
+            if (parsedPickup.pickup) {        
                 setPickUp(parsedPickup.pickup);
-                console.log(parsedPickup.pickup, "====parsedPickup");
                 if (parsedPickup.pickup === "Standard") {
                     setScheduleTime({
                         date: "",
@@ -158,20 +158,18 @@ const Pickup = () => {
                 }
             }
             if (
-                (parsedPickup?.scheduleTime as ScheduleTime) &&
-                parsedPickup?.scheduleTime?.date &&
-                parsedPickup.scheduleTime.time &&
-                parsedPickup.scheduleTime.date.length > 0 &&
-                parsedPickup.scheduleTime.time.length > 0
+                (parsedPickup?.scheduleTime as ScheduleTime)&&
+                (parsedPickup.scheduleTime.date !== undefined  && parsedPickup.scheduleTime.time !== undefined)
             ) {
+                
                 setScheduleTime({
-                    date: parsedPickup.scheduleTime.date,
-                    time: parsedPickup.scheduleTime.time,
-                } as ScheduleTime);
+                    date: parsedPickup.scheduleTime.date?.toString(),
+                    time: parsedPickup.scheduleTime.time?.toString(),
+                });
             }
         }
     }, []);
-
+    
     useEffect(() => {
         localStorage.setItem(
             "pickup",
@@ -184,11 +182,16 @@ const Pickup = () => {
                     time: scheduleTime.time,
                     date: scheduleTime.date,
                 },
-                pickup: pickup,
+                pickup: scheduleTime.time ? "Schedule": "Standard",
             })
         );
     }, [form.watch("name"), scheduleTime, form.watch("phone"), form.watch("email"), form.watch("notes"), form, pickup]);
-
+    
+    useEffect(()=>{
+        if (scheduleTime.time) {
+            setPickUp("Schedule")
+        }
+    },[scheduleTime.time])
     const onSubmit = (data: FormData) => {
         return mutate(data);
     };
@@ -295,7 +298,6 @@ const Pickup = () => {
                             <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="Collection">
                                 <div
                                     className={cn("flex w-full items-center gap-3 border-[2px] border-inputbg px-4 py-3 lg:w-2/3", pickup === "Schedule" && "border-menuprimary")}
-                                    onClick={() => setPickUp("Schedule")}
                                 >
                                     <CalendarClock />
                                     <div className="flex flex-col">

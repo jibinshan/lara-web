@@ -72,8 +72,8 @@ const Delivery = () => {
     const parsedPickup = JSON.parse(localStorage.getItem("delivery") as string) as DeliveryData;
     const [pickup, setPickUp] = useState<string>(parsedPickup?.pickup ? parsedPickup.pickup : "Standard");
     const [scheduleTime, setScheduleTime] = useState<ScheduleTime>({
-        time: "",
-        date: "",
+        time: parsedPickup.scheduleTime.time ? parsedPickup.scheduleTime.time : "",
+        date: parsedPickup.scheduleTime.date ? parsedPickup.scheduleTime.date : "",
     });
 
     const form = useForm<FormData>({
@@ -162,15 +162,12 @@ const Delivery = () => {
                 }
             }
             if (
-                (parsedPickup?.scheduleTime as ScheduleTime) &&
-                parsedPickup?.scheduleTime?.date &&
-                parsedPickup.scheduleTime.time &&
-                parsedPickup.scheduleTime.date.length > 0 &&
-                parsedPickup.scheduleTime.time.length > 0
+                (parsedPickup?.scheduleTime as ScheduleTime)&&
+                (parsedPickup.scheduleTime.date !== undefined  && parsedPickup.scheduleTime.time !== undefined)
             ) {
                 setScheduleTime({
-                    date: parsedPickup.scheduleTime.date,
-                    time: parsedPickup.scheduleTime.time,
+                    date: parsedPickup.scheduleTime.date?.toString(),
+                    time: parsedPickup.scheduleTime.time?.toString(),
                 } as ScheduleTime);
             }
         }
@@ -191,10 +188,16 @@ const Delivery = () => {
                     time: scheduleTime.time,
                     date: scheduleTime.date,
                 },
-                pickup: pickup,
+                pickup: scheduleTime.time ? "Schedule": "Standard",
             })
         );
     }, [form.watch("name"), scheduleTime, form.watch("phone"), form.watch("email"), form.watch("notes"), form, pickup]);
+
+        useEffect(()=>{
+            if (scheduleTime.time) {
+                setPickUp("Schedule")
+            }
+        },[scheduleTime.time])
 
     const onSubmit = (data: FormData) => {
         mutate(data);
@@ -224,7 +227,6 @@ const Delivery = () => {
                                         "flex w-full items-center gap-3 border-[2px] border-borderinput px-4 py-3 lg:w-2/3",
                                         pickup === "Schedule" && "border-menuprimary"
                                     )}
-                                    onClick={() => setPickUp("Schedule")}
                                 >
                                     <CalendarClock />
                                     <div className="flex flex-col">
