@@ -111,8 +111,8 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                         <p className="font-manrope text-xs font-[400] leading-[150%] tracking-[1.02px] text-menusecondary md:text-base">
                             {restaurant?.address.firstLine} {restaurant?.address.secondLine}
                             <br />
-                            {restaurant?.address.city}
-                            {restaurant?.address.countryCode}
+                            {restaurant?.address.city}&nbsp;
+                            {restaurant?.address.countryCode}&nbsp;
                             {restaurant?.address.postCode}
                         </p>
                         <span className="font-manrope text-xs font-[400] leading-[150%] tracking-[1.02px] text-menusecondary underline decoration-menusecondary decoration-1 underline-offset-4 md:text-base">
