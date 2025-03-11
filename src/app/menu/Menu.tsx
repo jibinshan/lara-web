@@ -130,8 +130,13 @@ export default function Menu() {
     const [totalAmount, setTotalAmount] = useState(0);
     const { items } = useRestaurant();
     useEffect(() => {
-        const totalCart = cartItems.reduce((acc, i) => acc + i.price.value, 0);
-
+        const totalCart = cartItems.reduce((acc, i) =>{
+            if (i.quantity > 0) {
+                return acc + i.price.value * (i.quantity)
+            }
+            
+           return acc + i.price.value
+        } , 0);
         setTotalAmount(totalCart);
     }, [cartItems]);
     const reversedCartItems = [...cartItems].reverse();
@@ -460,7 +465,8 @@ export default function Menu() {
                                                                         ...item,
                                                                         price: {
                                                                             ...item.price,
-                                                                            value: item.price.value - item.price.value / item.quantity,
+                                                                            value: item.price.value
+                                                                            //  - item.price.value / item.quantity,
                                                                         },
                                                                         quantity: item.quantity - 1,
                                                                     },
@@ -479,7 +485,8 @@ export default function Menu() {
                                                                         ...item,
                                                                         price: {
                                                                             ...item.price,
-                                                                            value: item.price.value + item.price.value / item.quantity,
+                                                                            value: item.price.value,
+                                                                            // + item.price.value / item.quantity,
                                                                         },
                                                                         quantity: item.quantity + 1,
                                                                     },
