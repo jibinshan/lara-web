@@ -20,6 +20,7 @@ import { Input } from "@/components/ui/input";
 import { useRestaurant } from "@/context/RestaurantContext";
 import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 import { format } from "date-fns";
+import type { CartItemModifier } from "@/types/cart-item.type";
 
 // interface PickupProps {
 
@@ -80,7 +81,28 @@ const Pickup = () => {
         defaultValues: {},
     });
     const { cartValue } = useCart();
-
+    const finalCart = cartItems.map((item) => {
+        const modifierCount: Record<string, CartItemModifier & { quantity: number }> = {};
+    
+        item.modifiers.forEach((modifier) => {
+            if (!modifier.price._id) return; // Ensure price._id exists before processing
+            
+            const key = modifier.price._id; // Use only price._id as the key
+    
+            if (modifierCount[key]) {
+                modifierCount[key].quantity += 1;
+            } else {
+                modifierCount[key] = { ...modifier, quantity: 1 };
+            }
+        });
+    
+        return {
+            ...item,
+            modifiers: Object.values(modifierCount), // Convert object back to array
+        };
+    });
+    
+    
     const { mutate, isPending } = useMutation({
         mutationFn: async (data: FormData) => {
             const res: AxiosResponse<{
@@ -97,7 +119,7 @@ const Pickup = () => {
                     pickup === "Standard" ? new Date(Date.now() + 20 * 60000).toISOString() : new Date(`${scheduleTime.date}T${scheduleTime.time.split("-")[0]}:00Z`).toISOString(),
                 description: "Order for " + data.name,
                 orderStatus: "placed_order",
-                items: cartItems,
+                items: finalCart,
                 notes: data.notes,
                 userDetails: {
                     name: data.name,
