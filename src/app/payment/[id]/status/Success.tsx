@@ -28,6 +28,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
+console.log(data,"===data");
 
     if (!data) {
         return (
@@ -157,27 +158,17 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                                     £{formattedItemPrice(item?.price.value * item.quantity)}
                                                 </span>
                                             </div>
-                                            {Object.entries(
-                                                item?.modifiers?.reduce((acc: Record<string, { count: number; price: number }>, mod) => {
-                                                    const name = mod?.menuItem?.name;
-                                                    if (name) {
-                                                        if (!acc[name]) {
-                                                            acc[name] = { count: 0, price: mod?.price?.value };
-                                                        }
-                                                        acc[name].count += 1;
-                                                    }
-                                                    return acc;
-                                                }, {})
-                                            ).map(([name, { count, price }], i) => (
-                                                <div className="flex w-full justify-between pl-4" key={i}>
+                                      {item.modifiers.map((i,index)=>(
+
+                                          <div className="flex w-full justify-between pl-4" key={index}>
                                                     <h5 className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">
-                                                        {count} x {name}
+                                                      {i.quantity} x {i.menuItem.name}
                                                     </h5>
                                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
-                                                        £{formattedItemPrice(price * count)}
+                                                        £{formattedItemPrice(i.quantity * i.price.value)}
                                                     </span>
                                                 </div>
-                                            ))}
+                                       ))}
                                         </div>
                                     );
                                 })}

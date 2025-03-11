@@ -46,6 +46,7 @@ export interface RefreshPayment {
         modifiers: {
             _idMenuItem: string;
             _idModifiers: string;
+            quantity: number;
             menuItem: {
                 description: string;
                 name: string;
