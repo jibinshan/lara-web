@@ -394,6 +394,8 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                         // Find which modifier group this item belongs to
                                         for (let i = 0; i < item.modifiers.length; i++) {
                                             const groupItems = GetModifiersFromItemId(item, items, i);
+                                            console.log(groupItems,"===groupitems");
+                                            
                                             if (groupItems.some((groupItem) => groupItem._id === selectedModifier._id)) {
                                                 return {
                                                     _idModifiers: item.modifiers[i]!._id,

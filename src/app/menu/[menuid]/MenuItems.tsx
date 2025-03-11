@@ -377,13 +377,15 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
 
                                     const modifiers: CartItemModifier[] = selectedModifiers.map((selectedModifier) => {
                                         for (let i = 0; i < item.modifiers.length; i++) {
-                                            const group = item.modifiers[i];
+                                            const group = GetModifiersFromItemId(item, items, i);
+                                            console.log(group,"===group");
+                                            
                                             if (!group) continue;
 
                                             const groupItems = GetModifiersFromItemId(item, items, i);
                                             if (groupItems.some((groupItem) => groupItem._id === selectedModifier._id)) {
                                                 return {
-                                                    _idModifiers: group._id,
+                                                    _idModifiers: item.modifiers[i]!._id,
                                                     _idMenuItem: selectedModifier._id,
                                                     price: selectedModifier.price,
                                                 };
