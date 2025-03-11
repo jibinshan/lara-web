@@ -10,7 +10,7 @@ import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 import { cn } from "@/lib/utils";
 import type { CartItemModifier } from "@/types/cart-item.type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import axios, { type AxiosResponse } from "axios";
 import { format } from "date-fns";
 import { Calendar, CalendarClock } from "lucide-react";
@@ -224,6 +224,34 @@ const Delivery = () => {
     const onSubmit = (data: FormData) => {
         mutate(data);
     };
+    // useEffect(()=>{
+
+    // },[form.watch('pinCode')])
+    const {data} = useQuery({
+        queryKey: ["orders", "delivery-charge",form.watch('pinCode')],
+        queryFn: async () => {
+            const res = await axios.post<{
+                success: boolean;
+                code: number;
+                msg: string;
+                serverTime: string;
+                data: {
+                    deliveryCharge: number;
+                };
+            }>(`${apiUrl}/orders/delivery-charge`,{
+                    _idRestaurant: restaurant?._id,
+                    shippingPincode: form.watch('pinCode'),
+            });
+            // : AxiosResponse<{
+            //     data: ;
+            // }>
+                
+            return res.data;
+        },
+        enabled:!!form.watch('pinCode')
+    });
+console.log(data,"==data");
+
     return (
         <div>
             <Form {...form}>

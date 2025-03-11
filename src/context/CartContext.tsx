@@ -61,11 +61,13 @@ export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const cartValue = () => {
         return parseFloat(
-            cartItems
-                .reduce((acc, item) => {
-                    return acc + item.price.value;
-                }, 0)
-                .toFixed(2)
+           cartItems.reduce((acc, i) =>{
+                if (i.quantity > 0) {
+                    return acc + i.price.value * (i.quantity)
+                }
+                
+               return acc + i.price.value
+            } , 0).toFixed(2)
         );
     };
 
