@@ -26,7 +26,7 @@ export default function Menu() {
     const categoryNavRef = useRef<HTMLDivElement>(null);
     const categoryButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
     const isManualScroll = useRef(false);
-    const lastActiveCategory = useRef<string>("");
+    const lastActiveCategory = useRef<string>(""); 
     const [orderType, setOrderType] = useState<2 | 3>(3);
     const router = useRouter();
     const isOpen = isRestaurantOpen(restaurant);
@@ -424,10 +424,12 @@ export default function Menu() {
                                                             },
                                                             {} as Record<string, (typeof item.modifiers)[0] & { count: number }>
                                                         )
-                                                    ).map(([name, modifier], index) => (
+                                                    ).map(([name, modifier], index) => {
+                                                        
+                                                        return(
                                                         <div className="flex w-full items-center justify-between" key={index}>
                                                             <p className="w-[80%] text-sm font-[300] tracking-[1.4px] text-menusecondary">
-                                                                {modifier.count}&nbsp;&nbsp;{name}
+                                                                {(modifier.count)*(item.quantity)}&nbsp;&nbsp;{name}
                                                             </p>
                                                             {modifier.price.value > 0 ? (
                                                                 <p className="text-sm font-[700] text-menuprimary">
@@ -437,7 +439,7 @@ export default function Menu() {
                                                                 ""
                                                             )}
                                                         </div>
-                                                    ))}
+                                                    )})}
                                                 </div>
                                                 <p className="w-full text-sm font-[300] tracking-[1.4px] text-menusecondary">
                                                     {item.notes && <span className="border-b-[1px] border-b-menusecondary">Instructions</span>}

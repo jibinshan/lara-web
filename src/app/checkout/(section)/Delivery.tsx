@@ -15,7 +15,7 @@ import axios, { type AxiosResponse } from "axios";
 import { format } from "date-fns";
 import { Calendar, CalendarClock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { FC, useEffect, useState } from "react";
+import {type FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -39,7 +39,7 @@ interface ScheduleTime {
 }
 
 interface DeliveryProps {
-    setDeliveryCharge: (value: number) => void;
+    setDeliveryCharge: (value: number| null) => void;
     deliveryCharge: number | null ;
 }
 
@@ -250,15 +250,20 @@ const { mutate:postMutate } = useMutation({
         setDeliveryCharge(data?.deliveryCharge)   
     },
     onError: (error: errordata) => {
+        setDeliveryCharge(null)
         toast.error(error?.response?.data?.msg);
     },
 });
 
     useEffect(()=>{
-        if (form.watch('pinCode')) {
+        if (form.watch('pinCode').length >= 5 && form.watch('pinCode').length <= 8) {
             postMutate()
+        }else{
+            setDeliveryCharge(null)
         }
     },[form.watch('pinCode')])
+
+
     return (
         <div>
             <Form {...form}>

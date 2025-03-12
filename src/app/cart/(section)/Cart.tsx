@@ -114,7 +114,7 @@ const Cart = ({ }) => {
                                                     ).map(([name, modifier], index) => (
                                                         <div className="flex w-full items-center justify-between" key={index}>
                                                             <p className="w-[80%] text-sm font-[300] tracking-[1.4px] text-menusecondary">
-                                                                {modifier.count}&nbsp;&nbsp;{name}
+                                                                {(modifier.count)*(item.quantity)}&nbsp;&nbsp;{name}
                                                             </p>
                                                             {modifier && modifier.price.value > 0 ? (
                                                                 <p className="text-sm font-[700] text-menuprimary">

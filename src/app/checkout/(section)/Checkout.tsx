@@ -31,6 +31,7 @@ const Checkout = () => {
         if (savedOrderType?.toString() === "2") {
             setCheckoutType("delivery");
         } else {
+            setDeliveryCharge(null)
             setCheckoutType("pickup");
         }
     }, []);
@@ -258,7 +259,7 @@ const Checkout = () => {
                                                         return (
                                                             <div key={index}>
                                                                 <p>
-                                                                    {modifier?.count} X {name}
+                                                                    {(modifier.count)*(item.quantity)} X {name}
                                                                 </p>
                                                             </div>
                                                         );
