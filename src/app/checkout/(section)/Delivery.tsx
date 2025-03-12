@@ -246,17 +246,17 @@ const { mutate:postMutate } = useMutation({
         return res.data.data;
     },
     onSuccess: (data) => {
-        toast("Added Delivery Charge");    
+        // toast("Added Delivery Charge");    
         setDeliveryCharge(data?.deliveryCharge)   
     },
-    onError: (error: errordata) => {
+    onError: () => {
         setDeliveryCharge(null)
-        toast.error(error?.response?.data?.msg);
+        // toast.error(error?.response?.data?.msg);
     },
 });
 
     useEffect(()=>{
-        if (form.watch('pinCode').length >= 5 && form.watch('pinCode').length <= 8) {
+        if (form.watch('pinCode')?.length >= 5 && form.watch('pinCode')?.length <= 8) {
             postMutate()
         }else{
             setDeliveryCharge(null)
