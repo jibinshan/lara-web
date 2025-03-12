@@ -10,12 +10,12 @@ import { calculateServiceCharge } from "@/lib/calculate-service-charge";
 import { cn } from "@/lib/utils";
 import type { CartItemModifier } from "@/types/cart-item.type";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useMutation, useQuery } from "@tanstack/react-query";
+import { useMutation } from "@tanstack/react-query";
 import axios, { type AxiosResponse } from "axios";
 import { format } from "date-fns";
 import { Calendar, CalendarClock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -36,6 +36,10 @@ const FormValidation = z.object({
 interface ScheduleTime {
     time: string; // Change to the appropriate type
     date: string; // Change to the appropriate type (e.g., Date, string, etc.)
+}
+
+interface DeliveryProps {
+    setDeliveryCharge: (value: number) => void;
 }
 
 interface errordata {
@@ -65,7 +69,7 @@ type DeliveryData = {
     pickup: string;
 };
 
-const Delivery = () => {
+const Delivery: FC<DeliveryProps> = ({setDeliveryCharge}) => {
     const { apiUrl, restaurantID, restaurant } = useRestaurant();
     const { cartValue } = useCart();
     const router = useRouter();
@@ -224,34 +228,34 @@ const Delivery = () => {
     const onSubmit = (data: FormData) => {
         mutate(data);
     };
-    // useEffect(()=>{
 
-    // },[form.watch('pinCode')])
-    const {data} = useQuery({
-        queryKey: ["orders", "delivery-charge",form.watch('pinCode')],
-        queryFn: async () => {
-            const res = await axios.post<{
-                success: boolean;
-                code: number;
-                msg: string;
-                serverTime: string;
-                data: {
-                    deliveryCharge: number;
-                };
-            }>(`${apiUrl}/orders/delivery-charge`,{
-                    _idRestaurant: restaurant?._id,
-                    shippingPincode: form.watch('pinCode'),
-            });
-            // : AxiosResponse<{
-            //     data: ;
-            // }>
-                
-            return res.data;
-        },
-        enabled:!!form.watch('pinCode')
-    });
-console.log(data,"==data");
+const { mutate:postMutate } = useMutation({
+    mutationFn: async () => {
+        const res: AxiosResponse<{
+            data: {
+              deliveryCharge: number;
+            };
+        }> = await axios.post(`${apiUrl}/orders/delivery-charge`, {
+            _idRestaurant: restaurant?._id,
+            shippingPincode: form.watch('pinCode'),
+        });
 
+        return res.data.data;
+    },
+    onSuccess: (data) => {
+        toast("Added Delivery Charge");    
+        setDeliveryCharge(data?.deliveryCharge)   
+    },
+    onError: (error: errordata) => {
+        toast.error(error?.response?.data?.msg);
+    },
+});
+
+    useEffect(()=>{
+        if (form.watch('pinCode')) {
+            postMutate()
+        }
+    },[form.watch('pinCode')])
     return (
         <div>
             <Form {...form}>

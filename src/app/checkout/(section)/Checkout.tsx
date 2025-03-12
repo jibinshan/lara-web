@@ -24,6 +24,7 @@ const Checkout = () => {
     const [couponApply, setCouponApply] = useState(false);
     const [isDeliveryNow, setIsDeliveryNow] = useState(true);
     const { restaurant, items } = useRestaurant();
+    const [deliveryCharge,setDeliveryCharge] = useState<number | null>(null)
     const [totalCharges, setTotalCharges] = useState(0);
     useEffect(() => {
         const savedOrderType = localStorage.getItem("orderType");
@@ -201,7 +202,7 @@ const Checkout = () => {
                                     Your order must total at least &nbsp; £{restaurant?.minimumDeliveryOrderAmount}. Why not have another look and add a few more tempting treats?
                                 </p>
                             ) : (
-                                <Delivery />
+                                <Delivery setDeliveryCharge={setDeliveryCharge}/>
                             )}
                         </TabsContent>
                     </Tabs>
@@ -353,18 +354,31 @@ const Checkout = () => {
                                             }
                                         }
                                     })}
+                                    {
+                                        deliveryCharge !== null && (
+                                            <div className="flex justify-between">
+                                            <p className="text-sm font-semibold text-menusecondary">Delivery Charge</p>
+                                            <p className="text-lg font-semibold text-menusecondary">
+                                                {getCurrencySymbol("GBP")} {deliveryCharge.toFixed(2)}
+                                            </p>
+                                        </div>
+                                        )
+                                    }
                                     <div className="flex justify-between">
                                         <p className="text-lg font-semibold text-menusecondary">Total Amount</p>
                                         <p className="text-lg font-semibold text-menusecondary">
                                             {getCurrencySymbol("GBP")}{" "}
-                                            {(cartValue() + totalCharges)
+                                            {deliveryCharge !== null ? (cartValue() + totalCharges + deliveryCharge)
                                                 // +
                                                 // calculateServiceCharge(
                                                 //   cartValue(),
                                                 //   restaurant?.serviceCharge ?? 0,
                                                 // )
                                                 // { restaurant?.charges.map((charge) => charge?.isActive ? charge.isPercentage ? (cartValue() * charge?.value) / 100 : charge?.value : 0 }.reduce((a, b) => a + b, 0)}
-                                                .toFixed(2)}
+                                                .toFixed(2)
+                                            :
+                                            (cartValue() + totalCharges).toFixed(2)
+                                            }
                                         </p>
                                     </div>
                                     <div>
