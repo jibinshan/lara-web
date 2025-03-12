@@ -202,7 +202,7 @@ const Checkout = () => {
                                     Your order must total at least &nbsp; £{restaurant?.minimumDeliveryOrderAmount}. Why not have another look and add a few more tempting treats?
                                 </p>
                             ) : (
-                                <Delivery setDeliveryCharge={setDeliveryCharge}/>
+                                <Delivery setDeliveryCharge={setDeliveryCharge} deliveryCharge={deliveryCharge}/>
                             )}
                         </TabsContent>
                     </Tabs>

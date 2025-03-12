@@ -40,6 +40,7 @@ interface ScheduleTime {
 
 interface DeliveryProps {
     setDeliveryCharge: (value: number) => void;
+    deliveryCharge: number | null ;
 }
 
 interface errordata {
@@ -69,7 +70,7 @@ type DeliveryData = {
     pickup: string;
 };
 
-const Delivery: FC<DeliveryProps> = ({setDeliveryCharge}) => {
+const Delivery: FC<DeliveryProps> = ({setDeliveryCharge,deliveryCharge}) => {
     const { apiUrl, restaurantID, restaurant } = useRestaurant();
     const { cartValue } = useCart();
     const router = useRouter();
@@ -156,8 +157,10 @@ const Delivery: FC<DeliveryProps> = ({setDeliveryCharge}) => {
             if (data?.orderType === 2) {
                 localStorage.setItem('totalAmount',data?.totalAmount.toString())
             }
-            console.log(data,"==data");
-            
+            if (data?.orderType === 2 && deliveryCharge !== null) {
+                const totalAmount = data.totalAmount + deliveryCharge;
+                localStorage.setItem('totalAmount',totalAmount.toString());
+            }
             router.push("/payment/" + data._id);
         },
         onError: (error: errordata) => {
