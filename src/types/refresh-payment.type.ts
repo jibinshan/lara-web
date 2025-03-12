@@ -10,6 +10,9 @@ export interface RefreshPayment {
     totalAmount: number;
     courseAway: string | null;
     orderStatus: string;
+    deliveryCharge:{
+      amount:number;
+    };
     totalDiscount: number;
     notes: string;
     transactionId: string;

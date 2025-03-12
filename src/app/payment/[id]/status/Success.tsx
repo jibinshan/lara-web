@@ -28,7 +28,6 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data]);
-console.log(data,"===data");
 
     if (!data) {
         return (
@@ -212,6 +211,14 @@ console.log(data,"===data");
                                         }
                                     }
                                 })}
+                                {close && (
+                                    <div className="flex flex-row justify-between pb-2">
+                                                    <p className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">Delivery Charge</p>
+                                                    <p className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
+                                                        {getCurrencySymbol("GBP")} {(data?.deliveryCharge?.amount).toFixed(2)}
+                                                    </p>
+                                 </div>
+                                )}
                             {close && <div className="h-[0.2px] w-full bg-menuprimary" />}
                             <div className="flex flex-row justify-between pb-2">
                                 <h5 className="font-manrope text-sm font-[700] leading-[150%] text-menusecondary md:text-base">Order Total</h5>
