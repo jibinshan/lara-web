@@ -79,7 +79,13 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
         }
         for (const selectedModifier of selectedModifiers) {
             if (price) {
-                price += selectedModifier.price.value;
+                if (selectedModifier.takeawayPrice.value > 0) {
+                    price += selectedModifier.takeawayPrice.value;
+                } else if(selectedModifier.price.value > 0){
+                    price += selectedModifier.price.value;
+                }else{
+                    price += 0;
+                }
             } else {
                 price = selectedModifier.price.value;
             }
@@ -266,9 +272,17 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                                               </div>
                                                           )}
                                                           <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
-                                                              {modifier.price && modifier.price.value > 0
-                                                                  ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                  : "FREE"}
+                                                          {modifier && modifier.takeawayPrice.value > 0 ? (
+                                <>
+                                    {getCurrencySymbol(modifier.takeawayPrice.currency)} {formattedItemPrice(modifier.takeawayPrice.value)}
+                                </>
+                            ) :
+                            modifier.price.value ?(
+                                <>{getCurrencySymbol(modifier?.price?.currency)} {formattedItemPrice(modifier?.price?.value)}</>
+                            ):(
+                                <>Free</>
+                            )
+                                 }
                                                           </p>
                                                       </div>
                                                   </div>
@@ -330,10 +344,18 @@ const MenuItems: FC<MenuItemProps> = ({ id }) => {
                                                                       </Button>
                                                                   </div>
                                                               )}
-                                                              <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">
-                                                                  {modifier.price && modifier.price.value > 0
-                                                                      ? `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`
-                                                                      : "FREE"}
+                                                              <p className="font-manrope text-lg font-[700] tracking-[1px] text-menuprimary">             
+                                                                      {modifier && modifier.takeawayPrice.value > 0 ? (
+                                <>
+                                    {getCurrencySymbol(modifier.takeawayPrice.currency)} {formattedItemPrice(modifier.takeawayPrice.value)}
+                                </>
+                            ) :
+                            modifier.price.value ?(
+                                <>{getCurrencySymbol(modifier?.price?.currency)} {formattedItemPrice(modifier?.price?.value)}</>
+                            ):(
+                                <>Free</>
+                            )
+                                 }
                                                               </p>
                                                           </div>
                                                       </div>
