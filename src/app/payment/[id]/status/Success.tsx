@@ -32,7 +32,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
     if (!data) {
         return (
             <div className="flex h-full w-full flex-col items-center justify-center gap-5 bg-menubackground">
-                <p className="text-4xl font-[600] tracking-[2px] text-menuprimary">Placing your order...</p>
+                <p className="text-4xl font-[600] tracking-[2px] text-menuprimary text-center">Placing your order...</p>
                 <Image src="/images/payment/loading.png" width={147} height={147} alt="loading" />
             </div>
         );
@@ -52,6 +52,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
         //     <Link href="/">Go Home</Link>
         //   </Button>
         // </main>
+        
         <section className="relative flex h-full w-full flex-col bg-menubackground md:px-[130px]">
             <div className="flex w-full flex-col items-center justify-center">
                 {/*head section */}

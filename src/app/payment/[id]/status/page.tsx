@@ -30,7 +30,7 @@ const PaymentStatusPage = (props: {
     if (!data) {
         return (
             <main className="flex h-full min-h-screen w-full flex-col items-center justify-center gap-2">
-                <p className="text-4xl font-[600] tracking-[2px] text-menuprimary">Placing your order...</p>
+                <p className="text-4xl font-[600] tracking-[2px] text-menuprimary text-center">Placing your order...</p>
                 <Image src="/images/payment/loading.png" width={147} height={147} alt="loading" />
             </main>
         );
