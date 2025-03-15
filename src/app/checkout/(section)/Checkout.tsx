@@ -270,7 +270,7 @@ const Checkout = () => {
                                                         {item.notes}
                                                     </p>
                                                     <p className="text-lg font-normal text-menusecondary">
-                                                        {getCurrencySymbol(item.price.currency)} {formattedItemPrice(item.price.value)}
+                                                        {getCurrencySymbol(item.price.currency)} {formattedItemPrice(item.price.value * item.quantity)}
                                                     </p>
                                                 </div>
                                             </div>

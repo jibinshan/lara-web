@@ -422,14 +422,14 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                                 return {
                                                     _idModifiers: item.modifiers[i]!._id,
                                                     _idMenuItem: selectedModifier._id,
-                                                    price: selectedModifier.price,
+                                                    price:  selectedModifier.takeawayPrice.value > 0 ? selectedModifier.takeawayPrice : selectedModifier.price,
                                                 };
                                             }
                                         }
                                         return {
                                             _idModifiers: "",
                                             _idMenuItem: selectedModifier._id,
-                                            price: selectedModifier.price,
+                                            price:  selectedModifier.takeawayPrice.value > 0 ? selectedModifier.takeawayPrice : selectedModifier.price,
                                         };
                                     });
                                     addItem({
@@ -437,7 +437,7 @@ const MenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, setChoose }) =
                                         _idMenuItem: item._id,
                                         quantity,
                                         price: {
-                                            value: price,
+                                            value: price ? (price/quantity) : 0,
                                             currency: item.price.currency,
                                         },
                                         modifiers: modifiers,

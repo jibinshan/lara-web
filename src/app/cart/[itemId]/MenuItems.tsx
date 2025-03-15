@@ -455,14 +455,14 @@ const MenuItems: FC<MenuItemProps> = ({ itemId }) => {
                                     return {
                                         _idModifiers: group._id,
                                         _idMenuItem: selectedModifier._id,
-                                        price: selectedModifier.price,
+                                        price:  selectedModifier.takeawayPrice.value > 0 ? selectedModifier.takeawayPrice : selectedModifier.price,
                                     };
                                 }
                             }
                             return {
                                 _idModifiers: "",
                                 _idMenuItem: selectedModifier._id,
-                                price: selectedModifier.price,
+                                price:  selectedModifier.takeawayPrice.value > 0 ? selectedModifier.takeawayPrice : selectedModifier.price,
                             };
                         });
                         // Create updated item while preserving the original item's properties
@@ -470,7 +470,7 @@ const MenuItems: FC<MenuItemProps> = ({ itemId }) => {
                             ...cartItem,
                             quantity,
                             price: {
-                                value: price ?? 0,
+                                value: price ? (price/quantity) : 0,
                                 currency: item.price.currency,
                             },
                             notes: note,

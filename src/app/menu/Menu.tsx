@@ -26,7 +26,7 @@ export default function Menu() {
     const categoryNavRef = useRef<HTMLDivElement>(null);
     const categoryButtonRefs = useRef<Record<string, HTMLButtonElement | null>>({});
     const isManualScroll = useRef(false);
-    const lastActiveCategory = useRef<string>(""); 
+    const lastActiveCategory = useRef<string>("");
     const [orderType, setOrderType] = useState<2 | 3>(3);
     const router = useRouter();
     const isOpen = isRestaurantOpen(restaurant);
@@ -130,13 +130,15 @@ export default function Menu() {
     const [totalAmount, setTotalAmount] = useState(0);
     const { items } = useRestaurant();
     useEffect(() => {
-        const totalCart = cartItems.reduce((acc, i) =>{
+        const totalCart = cartItems.reduce((acc, i) => {
+            console.log(i.quantity, "===quantity");
+
             if (i.quantity > 0) {
-                return acc + i.price.value * (i.quantity)
+                return acc + i.price.value * i.quantity;
             }
-            
-           return acc + i.price.value
-        } , 0);
+
+            return acc + i.price.value;
+        }, 0);
         setTotalAmount(totalCart);
     }, [cartItems]);
     const reversedCartItems = [...cartItems].reverse();
@@ -308,6 +310,9 @@ export default function Menu() {
                     </div>
                 </div>
             </div>
+
+            {/* cart start here */}
+
             <div className="hidden w-2/6 flex-col md:flex">
                 <div className="sticky top-0 z-10 h-fit overflow-y-visible bg-itembackground px-4 py-2">
                     <div className="scrollbar-none relative flex h-[85vh] flex-col gap-6 overflow-x-auto pb-2">
@@ -336,7 +341,7 @@ export default function Menu() {
                                                 ? "rounded-none bg-menuprimary font-bold uppercase text-menuforeground hover:bg-menuprimary hover:text-menuforeground"
                                                 : ""
                                         )}
-                                    // onClick={() => setOrderType(2)}
+                                        // onClick={() => setOrderType(2)}
                                     >
                                         Delivery
                                     </Button>
@@ -376,36 +381,39 @@ export default function Menu() {
                                                     </div>
                                                     {menuitem?.price.value
                                                         ? menuitem?.price.value > 0 && (
-                                                            <p className="font-[700] text-menuprimary">
-                                                                {menuitem && menuitem.takeawayPrice.value > 0 ? (
-                                                                    <>
-                                                                        {getCurrencySymbol(menuitem.takeawayPrice.currency)} {formattedItemPrice(menuitem.takeawayPrice.value)}
-                                                                    </>
-                                                                ) : (
-                                                                    <>
-                                                                        {menuitem && menuitem.price.value > 0 ? (
-                                                                            <>
-                                                                                {getCurrencySymbol(menuitem.price.currency)} {formattedItemPrice(menuitem.price.value)}
-                                                                            </>
-                                                                        ) : (
-                                                                            <>
-                                                                                {menuitem && menuitem.modifiers.length === 0 ? (
-                                                                                    <>Free</>
-                                                                                ) : (
-                                                                                    menuitem?.modifiers.map((mod, index) =>
-                                                                                        GetModifiersFromItemId(menuitem, items, index).map((modifier) => {
-                                                                                            if (modifier._id === item.modifiers.find((modifier) => modifier.defaultSelection)?.defaultSelection) {
-                                                                                                return `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`;
-                                                                                            }
-                                                                                        })
-                                                                                    )
-                                                                                )}
-                                                                            </>
-                                                                        )}
-                                                                    </>
-                                                                )}
-                                                            </p>
-                                                        )
+                                                              <p className="font-[700] text-menuprimary">
+                                                                  {menuitem && menuitem.takeawayPrice.value > 0 ? (
+                                                                      <>
+                                                                          {getCurrencySymbol(menuitem.takeawayPrice.currency)} {formattedItemPrice(menuitem.takeawayPrice.value)}
+                                                                      </>
+                                                                  ) : (
+                                                                      <>
+                                                                          {menuitem && menuitem.price.value > 0 ? (
+                                                                              <>
+                                                                                  {getCurrencySymbol(menuitem.price.currency)} {formattedItemPrice(menuitem.price.value)}
+                                                                              </>
+                                                                          ) : (
+                                                                              <>
+                                                                                  {menuitem && menuitem.modifiers.length === 0 ? (
+                                                                                      <>Free</>
+                                                                                  ) : (
+                                                                                      menuitem?.modifiers.map((mod, index) =>
+                                                                                          GetModifiersFromItemId(menuitem, items, index).map((modifier) => {
+                                                                                              if (
+                                                                                                  modifier._id ===
+                                                                                                  item.modifiers.find((modifier) => modifier.defaultSelection)?.defaultSelection
+                                                                                              ) {
+                                                                                                  return `${getCurrencySymbol(modifier.price.currency)} ${formattedItemPrice(modifier.price.value)}`;
+                                                                                              }
+                                                                                          })
+                                                                                      )
+                                                                                  )}
+                                                                              </>
+                                                                          )}
+                                                                      </>
+                                                                  )}
+                                                              </p>
+                                                          )
                                                         : ""}
                                                 </div>
 
@@ -425,21 +433,25 @@ export default function Menu() {
                                                             {} as Record<string, (typeof item.modifiers)[0] & { count: number }>
                                                         )
                                                     ).map(([name, modifier], index) => {
-                                                        
-                                                        return(
-                                                        <div className="flex w-full items-center justify-between" key={index}>
-                                                            <p className="w-[80%] text-sm font-[300] tracking-[1.4px] text-menusecondary">
-                                                                {(modifier.count)*(item.quantity)}&nbsp;&nbsp;{name}
-                                                            </p>
-                                                            {modifier.price.value > 0 ? (
-                                                                <p className="text-sm font-[700] text-menuprimary">
-                                                                    {getCurrencySymbol(modifier.price.currency)} {formattedItemPrice(modifier.price.value)}
+                                                        return (
+                                                            <div className="flex w-full items-center justify-between" key={index}>
+                                                                <p className="w-[80%] text-sm font-[300] tracking-[1.4px] text-menusecondary">
+                                                                    {modifier.count * item.quantity}&nbsp;&nbsp;{name}
                                                                 </p>
-                                                            ) : (
-                                                                ""
-                                                            )}
-                                                        </div>
-                                                    )})}
+                                                            
+                                                                    <p className="text-sm font-[700] text-menuprimary">
+                                                                        {modifier.price.value > 0 ? (
+                                                                            <>
+                                                                                {getCurrencySymbol(modifier.price.currency)} {formattedItemPrice(modifier.price.value)}
+                                                                            </>
+                                                                        ) : (
+                                                                            <>Free</>
+                                                                        )}
+                                                                    </p>
+                                                                
+                                                            </div>
+                                                        );
+                                                    })}
                                                 </div>
                                                 <p className="w-full text-sm font-[300] tracking-[1.4px] text-menusecondary">
                                                     {item.notes && <span className="border-b-[1px] border-b-menusecondary">Instructions</span>}
@@ -467,7 +479,7 @@ export default function Menu() {
                                                                         ...item,
                                                                         price: {
                                                                             ...item.price,
-                                                                            value: item.price.value
+                                                                            value: item.price.value,
                                                                             //  - item.price.value / item.quantity,
                                                                         },
                                                                         quantity: item.quantity - 1,
