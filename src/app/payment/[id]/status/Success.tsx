@@ -154,14 +154,14 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                                                     {item.notes}
                                                 </h5>
                                                 <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
-                                                    £{formattedItemPrice(item?.price.value * item.quantity)}
+                                                    £{formattedItemPrice(item?.price.value)}
                                                 </span>
                                             </div>
                                       {item.modifiers.map((i,index)=>(
 
                                           <div className="flex w-full justify-between pl-4" key={index}>
                                                     <h5 className="font-manrope text-sm font-[400] leading-[150%] text-menusecondary md:text-base">
-                                                      {i.quantity} x {i.menuItem.name}
+                                                      {i.quantity * item.quantity} x {i.menuItem.name}
                                                     </h5>
                                                     <span className="font-manrope text-sm font-[700] leading-[150%] text-menuprimary md:text-base">
                                                         £{formattedItemPrice(i.quantity * i.price.value)}
