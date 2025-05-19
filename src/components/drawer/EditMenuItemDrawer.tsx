@@ -118,9 +118,9 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
             if (price) {
                 if (selectedModifier.takeawayPrice.value > 0) {
                     price += selectedModifier.takeawayPrice.value;
-                } else if(selectedModifier.price.value > 0){
+                } else if (selectedModifier.price.value > 0) {
                     price += selectedModifier.price.value;
-                }else{
+                } else {
                     price += 0;
                 }
             } else {
@@ -262,7 +262,7 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                                   >
                                                       <div className="flex w-fit items-center justify-center gap-5">
                                                           <div className="flex flex-col items-start justify-center">
-                                                              <Label htmlFor={modifier._id} className="items-center gap-2 text-menusecondary">
+                                                              <Label htmlFor={modifier._id} className="items-center gap-2 text-lg text-menusecondary">
                                                                   {modifier.name}
                                                               </Label>
                                                               <Label htmlFor={modifier._id} className="font-manrope items-center gap-2 text-base font-[400] text-menusecondary">
@@ -273,17 +273,17 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                                       <div className="flex flex-col items-end justify-start gap-2">
                                                           <div className="flex gap-1">
                                                               <Label htmlFor={modifier._id} className="flex items-center gap-2 text-menusecondary">
-                                                              {modifier && modifier.takeawayPrice.value > 0 ? (
-                                <>
-                                    {getCurrencySymbol(modifier.takeawayPrice.currency)} {formattedItemPrice(modifier.takeawayPrice.value)}
-                                </>
-                            ) :
-                            modifier.price.value ?(
-                                <>{getCurrencySymbol(modifier?.price?.currency)} {formattedItemPrice(modifier?.price?.value)}</>
-                            ):(
-                                <>Free</>
-                            )
-                                 }
+                                                                  {modifier && modifier.takeawayPrice.value > 0 ? (
+                                                                      <>
+                                                                          {getCurrencySymbol(modifier.takeawayPrice.currency)} {formattedItemPrice(modifier.takeawayPrice.value)}
+                                                                      </>
+                                                                  ) : modifier.price.value ? (
+                                                                      <>
+                                                                          {getCurrencySymbol(modifier?.price?.currency)} {formattedItemPrice(modifier?.price?.value)}
+                                                                      </>
+                                                                  ) : (
+                                                                      <>Free</>
+                                                                  )}
                                                               </Label>
                                                               <Checkbox
                                                                   id={modifier._id}
@@ -356,17 +356,18 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                                                   <div className="flex flex-col items-end justify-start gap-2">
                                                                       <div className="flex items-start justify-end gap-1">
                                                                           <Label htmlFor={modifier._id} className="flex items-center gap-2 text-menusecondary">
-                                                                          {modifier && modifier.takeawayPrice.value > 0 ? (
-                                <>
-                                    {getCurrencySymbol(modifier.takeawayPrice.currency)} {formattedItemPrice(modifier.takeawayPrice.value)}
-                                </>
-                            ) :
-                            modifier.price.value ?(
-                                <>{getCurrencySymbol(modifier?.price?.currency)} {formattedItemPrice(modifier?.price?.value)}</>
-                            ):(
-                                <>Free</>
-                            )
-                                 }
+                                                                              {modifier && modifier.takeawayPrice.value > 0 ? (
+                                                                                  <>
+                                                                                      {getCurrencySymbol(modifier.takeawayPrice.currency)}{" "}
+                                                                                      {formattedItemPrice(modifier.takeawayPrice.value)}
+                                                                                  </>
+                                                                              ) : modifier.price.value ? (
+                                                                                  <>
+                                                                                      {getCurrencySymbol(modifier?.price?.currency)} {formattedItemPrice(modifier?.price?.value)}
+                                                                                  </>
+                                                                              ) : (
+                                                                                  <>Free</>
+                                                                              )}
                                                                           </Label>
                                                                           <RadioGroupItem id={modifier._id} value={modifier._id} className="h-4 w-4 border-menuprimary" />
                                                                       </div>
@@ -469,7 +470,7 @@ const EditMenuItemDrawer: FC<MenuItemPopupProps> = ({ children, item, index }) =
                                     ...item,
                                     quantity,
                                     price: {
-                                        value: price ? (price/quantity) : 0,
+                                        value: price ? price / quantity : 0,
                                         currency: item.price.currency,
                                     },
                                     notes: note,

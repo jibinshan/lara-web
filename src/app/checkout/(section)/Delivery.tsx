@@ -120,7 +120,7 @@ const Delivery: FC<DeliveryProps> = ({setDeliveryCharge,deliveryCharge}) => {
                 orderType: 2,
                 deliveryType: pickup === "Standard" ? "standard" : "scheduled",
                 deliveryTime:
-                    pickup === "Standard" ? new Date(Date.now() + 20 * 60000).toISOString() : new Date(`${scheduleTime.date},${scheduleTime.time.split("-")[0]}`).toISOString(),
+                    pickup === "Standard" ? new Date(Date.now() + Number(restaurant?.totalDeliveryETA)  * 60000).toISOString() : new Date(`${scheduleTime.date},${scheduleTime.time.split("-")[0]}`).toISOString(),
                 description: "Order for " + data.name,
                 orderStatus: "placed_order",
                 items: finalCart,
@@ -182,7 +182,6 @@ const Delivery: FC<DeliveryProps> = ({setDeliveryCharge,deliveryCharge}) => {
             form.setValue("pinCode", parsedPickup.pinCode as string);
             if (parsedPickup.pickup) {
                 setPickUp(parsedPickup.pickup);
-                console.log(parsedPickup.pickup, "====parsedPickup");
                 if (parsedPickup.pickup === "Standard") {
                     setScheduleTime({
                         date: "",

@@ -86,7 +86,7 @@ const PaymentForm: FC<{
                     },
                 }}
             />
-            <Button disabled={loading || !stripe || !elements} type="submit" className="w-full max-w-[400px]">
+            <Button disabled={loading || !stripe || !elements} type="submit" className="w-full h-[50px] max-w-[400px] rounded-none">
                 {loading ? "Processing..." : "Pay Now"}
             </Button>
         </form>

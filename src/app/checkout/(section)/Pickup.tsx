@@ -116,7 +116,7 @@ const Pickup = () => {
                 orderType: 3,
                 deliveryType: pickup === "Standard" ? "standard" : "scheduled",
                 deliveryTime:
-                    pickup === "Standard" ? new Date(Date.now() + 20 * 60000).toISOString() : new Date(`${scheduleTime.date}T${scheduleTime.time.split("-")[0]}:00Z`).toISOString(),
+                    pickup === "Standard" ? new Date(Date.now() +  Number(restaurant?.totalDeliveryETA) * 60000).toISOString() : new Date(`${scheduleTime.date}T${scheduleTime.time.split("-")[0]}:00Z`).toISOString(),
                 description: "Order for " + data.name,
                 orderStatus: "placed_order",
                 items: finalCart,
@@ -159,7 +159,6 @@ const Pickup = () => {
             toast.error(error?.response?.data?.msg);
         },
     });
-
     useEffect(() => {
         const localpickup = localStorage.getItem("pickup");
         if (localpickup) {
