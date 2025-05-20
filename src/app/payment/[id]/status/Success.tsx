@@ -14,7 +14,7 @@ interface SuccessProps {
     id: string;
 }
 
-const Success: FC<SuccessProps> = ({ data, id }) => {
+const Success: FC<SuccessProps> = ({ data }) => {
     const { restaurant } = useRestaurant();
     const { clearCart } = useCart();
     const [close, setClose] = useState(false);
@@ -89,7 +89,7 @@ const Success: FC<SuccessProps> = ({ data, id }) => {
                     >
                         <div>
                             <button className="font-manrope bg-menubackground px-5 py-3 text-sm font-[800] leading-[150%] text-menuprimary md:text-base">
-                                ORDER #{id.slice(-5)}
+                                ORDER #{data.orderRef ? data.orderRef :''}
                             </button>
                         </div>
                         <h4 className="font-manrope text-center text-2xl font-[500] leading-[150%] text-menubackground md:text-4xl">We’ve got your order</h4>

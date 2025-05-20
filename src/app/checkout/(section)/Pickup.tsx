@@ -83,40 +83,51 @@ const Pickup = () => {
     const { cartValue } = useCart();
     const finalCart = cartItems.map((item) => {
         const modifierCount: Record<string, CartItemModifier & { quantity: number }> = {};
-    
+
         item.modifiers.forEach((modifier) => {
             if (!modifier.price._id) return; // Ensure price._id exists before processing
-            
+
             const key = modifier.price._id; // Use only price._id as the key
-    
+
             if (modifierCount[key]) {
                 modifierCount[key].quantity += 1;
             } else {
                 modifierCount[key] = { ...modifier, quantity: 1 };
             }
         });
-    
+
         return {
             ...item,
             modifiers: Object.values(modifierCount), // Convert object back to array
         };
     });
-    
-    
+
+    const dateStr = scheduleTime?.date ?? "1970-01-01";
+    const timeStr = scheduleTime?.time?.split("-")[0] ?? "00:00";
+
+    const [hours, minutes] = timeStr.split(":");
+    const sheduleDate = new Date(dateStr);
+    if (hours && minutes) {
+        sheduleDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+    }
     const { mutate, isPending } = useMutation({
         mutationFn: async (data: FormData) => {
             const res: AxiosResponse<{
                 data: {
                     _id: string;
-                    orderType:number;
-                    totalAmount:number;
+                    orderType: number;
+                    totalAmount: number;
                 };
             }> = await axios.post(`${apiUrl}/orders`, {
                 _idRestaurant: restaurantID,
                 orderType: 3,
                 deliveryType: pickup === "Standard" ? "standard" : "scheduled",
                 deliveryTime:
-                    pickup === "Standard" ? new Date(Date.now() +  Number(restaurant?.totalDeliveryETA) * 60000).toISOString() : new Date(`${scheduleTime.date}T${scheduleTime.time.split("-")[0]}:00Z`).toISOString(),
+                    pickup === "Standard"
+                        ? new Date(
+                              Date.now() + (restaurant?.busyMode ? Number(restaurant?.diningETA) + restaurant.busyModeTime : Number(restaurant?.diningETA)) * 60000
+                          ).toISOString()
+                        : new Date(sheduleDate).toISOString(),
                 description: "Order for " + data.name,
                 orderStatus: "placed_order",
                 items: finalCart,
@@ -151,7 +162,7 @@ const Pickup = () => {
         onSuccess: (data) => {
             toast("Order created successfully");
             if (data?.orderType === 3) {
-                localStorage.setItem('totalAmount',data?.totalAmount.toString())
+                localStorage.setItem("totalAmount", data?.totalAmount.toString());
             }
             router.push("/payment/" + data._id);
         },
@@ -159,17 +170,18 @@ const Pickup = () => {
             toast.error(error?.response?.data?.msg);
         },
     });
+
     useEffect(() => {
         const localpickup = localStorage.getItem("pickup");
         if (localpickup) {
             // form.setValue('name')
             const parsedPickup = JSON.parse(localpickup) as PickupData;
-            
+
             form.setValue("name", parsedPickup.name as string);
             form.setValue("phone", parsedPickup.phone as string);
             form.setValue("email", parsedPickup.email as string);
             form.setValue("notes", parsedPickup.notes as string);
-            if (parsedPickup.pickup) {        
+            if (parsedPickup.pickup) {
                 setPickUp(parsedPickup.pickup);
                 if (parsedPickup.pickup === "Standard") {
                     setScheduleTime({
@@ -178,11 +190,7 @@ const Pickup = () => {
                     } as ScheduleTime);
                 }
             }
-            if (
-                (parsedPickup?.scheduleTime as ScheduleTime)&&
-                (parsedPickup.scheduleTime.date !== undefined  && parsedPickup.scheduleTime.time !== undefined)
-            ) {
-                
+            if ((parsedPickup?.scheduleTime as ScheduleTime) && parsedPickup.scheduleTime.date !== undefined && parsedPickup.scheduleTime.time !== undefined) {
                 setScheduleTime({
                     date: parsedPickup?.scheduleTime?.date?.toString(),
                     time: parsedPickup?.scheduleTime?.time?.toString(),
@@ -190,7 +198,7 @@ const Pickup = () => {
             }
         }
     }, []);
-    
+
     useEffect(() => {
         localStorage.setItem(
             "pickup",
@@ -203,16 +211,16 @@ const Pickup = () => {
                     time: scheduleTime.time,
                     date: scheduleTime.date,
                 },
-                pickup: scheduleTime.time ? "Schedule": "Standard",
+                pickup: scheduleTime.time ? "Schedule" : "Standard",
             })
         );
     }, [form.watch("name"), scheduleTime, form.watch("phone"), form.watch("email"), form.watch("notes"), form, pickup]);
-    
-    useEffect(()=>{
+
+    useEffect(() => {
         if (scheduleTime.time) {
-            setPickUp("Schedule")
+            setPickUp("Schedule");
         }
-    },[scheduleTime.time])
+    }, [scheduleTime.time]);
     const onSubmit = (data: FormData) => {
         return mutate(data);
     };
@@ -306,12 +314,12 @@ const Pickup = () => {
                         <div className="flex w-full flex-col gap-3 px-1 py-1">
                             <div
                                 className={cn("flex w-full items-center gap-3 border-[2px] border-inputbg px-4 py-3 lg:w-2/3", pickup === "Standard" && "border-menuprimary")}
-                                onClick={() =>{
-                                    setPickUp("Standard")
+                                onClick={() => {
+                                    setPickUp("Standard");
                                     setScheduleTime({
-                                        date:"",
-                                        time:""
-                                    }as ScheduleTime)
+                                        date: "",
+                                        time: "",
+                                    } as ScheduleTime);
                                 }}
                             >
                                 <Calendar />
@@ -323,9 +331,7 @@ const Pickup = () => {
                                 </div>
                             </div>
                             <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="Collection">
-                                <div
-                                    className={cn("flex w-full items-center gap-3 border-[2px] border-inputbg px-4 py-3 lg:w-2/3", pickup === "Schedule" && "border-menuprimary")}
-                                >
+                                <div className={cn("flex w-full items-center gap-3 border-[2px] border-inputbg px-4 py-3 lg:w-2/3", pickup === "Schedule" && "border-menuprimary")}>
                                     <CalendarClock />
                                     <div className="flex flex-col">
                                         <p className="text-lg font-semibold text-menusecondary">Schedule</p>

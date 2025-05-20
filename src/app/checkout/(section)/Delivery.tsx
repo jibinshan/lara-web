@@ -15,7 +15,7 @@ import axios, { type AxiosResponse } from "axios";
 import { format } from "date-fns";
 import { Calendar, CalendarClock } from "lucide-react";
 import { useRouter } from "next/navigation";
-import {type FC, useEffect, useState } from "react";
+import { type FC, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { z } from "zod";
@@ -39,8 +39,8 @@ interface ScheduleTime {
 }
 
 interface DeliveryProps {
-    setDeliveryCharge: (value: number| null) => void;
-    deliveryCharge: number | null ;
+    setDeliveryCharge: (value: number | null) => void;
+    deliveryCharge: number | null;
 }
 
 interface errordata {
@@ -70,7 +70,7 @@ type DeliveryData = {
     pickup: string;
 };
 
-const Delivery: FC<DeliveryProps> = ({setDeliveryCharge,deliveryCharge}) => {
+const Delivery: FC<DeliveryProps> = ({ setDeliveryCharge, deliveryCharge }) => {
     const { apiUrl, restaurantID, restaurant } = useRestaurant();
     const { cartValue } = useCart();
     const router = useRouter();
@@ -87,40 +87,49 @@ const Delivery: FC<DeliveryProps> = ({setDeliveryCharge,deliveryCharge}) => {
     });
 
     const finalCart = cartItems.map((item) => {
-            const modifierCount: Record<string, CartItemModifier & { quantity: number }> = {};
-        
-            item.modifiers.forEach((modifier) => {
-                if (!modifier.price._id) return; // Ensure price._id exists before processing
-                
-                const key = modifier.price._id; // Use only price._id as the key
-        
-                if (modifierCount[key]) {
-                    modifierCount[key].quantity += 1;
-                } else {
-                    modifierCount[key] = { ...modifier, quantity: 1 };
-                }
-            });
-        
-            return {
-                ...item,
-                modifiers: Object.values(modifierCount), // Convert object back to array
-            };
+        const modifierCount: Record<string, CartItemModifier & { quantity: number }> = {};
+
+        item.modifiers.forEach((modifier) => {
+            if (!modifier.price._id) return; // Ensure price._id exists before processing
+
+            const key = modifier.price._id; // Use only price._id as the key
+
+            if (modifierCount[key]) {
+                modifierCount[key].quantity += 1;
+            } else {
+                modifierCount[key] = { ...modifier, quantity: 1 };
+            }
         });
 
+        return {
+            ...item,
+            modifiers: Object.values(modifierCount), // Convert object back to array
+        };
+    });
+    const dateStr = scheduleTime?.date ?? "1970-01-01";
+    const timeStr = scheduleTime?.time?.split("-")[0] ?? "00:00";
+
+    const [hours, minutes] = timeStr.split(":");
+    const sheduleDate = new Date(dateStr);
+    if (hours && minutes) {
+        sheduleDate.setHours(parseInt(hours), parseInt(minutes), 0, 0);
+    }
     const { mutate, isPending } = useMutation({
         mutationFn: async (data: FormData) => {
             const res: AxiosResponse<{
                 data: {
                     _id: string;
-                    orderType:number;
-                    totalAmount:number;
+                    orderType: number;
+                    totalAmount: number;
                 };
             }> = await axios.post(`${apiUrl}/orders`, {
                 _idRestaurant: restaurantID,
                 orderType: 2,
                 deliveryType: pickup === "Standard" ? "standard" : "scheduled",
                 deliveryTime:
-                    pickup === "Standard" ? new Date(Date.now() + Number(restaurant?.totalDeliveryETA)  * 60000).toISOString() : new Date(`${scheduleTime.date},${scheduleTime.time.split("-")[0]}`).toISOString(),
+                    pickup === "Standard"
+                        ? new Date(Date.now() + Number(restaurant?.totalDeliveryETA) * 60000).toISOString()
+                        : new Date(sheduleDate).toISOString(),
                 description: "Order for " + data.name,
                 orderStatus: "placed_order",
                 items: finalCart,
@@ -155,11 +164,11 @@ const Delivery: FC<DeliveryProps> = ({setDeliveryCharge,deliveryCharge}) => {
         onSuccess: (data) => {
             toast("Order created successfully");
             if (data?.orderType === 2) {
-                localStorage.setItem('totalAmount',data?.totalAmount.toString())
+                localStorage.setItem("totalAmount", data?.totalAmount.toString());
             }
             if (data?.orderType === 2 && deliveryCharge !== null) {
                 const totalAmount = data.totalAmount + deliveryCharge;
-                localStorage.setItem('totalAmount',totalAmount.toString());
+                localStorage.setItem("totalAmount", totalAmount.toString());
             }
             router.push("/payment/" + data._id);
         },
@@ -167,7 +176,6 @@ const Delivery: FC<DeliveryProps> = ({setDeliveryCharge,deliveryCharge}) => {
             toast.error(error?.response?.data?.msg);
         },
     });
-
     useEffect(() => {
         const localpickup = localStorage.getItem("delivery");
         if (localpickup) {
@@ -189,10 +197,7 @@ const Delivery: FC<DeliveryProps> = ({setDeliveryCharge,deliveryCharge}) => {
                     } as ScheduleTime);
                 }
             }
-            if (
-                (parsedPickup?.scheduleTime as ScheduleTime)&&
-                (parsedPickup.scheduleTime.date !== undefined  && parsedPickup.scheduleTime.time !== undefined)
-            ) {
+            if ((parsedPickup?.scheduleTime as ScheduleTime) && parsedPickup.scheduleTime.date !== undefined && parsedPickup.scheduleTime.time !== undefined) {
                 setScheduleTime({
                     date: parsedPickup?.scheduleTime?.date?.toString(),
                     time: parsedPickup?.scheduleTime?.time?.toString(),
@@ -216,52 +221,51 @@ const Delivery: FC<DeliveryProps> = ({setDeliveryCharge,deliveryCharge}) => {
                     time: scheduleTime.time,
                     date: scheduleTime.date,
                 },
-                pickup: scheduleTime.time ? "Schedule": "Standard",
+                pickup: scheduleTime.time ? "Schedule" : "Standard",
             })
         );
     }, [form.watch("name"), scheduleTime, form.watch("phone"), form.watch("email"), form.watch("notes"), form, pickup]);
 
-        useEffect(()=>{
-            if (scheduleTime.time) {
-                setPickUp("Schedule")
-            }
-        },[scheduleTime.time])
+    useEffect(() => {
+        if (scheduleTime.time) {
+            setPickUp("Schedule");
+        }
+    }, [scheduleTime.time]);
 
     const onSubmit = (data: FormData) => {
         mutate(data);
     };
 
-const { mutate:postMutate } = useMutation({
-    mutationFn: async () => {
-        const res: AxiosResponse<{
-            data: {
-              deliveryCharge: number;
-            };
-        }> = await axios.post(`${apiUrl}/orders/delivery-charge`, {
-            _idRestaurant: restaurant?._id,
-            shippingPincode: form.watch('pinCode'),
-        });
+    const { mutate: postMutate } = useMutation({
+        mutationFn: async () => {
+            const res: AxiosResponse<{
+                data: {
+                    deliveryCharge: number;
+                };
+            }> = await axios.post(`${apiUrl}/orders/delivery-charge`, {
+                _idRestaurant: restaurant?._id,
+                shippingPincode: form.watch("pinCode"),
+            });
 
-        return res.data.data;
-    },
-    onSuccess: (data) => {
-        // toast("Added Delivery Charge");    
-        setDeliveryCharge(data?.deliveryCharge)   
-    },
-    onError: () => {
-        setDeliveryCharge(null)
-        // toast.error(error?.response?.data?.msg);
-    },
-});
+            return res.data.data;
+        },
+        onSuccess: (data) => {
+            // toast("Added Delivery Charge");
+            setDeliveryCharge(data?.deliveryCharge);
+        },
+        onError: () => {
+            setDeliveryCharge(null);
+            // toast.error(error?.response?.data?.msg);
+        },
+    });
 
-    useEffect(()=>{
-        if (form.watch('pinCode')?.length >= 5 && form.watch('pinCode')?.length <= 8) {
-            postMutate()
-        }else{
-            setDeliveryCharge(null)
+    useEffect(() => {
+        if (form.watch("pinCode")?.length >= 5 && form.watch("pinCode")?.length <= 8) {
+            postMutate();
+        } else {
+            setDeliveryCharge(null);
         }
-    },[form.watch('pinCode')])
-
+    }, [form.watch("pinCode")]);
 
     return (
         <div>
@@ -272,20 +276,18 @@ const { mutate:postMutate } = useMutation({
                         <div className="flex w-full flex-col gap-3 px-1 py-1">
                             <div
                                 className={cn("flex w-full items-center gap-3 border-[2px] border-borderinput px-4 py-3 lg:w-2/3", pickup === "Standard" && "border-menuprimary")}
-                                onClick={() =>{
-                                    setPickUp("Standard")
+                                onClick={() => {
+                                    setPickUp("Standard");
                                     setScheduleTime({
-                                        date:"",
-                                        time:""
-                                    }as ScheduleTime)
+                                        date: "",
+                                        time: "",
+                                    } as ScheduleTime);
                                 }}
                             >
                                 <Calendar />
                                 <div className="flex flex-col">
                                     <p className="text-lg font-semibold text-menusecondary">Standard</p>
-                                    <p className="text-menuprimary-foreground">
-                                        {restaurant?.totalDeliveryETA} min
-                                    </p>
+                                    <p className="text-menuprimary-foreground">{restaurant?.totalDeliveryETA} min</p>
                                 </div>
                             </div>
                             <ScheduleTImePopup setScheduleTime={setScheduleTime} orderType="Delivery">
